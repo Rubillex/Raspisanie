@@ -21,8 +21,10 @@ import java.nio.channels.ReadableByteChannel;
 
 
 
-
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+
+    public int file_number = 80500;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,15 +45,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (view.getId())
         {
             case R.id.aaa:
-
-
-                String destFileName = "581-8_red.xls";
-                String src = "https://www.asu.ru/timetable/students/24/?file=80720.xls&file_name=%D0%98%D0%A6%D0%A2%D0%AD%D0%A4%20581%20,%20583%20,%20585%20,%20587-8.xls";
-                File dest = new File(Environment.getExternalStorageDirectory() + "/Download/" + destFileName);
-                new LoadFile(src, dest).start();
+                Downloader();
         }
 
 
+    }
+
+
+    private void Downloader(){
+        String destFileName = "581-8_red.xls";
+        String src = "https://www.asu.ru/timetable/students/24/?file=" + file_number + ".xls";
+        Log.i("***", src);
+        File dest = new File(Environment.getExternalStorageDirectory() + "/Download/" + destFileName);
+        new LoadFile(src, dest).start();
     }
 
     private void onDownloadComplete(boolean success) {
@@ -76,6 +82,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             } catch (IOException e) {
                 e.printStackTrace();
                 onDownloadComplete(false);
+                file_number++;
+                Downloader();
             }
         }
     }
