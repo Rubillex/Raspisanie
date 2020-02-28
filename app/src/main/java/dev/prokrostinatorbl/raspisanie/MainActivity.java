@@ -21,6 +21,22 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
+import android.content.Intent;
+
+
+
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Iterator;
+
 
 // ХЛЕБНЫЕ КРОШКИ
 
@@ -63,6 +79,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Button aaa = (Button) findViewById(R.id.aaa);
         aaa.setOnClickListener(this);
+
+        Button fuck = (Button) findViewById(R.id.FUCK);
+        fuck.setOnClickListener(this);
+
+
     }
 
     @Override
@@ -72,8 +93,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         {
             case R.id.aaa:
                 checkPermission(
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    STORAGE_PERMISSION_CODE);
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        STORAGE_PERMISSION_CODE);
                 checkPermission(
                         Manifest.permission.INTERNET,
                         INTERNET_PERMISSION_CODE);
@@ -87,6 +108,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         Manifest.permission.READ_PHONE_STATE,
                         INTERNET_PERMISSION_CODE);
                 Downloader();
+                break;
+            case R.id.FUCK:
+                Intent intent = new Intent(MainActivity.this, FUCKTABLE.class);
+                startActivity(intent);
+                break;
         }
     }
 
@@ -125,4 +151,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
     }
+
+    public static void readFromExcel(String file) throws IOException{
+
+        int number_list = 0;
+
+        HSSFWorkbook myExcelBook = new HSSFWorkbook(new FileInputStream(file));
+        HSSFSheet myExcelSheet = myExcelBook.getSheet("Ф #"+ number_list);
+        HSSFRow row = myExcelSheet.getRow(0);
+
+    }
+
+
 }
