@@ -2,23 +2,20 @@ package dev.prokrostinatorbl.raspisanie;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.net.Uri;
 
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
 
+
+// ХЛЕБНЫЕ КРОШКИ
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
@@ -56,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String destFileName = "581-8_red.xls";
         String src = "https://www.asu.ru/timetable/students/24/?file=" + file_number + ".xls";
         Log.i("***", src);
-        File dest = new File(Environment.getExternalStorageDirectory() + "/Download/" + destFileName);
+        File dest = new File(Environment.getExternalStorageDirectory() + "/Android/data/dev.prokrostinatorbl.raspisanie/files/" + destFileName);
         new LoadFile(src, dest).start();
     }
 
