@@ -28,9 +28,7 @@ import android.content.Intent;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
+
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -108,6 +106,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         Manifest.permission.READ_PHONE_STATE,
                         INTERNET_PERMISSION_CODE);
                 Downloader();
+
+
                 break;
             case R.id.FUCK:
                 Intent intent = new Intent(MainActivity.this, FUCKTABLE.class);
@@ -157,8 +157,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         int number_list = 0;
 
         HSSFWorkbook myExcelBook = new HSSFWorkbook(new FileInputStream(file));
-        HSSFSheet myExcelSheet = myExcelBook.getSheet("Ф #"+ number_list);
-        HSSFRow row = myExcelSheet.getRow(0);
+
+            HSSFSheet myExcelSheet = myExcelBook.getSheet("Ф #"+ number_list);
+            HSSFRow row = myExcelSheet.getRow(0);
+
+
 
     }
 
