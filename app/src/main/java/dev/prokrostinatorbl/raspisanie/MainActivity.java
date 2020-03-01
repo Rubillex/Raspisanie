@@ -1,6 +1,7 @@
 package dev.prokrostinatorbl.raspisanie;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.CoreComponentFactory;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.app.CoreComponentFactory;
@@ -62,18 +63,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             new String[] { permission },
                             requestCode);
         }
-        else {
-            Toast
-                    .makeText(MainActivity.this,
-                            "Permission already granted",
-                            Toast.LENGTH_SHORT)
-                    .show();
-        }
     }
-
-
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -115,7 +105,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.FUCK:
                 Intent intent = new Intent(MainActivity.this, FUCKTABLE.class);
                 startActivity(intent);
+                checkPermission(
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        STORAGE_PERMISSION_CODE);
+                checkPermission(
+                        Manifest.permission.INTERNET,
+                        INTERNET_PERMISSION_CODE);
+                checkPermission(
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        STORAGE_PERMISSION_CODE);
+                checkPermission(
+                        Manifest.permission.ACCESS_NETWORK_STATE,
+                        INTERNET_PERMISSION_CODE);
+                checkPermission(
+                        Manifest.permission.READ_PHONE_STATE,
+                        INTERNET_PERMISSION_CODE);
+                Downloader();
                 break;
+
         }
     }
 
@@ -163,10 +170,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             HSSFSheet myExcelSheet = myExcelBook.getSheet("Ф #"+ number_list);
             HSSFRow row = myExcelSheet.getRow(0);
-
-
-
     }
-
-
 }
