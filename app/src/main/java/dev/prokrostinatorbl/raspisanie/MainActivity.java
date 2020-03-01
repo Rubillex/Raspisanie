@@ -3,6 +3,7 @@ package dev.prokrostinatorbl.raspisanie;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.app.CoreComponentFactory;
 
 import android.Manifest;
 import android.app.Activity;
@@ -30,6 +31,7 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 
 
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -40,6 +42,7 @@ import java.util.Iterator;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+
     public int file_number = 80572;
 
     private static final int INTERNET_PERMISSION_CODE = 100;

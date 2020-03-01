@@ -29,7 +29,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
     implementation 'commons-io:commons-io:2.4'
-//    implementation 'org.apache.poi:com.springsource.org.apache.poi:3.0.2.FINAL'
     implementation 'org.jetbrains:annotations-java5:15.0'
-    implementation fileTree(dir: 'C:\\poi-4.1.2', include: ['*.aar', '*.jar'], exclude: [])
+    implementation 'org.apache.poi:poi:4.1.2'
+
 }
