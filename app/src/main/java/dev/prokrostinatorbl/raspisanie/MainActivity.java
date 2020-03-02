@@ -1,7 +1,6 @@
 package dev.prokrostinatorbl.raspisanie;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.CoreComponentFactory;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.app.CoreComponentFactory;
@@ -30,12 +29,21 @@ import android.content.Intent;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.FormulaEvaluator;
+import org.apache.poi.ss.usermodel.Row;
 
 
 
+
+
+import java.util.Iterator;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
+
 import java.util.Iterator;
 
 
@@ -64,6 +72,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             requestCode);
         }
     }
+
+
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -98,8 +110,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 checkPermission(
                         Manifest.permission.READ_PHONE_STATE,
                         INTERNET_PERMISSION_CODE);
+                checkPermission(
+                        Manifest.permission.MANAGE_DOCUMENTS,
+                        INTERNET_PERMISSION_CODE);
                 Downloader();
 
+
+                try {
+                readFromExcel();
+                }
+                catch (IOException e) {
+                    // Do something here
+                }
 
                 break;
             case R.id.FUCK:
@@ -120,9 +142,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 checkPermission(
                         Manifest.permission.READ_PHONE_STATE,
                         INTERNET_PERMISSION_CODE);
+                checkPermission(
+                        Manifest.permission.MANAGE_DOCUMENTS,
+                        INTERNET_PERMISSION_CODE);
+
                 Downloader();
                 break;
-
         }
     }
 
@@ -162,13 +187,79 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    public static void readFromExcel(String file) throws IOException{
+
+
+    //НЕ РАБОТАЕТ ФУНКЦИЯ
+
+    public static void readFromExcel() throws IOException{
 
         int number_list = 0;
+        File file = new File(Environment.getExternalStorageDirectory() + "/Android/data/dev.prokrostinatorbl.raspisanie/files/123.xlsx");
+
+        Log.i("***", "************** " + "я попал сюда, а дальше не могу :с");
 
         HSSFWorkbook myExcelBook = new HSSFWorkbook(new FileInputStream(file));
 
-            HSSFSheet myExcelSheet = myExcelBook.getSheet("Ф #"+ number_list);
-            HSSFRow row = myExcelSheet.getRow(0);
+        HSSFSheet myExcelSheet = myExcelBook.getSheetAt(0);
+        HSSFRow row = myExcelSheet.getRow(0);
+
+
+        Iterator<Row> rowIterator = myExcelSheet.iterator();
+
+        while (rowIterator.hasNext()) {
+            Row row2 = rowIterator.next();
+            // Get iterator to all cells of current row
+            Iterator<Cell> cellIterator = row2.cellIterator();
+
+            while (cellIterator.hasNext()) {
+                Cell cell = cellIterator.next();
+
+                // Change to getCellType() if using POI 4.x
+                CellType cellType = cell.getCellTypeEnum();
+
+                switch (cellType) {
+                    case _NONE:
+                        Log.i("***", "************** ");
+                        break;
+                    case BOOLEAN:
+                        Log.i("***", "************** " + cell.getBooleanCellValue());
+                        System.out.print("\t");
+                        break;
+                    case BLANK:
+                        Log.i("***", "************** ");
+                        System.out.print("\t");
+                        break;
+                    case FORMULA:
+                        // Formula
+                        Log.i("***", "************** " + cell.getCellFormula());
+
+                        System.out.print("\t");
+
+                        FormulaEvaluator evaluator = myExcelBook.getCreationHelper().createFormulaEvaluator();
+                        // Print out value evaluated by formula
+                        Log.i("***", "************** " + evaluator.evaluate(cell).getNumberValue());
+                        break;
+                    case NUMERIC:
+                        Log.i("***", "************** " + cell.getNumericCellValue());
+                        System.out.print("\t");
+                        break;
+                    case STRING:
+                        Log.i("***", "************** " + cell.getStringCellValue());
+
+                        System.out.print("\t");
+                        break;
+                    case ERROR:
+                        System.out.print("!");
+                        System.out.print("\t");
+                        break;
+                }
+
+            }
+        }
+
+
+
     }
+
+
 }
