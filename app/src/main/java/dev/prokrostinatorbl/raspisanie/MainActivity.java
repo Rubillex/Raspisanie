@@ -13,6 +13,7 @@ import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -26,18 +27,8 @@ import android.content.Intent;
 
 
 
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFCell;
-
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.FormulaEvaluator;
-import org.apache.poi.ss.usermodel.Row;
-
-
-
+import java.io.*;
+import java.util.*;
 
 
 import java.util.Iterator;
@@ -52,7 +43,6 @@ import java.util.Iterator;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
-    public int file_number = 80572;
 
     private static final int INTERNET_PERMISSION_CODE = 100;
     private static final int STORAGE_PERMISSION_CODE = 101;
@@ -75,16 +65,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_main);
 
-        Button aaa = (Button) findViewById(R.id.aaa);
-        aaa.setOnClickListener(this);
+            Button aaa = (Button) findViewById(R.id.aaa);
+            aaa.setOnClickListener(this);
 
-        Button fuck = (Button) findViewById(R.id.FUCK);
+            Button fuck = (Button) findViewById(R.id.FUCK);
         fuck.setOnClickListener(this);
+
+        TextView first = (TextView) findViewById(R.id.first);
+        TextView second = (TextView) findViewById(R.id.second);
+
 
 
     }
@@ -116,13 +110,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Downloader();
 
 
-                try {
-                readFromExcel();
-                }
-                catch (IOException e) {
-                    // Do something here
-                }
-
                 break;
             case R.id.FUCK:
                 Intent intent = new Intent(MainActivity.this, FUCKTABLE.class);
@@ -152,11 +139,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void Downloader(){
-        String destFileName = "581-8_red.xls";
-        String src = "https://www.asu.ru/timetable/students/24/?file=" + file_number + ".xls";
+        String destFileName = "581-8.txt";
+        String src = "https://www.asu.ru/timetable/students/24/2129437031/?file=2129437031.ics";
         Log.i("***", src);
         File dest = new File(Environment.getExternalStorageDirectory() + "/Android/data/dev.prokrostinatorbl.raspisanie/files/" + destFileName);
         new LoadFile(src, dest).start();
+
     }
 
     private void onDownloadComplete(boolean success) {
@@ -178,88 +166,74 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             try {
                 FileUtils.copyURLToFile(new URL(src), dest);
                 onDownloadComplete(true);
+                Read();
             } catch (IOException e) {
                 e.printStackTrace();
                 onDownloadComplete(false);
-                file_number++;
-                Downloader();
             }
         }
     }
 
+    public static void Read() throws IOException {
+        File dest = new File(Environment.getExternalStorageDirectory() + "/Android/data/dev.prokrostinatorbl.raspisanie/files/581-8.txt");
+        Scanner in = new Scanner(dest);
+
+        Log.i("***", "  " + "я читаю");
+
+        String s;
 
 
-    //НЕ РАБОТАЕТ ФУНКЦИЯ
-
-    public static void readFromExcel() throws IOException{
-
-        int number_list = 0;
-        File file = new File(Environment.getExternalStorageDirectory() + "/Android/data/dev.prokrostinatorbl.raspisanie/files/123.xlsx");
-
-        Log.i("***", "************** " + "я попал сюда, а дальше не могу :с");
-
-        HSSFWorkbook myExcelBook = new HSSFWorkbook(new FileInputStream(file));
-
-        HSSFSheet myExcelSheet = myExcelBook.getSheetAt(0);
-        HSSFRow row = myExcelSheet.getRow(0);
+        String group_num = "X-WR-CALNAME";
+        String prep = "DESCRIPTION";
+        String location = "LOCATION";
+        String name = "SUMMARY";
 
 
-        Iterator<Row> rowIterator = myExcelSheet.iterator();
+        while(in.hasNextLine()){
 
-        while (rowIterator.hasNext()) {
-            Row row2 = rowIterator.next();
-            // Get iterator to all cells of current row
-            Iterator<Cell> cellIterator = row2.cellIterator();
+            s = in.nextLine();
+            String words[] = s.split(":");
+            String word = words[0];
 
-            while (cellIterator.hasNext()) {
-                Cell cell = cellIterator.next();
+//            Log.i("***", "НАШЁЛ ВОТ ЭТО:" + words[0]);
 
-                // Change to getCellType() if using POI 4.x
-                CellType cellType = cell.getCellTypeEnum();
 
-                switch (cellType) {
-                    case _NONE:
-                        Log.i("***", "************** ");
-                        break;
-                    case BOOLEAN:
-                        Log.i("***", "************** " + cell.getBooleanCellValue());
-                        System.out.print("\t");
-                        break;
-                    case BLANK:
-                        Log.i("***", "************** ");
-                        System.out.print("\t");
-                        break;
-                    case FORMULA:
-                        // Formula
-                        Log.i("***", "************** " + cell.getCellFormula());
+            if (word.equals(group_num))
+            {
+//                Log.i("YRAAAA", " " + "провалился внутрь");
+                String words_line[] = words[1].split(",");
 
-                        System.out.print("\t");
-
-                        FormulaEvaluator evaluator = myExcelBook.getCreationHelper().createFormulaEvaluator();
-                        // Print out value evaluated by formula
-                        Log.i("***", "************** " + evaluator.evaluate(cell).getNumberValue());
-                        break;
-                    case NUMERIC:
-                        Log.i("***", "************** " + cell.getNumericCellValue());
-                        System.out.print("\t");
-                        break;
-                    case STRING:
-                        Log.i("***", "************** " + cell.getStringCellValue());
-
-                        System.out.print("\t");
-                        break;
-                    case ERROR:
-                        System.out.print("!");
-                        System.out.print("\t");
-                        break;
+                Log.i("!!!", "номер группы " + words_line[0]);
+                Log.i("!!!", "Место учёбы" + words_line[1]);
+            }
+            if (word.equals(prep))
+            {
+                String words_line[] = words[1].split(")");
+                Log.i("!!!","преподаватель " + words_line[0]);
+            }
+            if (word.equals(location))
+            {
+                String words_line[] = words[1].split(" ");
+                Log.i("!!!", "Аудитория" + words_line[0]);
+            }
+            if (word.equals(name))
+            {
+                String name_par[] = words[2].split(" ");
+                String par = null;
+                for(int i=1; i <= name_par.length - 1; i++)
+                {
+                    par += name_par[i];
                 }
-
+                Log.i("!!!","Пара:" + par);
             }
+
+
+
+
         }
-
-
-
+        in.close();
     }
+
 
 
 }

@@ -19,4 +19,22 @@
         android:layout_margin="40dp"
         android:id="@+id/FUCK"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="150dp"
+        android:id="@+id/first"
+        android:text="text"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="150dp"
+        android:layout_marginLeft="300dp"
+        android:id="@+id/second"
+        android:text="text"/>
+
+
 </RelativeLayout>
