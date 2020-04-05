@@ -187,6 +187,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String prep = "DESCRIPTION";
         String location = "LOCATION";
         String name = "SUMMARY";
+        String start = "DTSTART;TZID=Asia/Krasnoyarsk";
+        String end = "DTEND;TZID=Asia/Krasnoyarsk";
 
 
         while(in.hasNextLine()){
@@ -203,28 +205,72 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                Log.i("YRAAAA", " " + "провалился внутрь");
                 String words_line[] = words[1].split(",");
 
-                Log.i("!!!", "номер группы " + words_line[0]);
-                Log.i("!!!", "Место учёбы" + words_line[1]);
+                Log.i("!!!", "номер группы: " + words_line[0]);
+                Log.i("!!!", "Место учёбы: " + words_line[1]);
             }
+
             if (word.equals(prep))
             {
-                String words_line[] = words[1].split(")");
-                Log.i("!!!","преподаватель " + words_line[0]);
+                if (words.length > 1 && words[1] != null) {
+                    String words_line[] = words[1].split(" ");
+
+                    String prepodav = "";
+                    for (int i = 0; i <= words_line.length - 1; i++) {
+                        prepodav += words_line[i] + " ";
+                    }
+                    Log.i("!!!", "преподаватель: " + prepodav);
+                }
             }
+
             if (word.equals(location))
             {
-                String words_line[] = words[1].split(" ");
-                Log.i("!!!", "Аудитория" + words_line[0]);
+                if (words.length > 1 && words[1] != null) {
+                    String words_line[] = words[1].split(" ");
+                    Log.i("!!!", "Аудитория: " + words_line[0]);
+                }
             }
+
             if (word.equals(name))
             {
-                String name_par[] = words[2].split(" ");
-                String par = null;
-                for(int i=1; i <= name_par.length - 1; i++)
-                {
-                    par += name_par[i];
+                if (words.length > 1 && words[2] != null) {
+                    String name_par[] = words[2].split(" ");
+                    String par = "";
+                    for (int i = 1; i <= name_par.length - 1; i++) {
+                        par += name_par[i] + " ";
+                    }
+                    Log.i("!!!", "Пара: " + par);
                 }
-                Log.i("!!!","Пара:" + par);
+            }
+
+
+
+
+            if (word.equals(start))
+            {
+                if (words.length > 1 && words[1] != null) {
+                    String start_time = words[1];
+                    char[] start_t = start_time.toCharArray(); //преобразования слова в массив символов
+
+                    String y = new String(start_t, 0, 4); // начиная с нулевого символа(до строки) забираем 4 символа в переменную
+                    String m = new String(start_t, 4, 2); // начиная с 4 символа забираем два символа в переменную
+                    String d = new String(start_t, 6, 2); // аналогично предыдущим
+                    String t = new String(start_t, 9, 2) + ":" + new String(start_t, 11, 2);
+
+                    Log.i("!!!", "Дата: " + d + "." + m + "." + y);
+                    Log.i("!!!", "Начало пары: "  + t);
+                }
+            }
+
+            if (word.equals(end))
+            {
+                if (words.length > 1 && words[1] != null) {
+                    String end_time = words[1];
+                    char[] end_t = end_time.toCharArray(); //преобразования слова в массив символов
+
+
+                    String t = new String(end_t, 9, 2) + ":" + new String(end_t, 11, 2);
+                    Log.i("!!!", "Конец пары: "  + t);
+                }
             }
 
 
