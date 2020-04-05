@@ -197,12 +197,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             String words[] = s.split(":");
             String word = words[0];
 
-//            Log.i("***", "НАШЁЛ ВОТ ЭТО:" + words[0]);
 
 
             if (word.equals(group_num))
             {
-//                Log.i("YRAAAA", " " + "провалился внутрь");
                 String words_line[] = words[1].split(",");
 
                 Log.i("!!!", "номер группы: " + words_line[0]);
@@ -211,12 +209,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             if (word.equals(prep))
             {
-                if (words.length > 1 && words[1] != null) {
+                if (words.length > 1 && words[1] != null) //Проверка: если в строке есть не пустые данные после двоеточия, то идём дальше
+                {
                     String words_line[] = words[1].split(" ");
 
-                    String prepodav = "";
-                    for (int i = 0; i <= words_line.length - 1; i++) {
-                        prepodav += words_line[i] + " ";
+                    String prepodav = ""; //создаём пустую переменную, чтобы в неё скидывать нужные записи
+                    for (int i = 0; i <= words_line.length - 1; i++) { //цикл который будет работать пока не дойдёт до значения "Длина строки" (хуй знает зачем минус один. По сути я хотел убрать скобки после ФИО препода которые "Доцент" и т.п., но не вышло, да и похуй)
+                        prepodav += words_line[i] + " "; //в вышесозданную переменную мы скидываем встречающиеся слова и ставим между ними пробелы
                     }
                     Log.i("!!!", "преподаватель: " + prepodav);
                 }
@@ -224,7 +223,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             if (word.equals(location))
             {
-                if (words.length > 1 && words[1] != null) {
+                if (words.length > 1 && words[1] != null) { // аналогично проверяем существование данных
                     String words_line[] = words[1].split(" ");
                     Log.i("!!!", "Аудитория: " + words_line[0]);
                 }
@@ -256,8 +255,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     String d = new String(start_t, 6, 2); // аналогично предыдущим
                     String t = new String(start_t, 9, 2) + ":" + new String(start_t, 11, 2);
 
-                    Log.i("!!!", "Дата: " + d + "." + m + "." + y);
-                    Log.i("!!!", "Начало пары: "  + t);
+                    Log.i("!!!", "Дата: " + d + "." + m + "." + y); //выводим дату
+                    Log.i("!!!", "Начало пары: "  + t); // выводим время
                 }
             }
 
