@@ -150,143 +150,151 @@ public class FUCKTABLE extends Activity {
                     src_file = "https://www.asu.ru/timetable/students/24/2129437031/?file=2129437031.ics";
                     break;
                 case "581":
-                    src_file = "https://www.asu.ru/timetable/students/24/2129437031/?file=2129437031.ics";
+                    src_file = "https://www.asu.ru/timetable/students/24/2129437028/?file=2129437028.ics";
                     break;
                 case "561":
-                    src_file = "https://www.asu.ru/timetable/students/24/2129437031/?file=2129437031.ics";
+                    src_file = "https://www.asu.ru/timetable/students/24/2129436560/?file=2129436560.ics";
                     break;
                 case "563":
-                    src_file = "https://www.asu.ru/timetable/students/24/2129437031/?file=2129437031.ics";
+                    src_file = "https://www.asu.ru/timetable/students/24/2129436562/?file=2129436562.ics";
                     break;
                 case "565":
-                    src_file = "https://www.asu.ru/timetable/students/24/2129437031/?file=2129437031.ics";
+                    src_file = "https://www.asu.ru/timetable/students/24/2129436563/?file=2129436563.ics";
                     break;
                 case "566":
-                    src_file = "https://www.asu.ru/timetable/students/24/2129437031/?file=2129437031.ics";
+                    src_file = "https://www.asu.ru/timetable/students/24/2129437286/?file=2129437286.ics";
                     break;
                 case "567":
-                    src_file = "https://www.asu.ru/timetable/students/24/2129437031/?file=2129437031.ics";
+                    src_file = "https://www.asu.ru/timetable/students/24/2129436564/?file=2129436564.ics";
                     break;
                 case "568":
-                    src_file = "https://www.asu.ru/timetable/students/24/2129437031/?file=2129437031.ics";
+                    src_file = "https://www.asu.ru/timetable/students/24/2129439087/?file=2129439087.ics";
                     break;
                 case "571":
-                    src_file = "https://www.asu.ru/timetable/students/24/2129437031/?file=2129437031.ics";
+                    src_file = "https://www.asu.ru/timetable/students/24/2129436721/?file=2129436721.ics";
                     break;
                 case "571M":
-                    src_file = "https://www.asu.ru/timetable/students/24/2129437031/?file=2129437031.ics";
+                    src_file = "";
                     break;
                 case "572aM":
-                    src_file = "https://www.asu.ru/timetable/students/24/2129437031/?file=2129437031.ics";
+                    src_file = "";
                     break;
                 case "572bM":
-                    src_file = "https://www.asu.ru/timetable/students/24/2129437031/?file=2129437031.ics";
+                    src_file = "";
                     break;
                 case "573":
-                    src_file = "https://www.asu.ru/timetable/students/24/2129437031/?file=2129437031.ics";
+                    src_file = "https://www.asu.ru/timetable/students/24/2129436723/?file=2129436723.ics";
                     break;
                 case "573M":
-                    src_file = "https://www.asu.ru/timetable/students/24/2129437031/?file=2129437031.ics";
+                    src_file = "";
                     break;
                 case "574M":
-                    src_file = "https://www.asu.ru/timetable/students/24/2129437031/?file=2129437031.ics";
+                    src_file = "";
                     break;
                 case "575":
-                    src_file = "https://www.asu.ru/timetable/students/24/2129437031/?file=2129437031.ics";
+                    src_file = "https://www.asu.ru/timetable/students/24/2129436724/?file=2129436724.ics";
                     break;
                 case "576":
-                    src_file = "https://www.asu.ru/timetable/students/24/2129437031/?file=2129437031.ics";
+                    src_file = "https://www.asu.ru/timetable/students/24/2129437577/?file=2129437577.ics";
                     break;
                 case "577":
-                    src_file = "https://www.asu.ru/timetable/students/24/2129437031/?file=2129437031.ics";
+                    src_file = "https://www.asu.ru/timetable/students/24/2129436725/?file=2129436725.ics";
                     break;
                 case "578":
-                    src_file = "https://www.asu.ru/timetable/students/24/2129437031/?file=2129437031.ics";
+                    src_file = "https://www.asu.ru/timetable/students/24/2129439426/?file=2129439426.ics";
                     break;
                 case "581M":
-                    src_file = "https://www.asu.ru/timetable/students/24/2129437031/?file=2129437031.ics";
+                    src_file = "";
                     break;
                 case "582bM":
-                    src_file = "https://www.asu.ru/timetable/students/24/2129437031/?file=2129437031.ics";
+                    src_file = "";
                     break;
                 case "583":
-                    src_file = "https://www.asu.ru/timetable/students/24/2129437031/?file=2129437031.ics";
+                    src_file = "https://www.asu.ru/timetable/students/24/2129437030/?file=2129437030.ics";
                     break;
                 case "583M":
-                    src_file = "https://www.asu.ru/timetable/students/24/2129437031/?file=2129437031.ics";
+                    src_file = "";
                     break;
                 case "584M":
-                    src_file = "https://www.asu.ru/timetable/students/24/2129437031/?file=2129437031.ics";
+                    src_file = "";
                     break;
                 case "587":
-                    src_file = "https://www.asu.ru/timetable/students/24/2129437031/?file=2129437031.ics";
+                    src_file = "https://www.asu.ru/timetable/students/24/2129437032/?file=2129437032.ics";
                     break;
                 case "588":
-                    src_file = "https://www.asu.ru/timetable/students/24/2129437031/?file=2129437031.ics";
+                    src_file = "https://www.asu.ru/timetable/students/24/2129439738/?file=2129439738.ics";
                     break;
                 case "591":
-                    src_file = "https://www.asu.ru/timetable/students/24/2129437031/?file=2129437031.ics";
+                    src_file = "https://www.asu.ru/timetable/students/24/2129437210/?file=2129437210.ics";
                     break;
                 case "591M":
-                    src_file = "https://www.asu.ru/timetable/students/24/2129437031/?file=2129437031.ics";
+                    src_file = "";
                     break;
                 case "592aM":
-                    src_file = "https://www.asu.ru/timetable/students/24/2129437031/?file=2129437031.ics";
+                    src_file = "";
                     break;
                 case "592bM":
-                    src_file = "https://www.asu.ru/timetable/students/24/2129437031/?file=2129437031.ics";
+                    src_file = "";
                     break;
                 case "593":
-                    src_file = "https://www.asu.ru/timetable/students/24/2129437031/?file=2129437031.ics";
+                    src_file = "https://www.asu.ru/timetable/students/24/2129437214/?file=2129437214.ics";
                     break;
                 case "593M":
-                    src_file = "https://www.asu.ru/timetable/students/24/2129437031/?file=2129437031.ics";
+                    src_file = "";
                     break;
                 case "594M":
-                    src_file = "https://www.asu.ru/timetable/students/24/2129437031/?file=2129437031.ics";
+                    src_file = "";
                     break;
                 case "595":
-                    src_file = "https://www.asu.ru/timetable/students/24/2129437031/?file=2129437031.ics";
+                    src_file = "https://www.asu.ru/timetable/students/24/2129437216/?file=2129437216.ics";
                     break;
                 case "597":
-                    src_file = "https://www.asu.ru/timetable/students/24/2129437031/?file=2129437031.ics";
+                    src_file = "https://www.asu.ru/timetable/students/24/2129437218/?file=2129437218.ics";
                     break;
                 case "598":
-                    src_file = "https://www.asu.ru/timetable/students/24/2129437031/?file=2129437031.ics";
+                    src_file = "https://www.asu.ru/timetable/students/24/2129439985/?file=2129439985.ics";
                     break;
 
             }
 
 
-
-            number = new ArrayList<String>();
-            prepod = new ArrayList<String>();
-            location = new ArrayList<String>();
-            par_names = new ArrayList<String>();
-            start = new ArrayList<String>();
-            end = new ArrayList<String>();
-            date = new ArrayList<String>();
+            if(src_file.equals("")){
+                Toast toast = Toast.makeText(getApplicationContext(),
+                        "Расписания для этой группы нет на сайте!", Toast.LENGTH_SHORT);
+                toast.show();
+            } else {
 
 
-            Downloader();
+                number = new ArrayList<String>();
+                prepod = new ArrayList<String>();
+                location = new ArrayList<String>();
+                par_names = new ArrayList<String>();
+                start = new ArrayList<String>();
+                end = new ArrayList<String>();
+                date = new ArrayList<String>();
+
+
+                Downloader();
 
                 h = new Handler() {
                     public void handleMessage(android.os.Message msg) {
                         // ждём окончание выполнения Загрузчика
 
                         if (msg.what == 1)
-                            {
-                                Parser();
-                                Log.i("header","онлайн мод");
-                            }
-                        if (msg.what == 2)
-                            {
-                                Parser();
-                                toolbar_text.setText(institut + ": " + group_num + " (оффлайн)");
-                                Log.i("header","оффлайн мод");
-                            }
+                        {
+                            Parser();
+                            Log.i("header","онлайн мод");
                         }
-                    };
+                        if (msg.what == 2)
+                        {
+                            Parser();
+                            toolbar_text.setText(institut + ": " + group_num + " (оффлайн)");
+                            Log.i("header","оффлайн мод");
+                        }
+                    }
+                };
+
+            }
 
     }
 
