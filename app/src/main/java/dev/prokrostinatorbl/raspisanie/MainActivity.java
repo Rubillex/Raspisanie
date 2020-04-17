@@ -8,6 +8,7 @@ import androidx.core.app.CoreComponentFactory;
 import android.Manifest;
 import android.app.Activity;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -36,8 +37,10 @@ import org.json.JSONString;
 
 
 import android.content.Intent;
+import android.widget.Toolbar;
 
 import org.json.*;
+import org.w3c.dom.Text;
 
 
 import java.io.*;
@@ -59,10 +62,10 @@ import java.util.Iterator;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
 
+    private Toolbar toolbar;
+
     private static final int INTERNET_PERMISSION_CODE = 100;
     private static final int STORAGE_PERMISSION_CODE = 101;
-
-
 
     public void checkPermission(String permission, int requestCode)
     {
@@ -80,33 +83,189 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+        @Override
+        protected void onRestart(){
+        super.onRestart();
+        setContentView(R.layout.activity_main);
+            toolbar  = (Toolbar) findViewById(R.id.my_toolbar);
+            TextView toolbar_text = (TextView) findViewById(R.id.toolbar_text);
+            toolbar_text.setText("Выберите группу");
 
-        BlueFragment frag1;
-        FragmentTransaction fTrans;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            }
+
+            TextView group_561 = (TextView) findViewById(R.id.group_561);
+            group_561.setOnClickListener(this);
+            TextView group_563 = (TextView) findViewById(R.id.group_563);
+            group_563.setOnClickListener(this);
+            TextView group_565 = (TextView) findViewById(R.id.group_565);
+            group_565.setOnClickListener(this);
+            TextView group_566 = (TextView) findViewById(R.id.group_566);
+            group_566.setOnClickListener(this);
+            TextView group_567 = (TextView) findViewById(R.id.group_567);
+            group_567.setOnClickListener(this);
+            TextView group_568 = (TextView) findViewById(R.id.group_568);
+            group_568.setOnClickListener(this);
+            TextView group_571 = (TextView) findViewById(R.id.group_571);
+            group_571.setOnClickListener(this);
+            TextView group_571M = (TextView) findViewById(R.id.group_571M);
+            group_571M.setOnClickListener(this);
+            TextView group_572aM = (TextView) findViewById(R.id.group_572aM);
+            group_572aM.setOnClickListener(this);
+            TextView group_572bM = (TextView) findViewById(R.id.group_572bM);
+            group_572bM.setOnClickListener(this);
+            TextView group_573 = (TextView) findViewById(R.id.group_573);
+            group_573.setOnClickListener(this);
+            TextView group_573M = (TextView) findViewById(R.id.group_573M);
+            group_573M.setOnClickListener(this);
+            TextView group_574M = (TextView) findViewById(R.id.group_574M);
+            group_574M.setOnClickListener(this);
+            TextView group_575 = (TextView) findViewById(R.id.group_575);
+            group_575.setOnClickListener(this);
+            TextView group_576 = (TextView) findViewById(R.id.group_576);
+            group_576.setOnClickListener(this);
+            TextView group_577 = (TextView) findViewById(R.id.group_577);
+            group_577.setOnClickListener(this);
+            TextView group_578 = (TextView) findViewById(R.id.group_578);
+            group_578.setOnClickListener(this);
+            TextView group_581M = (TextView) findViewById(R.id.group_581M);
+            group_581M.setOnClickListener(this);
+            TextView group_582bM = (TextView) findViewById(R.id.group_582bM);
+            group_582bM.setOnClickListener(this);
+            TextView group_583 = (TextView) findViewById(R.id.group_583);
+            group_583.setOnClickListener(this);
+            TextView group_583M = (TextView) findViewById(R.id.group_583M);
+            group_583M.setOnClickListener(this);
+            TextView group_584M = (TextView) findViewById(R.id.group_584M);
+            group_584M.setOnClickListener(this);
+            TextView group_587 = (TextView) findViewById(R.id.group_587);
+            group_587.setOnClickListener(this);
+            TextView group_588 = (TextView) findViewById(R.id.group_588);
+            group_588.setOnClickListener(this);
+            TextView group_591 = (TextView) findViewById(R.id.group_591);
+            group_591.setOnClickListener(this);
+            TextView group_591M = (TextView) findViewById(R.id.group_591M);
+            group_591M.setOnClickListener(this);
+            TextView group_592aM = (TextView) findViewById(R.id.group_592aM);
+            group_592aM.setOnClickListener(this);
+            TextView group_592bM = (TextView) findViewById(R.id.group_592bM);
+            group_592bM.setOnClickListener(this);
+            TextView group_593 = (TextView) findViewById(R.id.group_593);
+            group_593.setOnClickListener(this);
+            TextView group_593M = (TextView) findViewById(R.id.group_593M);
+            group_593M.setOnClickListener(this);
+            TextView group_594M = (TextView) findViewById(R.id.group_594M);
+            group_594M.setOnClickListener(this);
+            TextView group_595 = (TextView) findViewById(R.id.group_595);
+            group_595.setOnClickListener(this);
+            TextView group_597 = (TextView) findViewById(R.id.group_597);
+            group_597.setOnClickListener(this);
+            TextView group_598 = (TextView) findViewById(R.id.group_598);
+            group_598.setOnClickListener(this);
+
+        TextView group_585 = (TextView) findViewById(R.id.group_585);
+        group_585.setOnClickListener(this);
+        TextView group_581 = (TextView) findViewById(R.id.group_581);
+        group_581.setOnClickListener(this);
+
+        Cheker();
+
+        }
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
 
-            frag1 = new BlueFragment();
-            fTrans = getFragmentManager().beginTransaction();
-            fTrans.add(R.id.frgmCont, frag1);
-            Log.i("aaa","Фрагмен криейтед");
-
-//            Button aaa = (Button) findViewById(R.id.aaa);
-//            aaa.setOnClickListener(this);
-//
-//            Button fuck = (Button) findViewById(R.id.FUCK);
-//            fuck.setOnClickListener(this);
+            toolbar  = (Toolbar) findViewById(R.id.my_toolbar);
+            TextView toolbar_text = (TextView) findViewById(R.id.toolbar_text);
+            toolbar_text.setText("Выберите группу");
+//            setActionBar(toolbar);
 
 
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            }
+
+            TextView group_585 = (TextView) findViewById(R.id.group_585);
+            group_585.setOnClickListener(this);
+
+            TextView group_581 = (TextView) findViewById(R.id.group_581);
+            group_581.setOnClickListener(this);
+
+            TextView group_561 = (TextView) findViewById(R.id.group_561);
+            group_561.setOnClickListener(this);
+            TextView group_563 = (TextView) findViewById(R.id.group_563);
+            group_563.setOnClickListener(this);
+            TextView group_565 = (TextView) findViewById(R.id.group_565);
+            group_565.setOnClickListener(this);
+            TextView group_566 = (TextView) findViewById(R.id.group_566);
+            group_566.setOnClickListener(this);
+            TextView group_567 = (TextView) findViewById(R.id.group_567);
+            group_567.setOnClickListener(this);
+            TextView group_568 = (TextView) findViewById(R.id.group_568);
+            group_568.setOnClickListener(this);
+            TextView group_571 = (TextView) findViewById(R.id.group_571);
+            group_571.setOnClickListener(this);
+            TextView group_571M = (TextView) findViewById(R.id.group_571M);
+            group_571M.setOnClickListener(this);
+            TextView group_572aM = (TextView) findViewById(R.id.group_572aM);
+            group_572aM.setOnClickListener(this);
+            TextView group_572bM = (TextView) findViewById(R.id.group_572bM);
+            group_572bM.setOnClickListener(this);
+            TextView group_573 = (TextView) findViewById(R.id.group_573);
+            group_573.setOnClickListener(this);
+            TextView group_573M = (TextView) findViewById(R.id.group_573M);
+            group_573M.setOnClickListener(this);
+            TextView group_574M = (TextView) findViewById(R.id.group_574M);
+            group_574M.setOnClickListener(this);
+            TextView group_575 = (TextView) findViewById(R.id.group_575);
+            group_575.setOnClickListener(this);
+            TextView group_576 = (TextView) findViewById(R.id.group_576);
+            group_576.setOnClickListener(this);
+            TextView group_577 = (TextView) findViewById(R.id.group_577);
+            group_577.setOnClickListener(this);
+            TextView group_578 = (TextView) findViewById(R.id.group_578);
+            group_578.setOnClickListener(this);
+            TextView group_581M = (TextView) findViewById(R.id.group_581M);
+            group_581M.setOnClickListener(this);
+            TextView group_582bM = (TextView) findViewById(R.id.group_582bM);
+            group_582bM.setOnClickListener(this);
+            TextView group_583 = (TextView) findViewById(R.id.group_583);
+            group_583.setOnClickListener(this);
+            TextView group_583M = (TextView) findViewById(R.id.group_583M);
+            group_583M.setOnClickListener(this);
+            TextView group_584M = (TextView) findViewById(R.id.group_584M);
+            group_584M.setOnClickListener(this);
+            TextView group_587 = (TextView) findViewById(R.id.group_587);
+            group_587.setOnClickListener(this);
+            TextView group_588 = (TextView) findViewById(R.id.group_588);
+            group_588.setOnClickListener(this);
+            TextView group_591 = (TextView) findViewById(R.id.group_591);
+            group_591.setOnClickListener(this);
+            TextView group_591M = (TextView) findViewById(R.id.group_591M);
+            group_591M.setOnClickListener(this);
+            TextView group_592aM = (TextView) findViewById(R.id.group_592aM);
+            group_592aM.setOnClickListener(this);
+            TextView group_592bM = (TextView) findViewById(R.id.group_592bM);
+            group_592bM.setOnClickListener(this);
+            TextView group_593 = (TextView) findViewById(R.id.group_593);
+            group_593.setOnClickListener(this);
+            TextView group_593M = (TextView) findViewById(R.id.group_593M);
+            group_593M.setOnClickListener(this);
+            TextView group_594M = (TextView) findViewById(R.id.group_594M);
+            group_594M.setOnClickListener(this);
+            TextView group_595 = (TextView) findViewById(R.id.group_595);
+            group_595.setOnClickListener(this);
+            TextView group_597 = (TextView) findViewById(R.id.group_597);
+            group_597.setOnClickListener(this);
+            TextView group_598 = (TextView) findViewById(R.id.group_598);
+            group_598.setOnClickListener(this);
 
 
-
-
-        Cheker();
-        Downloader();
+            Cheker();
+//        Downloader();
 
 
 
@@ -115,57 +274,163 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view)
     {
-//        switch (view.getId())
-//        {
-//            case R.id.aaa:
-//                checkPermission(
-//                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
-//                    STORAGE_PERMISSION_CODE);
-//                checkPermission(
-//                        Manifest.permission.INTERNET,
-//                        INTERNET_PERMISSION_CODE);
-//                checkPermission(
-//                        Manifest.permission.READ_EXTERNAL_STORAGE,
-//                        STORAGE_PERMISSION_CODE);
-//                checkPermission(
-//                        Manifest.permission.ACCESS_NETWORK_STATE,
-//                        INTERNET_PERMISSION_CODE);
-//                checkPermission(
-//                        Manifest.permission.READ_PHONE_STATE,
-//                        INTERNET_PERMISSION_CODE);
-//                checkPermission(
-//                        Manifest.permission.MANAGE_DOCUMENTS,
-//                        INTERNET_PERMISSION_CODE);
-//                Downloader();
-//
-//
-//                break;
-//            case R.id.FUCK:
-//                Intent intent = new Intent(MainActivity.this, FUCKTABLE.class);
-//                startActivity(intent);
-//                checkPermission(
-//                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
-//                        STORAGE_PERMISSION_CODE);
-//                checkPermission(
-//                        Manifest.permission.INTERNET,
-//                        INTERNET_PERMISSION_CODE);
-//                checkPermission(
-//                        Manifest.permission.READ_EXTERNAL_STORAGE,
-//                        STORAGE_PERMISSION_CODE);
-//                checkPermission(
-//                        Manifest.permission.ACCESS_NETWORK_STATE,
-//                        INTERNET_PERMISSION_CODE);
-//                checkPermission(
-//                        Manifest.permission.READ_PHONE_STATE,
-//                        INTERNET_PERMISSION_CODE);
-//                checkPermission(
-//                        Manifest.permission.MANAGE_DOCUMENTS,
-//                        INTERNET_PERMISSION_CODE);
-//
-//                Downloader();
-//                break;
-//        }
+        Intent intent = new Intent(MainActivity.this, FUCKTABLE.class);
+
+        switch (view.getId())
+        {
+            case R.id.group_585:
+                intent.putExtra("key", "585");
+                intent.putExtra("instit", "ИЦТЭФ");
+               break;
+
+            case R.id.group_581:
+                intent.putExtra("key", "581");
+                intent.putExtra("instit", "ИЦТЭФ");
+                break;
+            case R.id.group_561:
+                intent.putExtra("key","561");
+                intent.putExtra("instit", "ИЦТЭФ");
+                break;
+
+            case R.id.group_563:
+                intent.putExtra("key","563");
+                intent.putExtra("instit", "ИЦТЭФ");
+                break;
+            case R.id.group_565:
+                intent.putExtra("key","565");
+                intent.putExtra("instit", "ИЦТЭФ");
+                break;
+            case R.id.group_566:
+                intent.putExtra("key","566");
+                intent.putExtra("instit", "ИЦТЭФ");
+                break;
+            case R.id.group_567:
+                intent.putExtra("key","567");
+                intent.putExtra("instit", "ИЦТЭФ");
+                break;
+            case R.id.group_568:
+                intent.putExtra("key","568");
+                intent.putExtra("instit", "ИЦТЭФ");
+                break;
+            case R.id.group_571:
+                intent.putExtra("key","571");
+                intent.putExtra("instit", "ИЦТЭФ");
+                break;
+            case R.id.group_571M:
+                intent.putExtra("key","571M");
+                intent.putExtra("instit", "ИЦТЭФ");
+                break;
+            case R.id.group_572aM:
+                intent.putExtra("key","572aM");
+                intent.putExtra("instit", "ИЦТЭФ");
+                break;
+            case R.id.group_572bM:
+                intent.putExtra("key","572bM");
+                intent.putExtra("instit", "ИЦТЭФ");
+                break;
+            case R.id.group_573:
+                intent.putExtra("key","573");
+                intent.putExtra("instit", "ИЦТЭФ");
+                break;
+            case R.id.group_573M:
+                intent.putExtra("key","573M");
+                intent.putExtra("instit", "ИЦТЭФ");
+                break;
+            case R.id.group_574M:
+                intent.putExtra("key","574M");
+                intent.putExtra("instit", "ИЦТЭФ");
+                break;
+            case R.id.group_575:
+                intent.putExtra("key","575");
+                intent.putExtra("instit", "ИЦТЭФ");
+                break;
+            case R.id.group_576:
+                intent.putExtra("key","576");
+                intent.putExtra("instit", "ИЦТЭФ");
+                break;
+            case R.id.group_577:
+                intent.putExtra("key","577");
+                intent.putExtra("instit", "ИЦТЭФ");
+                break;
+            case R.id.group_578:
+                intent.putExtra("key","578");
+                intent.putExtra("instit", "ИЦТЭФ");
+                break;
+            case R.id.group_581M:
+                intent.putExtra("key","581M");
+                intent.putExtra("instit", "ИЦТЭФ");
+                break;
+            case R.id.group_582bM:
+                intent.putExtra("key","582bM");
+                intent.putExtra("instit", "ИЦТЭФ");
+                break;
+            case R.id.group_583:
+                intent.putExtra("key","583");
+                intent.putExtra("instit", "ИЦТЭФ");
+                break;
+            case R.id.group_583M:
+                intent.putExtra("key","583M");
+                intent.putExtra("instit", "ИЦТЭФ");
+                break;
+            case R.id.group_584M:
+                intent.putExtra("instit", "ИЦТЭФ");
+                intent.putExtra("key","584M");
+                break;
+            case R.id.group_587:
+                intent.putExtra("instit", "ИЦТЭФ");
+                intent.putExtra("key","587");
+                break;
+            case R.id.group_588:
+                intent.putExtra("instit", "ИЦТЭФ");
+                intent.putExtra("key","588");
+                break;
+            case R.id.group_591:
+                intent.putExtra("instit", "ИЦТЭФ");
+                intent.putExtra("key","591");
+                break;
+            case R.id.group_591M:
+                intent.putExtra("instit", "ИЦТЭФ");
+                intent.putExtra("key","591M");
+                break;
+            case R.id.group_592aM:
+                intent.putExtra("instit", "ИЦТЭФ");
+                intent.putExtra("key","592aM");
+                break;
+            case R.id.group_592bM:
+                intent.putExtra("instit", "ИЦТЭФ");
+                intent.putExtra("key","592bM");
+                break;
+            case R.id.group_593:
+                intent.putExtra("instit", "ИЦТЭФ");
+                intent.putExtra("key","593");
+                break;
+            case R.id.group_593M:
+                intent.putExtra("instit", "ИЦТЭФ");
+                intent.putExtra("key","593M");
+                break;
+            case R.id.group_594M:
+                intent.putExtra("instit", "ИЦТЭФ");
+                intent.putExtra("key","594M");
+                break;
+            case R.id.group_595:
+                intent.putExtra("instit", "ИЦТЭФ");
+                intent.putExtra("key","595");
+                break;
+            case R.id.group_597:
+                intent.putExtra("instit", "ИЦТЭФ");
+                intent.putExtra("key","597");
+                break;
+            case R.id.group_598:
+                intent.putExtra("instit", "ИЦТЭФ");
+                intent.putExtra("key","598");
+                break;
+
+        }
+        startActivity(intent);
+    setContentView(R.layout.loading);
+
     }
+
 
     private void Cheker(){
         checkPermission(
@@ -187,205 +452,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Manifest.permission.MANAGE_DOCUMENTS,
                 INTERNET_PERMISSION_CODE);
     }
-
-    private void Downloader(){
-        String destFileName = "581-8.txt";
-        String src = "https://www.asu.ru/timetable/students/24/2129437031/?file=2129437031.ics";
-        Log.i("***", src);
-        File dest = new File(Environment.getExternalStorageDirectory() + "/Android/data/dev.prokrostinatorbl.raspisanie/files/" + destFileName);
-        new LoadFile(src, dest).start();
-
-    }
-
-    private void onDownloadComplete(boolean success) {
-        // файл скачался, можно как-то реагировать
-        Log.i("***", "************** " + success);
-    }
-
-    private class LoadFile extends Thread {
-        private final String src;
-        private final File dest;
-
-        LoadFile(String src, File dest) {
-            this.src = src;
-            this.dest = dest;
-        }
-
-        @Override
-        public void run() {
-            try {
-                FileUtils.copyURLToFile(new URL(src), dest);
-                onDownloadComplete(true);
-                Read();
-            } catch (IOException e) {
-                e.printStackTrace();
-                onDownloadComplete(false);
-            }
-        }
-    }
-
-    public static void Read() throws IOException {
-        File dest = new File(Environment.getExternalStorageDirectory() + "/Android/data/dev.prokrostinatorbl.raspisanie/files/581-8.txt");
-        Scanner in = new Scanner(dest);
-
-        Log.i("***", "  " + "я читаю");
-
-        String s;
-
-
-        String group_num = "X-WR-CALNAME";
-        String prep = "DESCRIPTION";
-        String location = "LOCATION";
-        String name = "SUMMARY";
-        String start = "DTSTART;TZID=Asia/Krasnoyarsk";
-        String end = "DTEND;TZID=Asia/Krasnoyarsk";
-
-        JSONArray group_numb = new JSONArray();
-        JSONArray prepod_name = new JSONArray();
-        JSONArray auditor = new JSONArray();
-        JSONArray par_name = new JSONArray();
-        JSONArray start_par = new JSONArray();
-        JSONArray end_par = new JSONArray();
-        JSONArray date_par = new JSONArray();
-
-
-
-        while(in.hasNextLine()){
-
-            s = in.nextLine();
-            String words[] = s.split(":");
-            String word = words[0];
-
-            try {
-                // Create a new instance of a JSONObject
-                File json_db = new File(Environment.getExternalStorageDirectory() + "/Android/data/dev.prokrostinatorbl.raspisanie/files/585.json");
-                final JSONObject object = new JSONObject();
-
-
-
-            if (word.equals(group_num))
-            {
-                String words_line[] = words[1].split(",");
-
-                String number_group = words_line[0];
-                group_numb.put(number_group); // в json добавляем номер группы
-//                Log.i("!!!", "номер группы: " + words_line[0]);
-//                Log.i("!!!", "Место учёбы: " + words_line[1]);
-            }
-
-            if (word.equals(prep))
-            {
-                if (words.length > 1 && words[1] != null) //Проверка: если в строке есть не пустые данные после двоеточия, то идём дальше
-                {
-                    String words_line[] = words[1].split(" ");
-
-                    String prepodav = ""; //создаём пустую переменную, чтобы в неё скидывать нужные записи
-                    for (int i = 0; i <= words_line.length - 1; i++) { //цикл который будет работать пока не дойдёт до значения "Длина строки" (хуй знает зачем минус один. По сути я хотел убрать скобки после ФИО препода которые "Доцент" и т.п., но не вышло, да и похуй)
-                        prepodav += words_line[i] + " "; //в вышесозданную переменную мы скидываем встречающиеся слова и ставим между ними пробелы
-                    }
-//                    Log.i("!!!", "преподаватель: " + prepodav);
-                    prepod_name.put(prepodav); // в json добавляем имя препода
-                }
-            }
-
-            if (word.equals(location))
-            {
-                if (words.length > 1 && words[1] != null) { // аналогично проверяем существование данных
-                    String words_line[] = words[1].split(" ");
-//                    Log.i("!!!", "Аудитория: " + words_line[0]);
-                    auditor.put(words_line[0]); // в json добавляем номер аудитории
-                }
-            }
-
-            if (word.equals(name))
-            {
-                if (words.length > 1 && words[2] != null) {
-                    String name_par[] = words[2].split(" ");
-                    String par = "";
-                    for (int i = 1; i <= name_par.length - 1; i++) {
-                        par += name_par[i] + " ";
-                    }
-//                    Log.i("!!!", "Пара: " + par);
-                    par_name.put(par); // в json добавляем название пары
-                }
-            }
-
-
-
-
-            if (word.equals(start))
-            {
-                if (words.length > 1 && words[1] != null) {
-                    String start_time = words[1];
-                    char[] start_t = start_time.toCharArray(); //преобразования слова в массив символов
-
-                    String y = new String(start_t, 0, 4); // начиная с нулевого символа(до строки) забираем 4 символа в переменную
-                    String m = new String(start_t, 4, 2); // начиная с 4 символа забираем два символа в переменную
-                    String d = new String(start_t, 6, 2); // аналогично предыдущим
-                    String t = new String(start_t, 9, 2) + ":" + new String(start_t, 11, 2);
-                    String date = d + "." + m + "." + y;
-//                    Log.i("!!!", "Дата: " + date); //выводим дату
-                    date_par.put(date); // в json добавляем дату
-//                    Log.i("!!!", "Начало пары: "  + t); // выводим время
-                    start_par.put(t); // в json добавляем время начала пары
-                }
-            }
-
-            if (word.equals(end))
-            {
-                if (words.length > 1 && words[1] != null) {
-                    String end_time = words[1];
-                    char[] end_t = end_time.toCharArray(); //преобразования слова в массив символов
-
-
-                    String t = new String(end_t, 9, 2) + ":" + new String(end_t, 11, 2);
-//                    Log.i("!!!", "Конец пары: "  + t);
-                    end_par.put(t); // в json добавляем время конца пары
-                }
-            }
-//
-//                JSONArray group_numb = new JSONArray();
-//                JSONArray prepod_name = new JSONArray();
-//                JSONArray auditor = new JSONArray();
-//                JSONArray par_name = new JSONArray();
-//                JSONArray start_par = new JSONArray();
-//                JSONArray end_par = new JSONArray();
-//                JSONArray date_par = new JSONArray();
-
-
-
-                    object.put("number", group_numb);
-                    object.put("prepod", prepod_name);
-                    object.put("location", auditor);
-                    object.put("par_name", par_name);
-                    object.put("start", start_par);
-                    object.put("end", end_par);
-                    object.put("date", date_par);
-
-
-                try{
-                    FileWriter file = new FileWriter(json_db); // сохраняем всё это в json
-                    file.write(object.toString());
-                    file.flush();
-                    file.close();
-//                    Log.i("***", "JSON создан");
-                } catch (IOException ex){
-                    ex.printStackTrace();
-                }
-
-
-            } catch (JSONException e) {
-                Log.e("***", "Failed to create JSONObject", e);
-            }
-
-        }
-        in.close();
-
-
-
-
-    }
-
 
 
 }

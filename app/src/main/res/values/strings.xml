@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Raspisanie</string>
+    <string name="card_margin">16dp</string>
 </resources>

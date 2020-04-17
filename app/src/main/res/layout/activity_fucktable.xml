@@ -1,11 +1,527 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FUCKTABLE">
+    tools:context=".FUCKTABLE"
+    android:id="@+id/linearLayout"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+         <LinearLayout
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:orientation="vertical">
+
+             <LinearLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:id="@+id/first_day"
+                 android:background="@drawable/card"
+                 android:orientation="vertical"
+                 android:layout_marginLeft="16dp"
+                 android:layout_marginRight="16dp"
+                 android:layout_marginTop="16dp"
+                 android:elevation="@dimen/cardview_default_elevation">
+
+                 <RelativeLayout
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:orientation="horizontal">
+
+                     <TextView
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:text="Понедельник"
+                         android:textSize="16dp"
+                         android:textColor="@color/secondaryText"
+                         android:layout_alignParentLeft="true"
+                         android:layout_marginLeft="10dp"
+                         android:gravity="left"/>
+                     />
+                     <TextView
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:text="DD.MM.YYYY"
+                         android:id="@+id/date1"
+                         android:textSize="16dp"
+                         android:textColor="@color/secondaryText"
+                         android:layout_marginRight="10dp"
+                         android:layout_alignParentRight="true"
+                         android:layout_gravity="right"/>
+
+                 </RelativeLayout>
+
+             </LinearLayout>
+
+             <LinearLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:id="@+id/second_day"
+                 android:background="@drawable/card"
+                 android:orientation="vertical"
+                 android:layout_marginLeft="16dp"
+                 android:layout_marginRight="16dp"
+                 android:layout_marginTop="16dp"
+                 android:elevation="@dimen/cardview_default_elevation">
+
+                 <RelativeLayout
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:orientation="horizontal">
+
+                     <TextView
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:text="Вторник"
+                         android:textSize="16dp"
+                         android:textColor="@color/secondaryText"
+                         android:layout_alignParentLeft="true"
+                         android:layout_marginLeft="10dp"
+                         android:gravity="left"/>
+                     />
+                     <TextView
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:text="DD.MM.YYYY"
+                         android:id="@+id/date2"
+                         android:textColor="@color/secondaryText"
+                         android:textSize="16dp"
+                         android:layout_marginRight="10dp"
+                         android:layout_alignParentRight="true"
+                         android:layout_gravity="right"/>
+
+                 </RelativeLayout>
+
+
+             </LinearLayout>
+
+             <LinearLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:id="@+id/day3"
+                 android:background="@drawable/card"
+                 android:orientation="vertical"
+                 android:layout_marginLeft="16dp"
+                 android:layout_marginRight="16dp"
+                 android:layout_marginTop="16dp"
+                 android:elevation="@dimen/cardview_default_elevation">
+
+                 <RelativeLayout
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:orientation="horizontal">
+
+                     <TextView
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:text="Среда"
+                         android:textSize="16dp"
+                         android:textColor="@color/secondaryText"
+                         android:layout_alignParentLeft="true"
+                         android:layout_marginLeft="10dp"
+                         android:gravity="left"/>
+                     />
+                     <TextView
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:text="DD.MM.YYYY"
+                         android:textColor="@color/secondaryText"
+                         android:id="@+id/date3"
+                         android:textSize="16dp"
+                         android:layout_marginRight="10dp"
+                         android:layout_alignParentRight="true"
+                         android:layout_gravity="right"/>
+
+                 </RelativeLayout>
+
+
+             </LinearLayout>
+
+             <LinearLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:id="@+id/day4"
+                 android:background="@drawable/card"
+                 android:orientation="vertical"
+                 android:layout_marginLeft="16dp"
+                 android:layout_marginRight="16dp"
+                 android:layout_marginTop="16dp"
+                 android:elevation="@dimen/cardview_default_elevation">
+
+                 <RelativeLayout
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:orientation="horizontal">
+
+                     <TextView
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:text="Четверг"
+                         android:textSize="16dp"
+                         android:textColor="@color/secondaryText"
+                         android:layout_alignParentLeft="true"
+                         android:layout_marginLeft="10dp"
+                         android:gravity="left"/>
+                     />
+                     <TextView
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:text="DD.MM.YYYY"
+                         android:id="@+id/date4"
+                         android:textSize="16dp"
+                         android:textColor="@color/secondaryText"
+                         android:layout_marginRight="10dp"
+                         android:layout_alignParentRight="true"
+                         android:layout_gravity="right"/>
+
+                 </RelativeLayout>
+
+
+             </LinearLayout>
+
+             <LinearLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:id="@+id/day5"
+                 android:background="@drawable/card"
+                 android:orientation="vertical"
+                 android:layout_marginLeft="16dp"
+                 android:layout_marginRight="16dp"
+                 android:layout_marginTop="16dp"
+                 android:elevation="@dimen/cardview_default_elevation">
+
+                 <RelativeLayout
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:orientation="horizontal">
+
+                     <TextView
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:text="Пятница"
+                         android:textSize="16dp"
+                         android:textColor="@color/secondaryText"
+                         android:layout_alignParentLeft="true"
+                         android:layout_marginLeft="10dp"
+                         android:gravity="left"/>
+                     />
+                     <TextView
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:text="DD.MM.YYYY"
+                         android:id="@+id/date5"
+                         android:textSize="16dp"
+                         android:textColor="@color/secondaryText"
+                         android:layout_marginRight="10dp"
+                         android:layout_alignParentRight="true"
+                         android:layout_gravity="right"/>
+
+                 </RelativeLayout>
+
+             </LinearLayout>
+
+             <LinearLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:id="@+id/day6"
+                 android:background="@drawable/card"
+                 android:orientation="vertical"
+                 android:layout_marginLeft="16dp"
+                 android:layout_marginRight="16dp"
+                 android:layout_marginTop="16dp"
+                 android:elevation="@dimen/cardview_default_elevation">
+
+                 <RelativeLayout
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:orientation="horizontal">
+
+                     <TextView
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:text="Суббота"
+                         android:textSize="16dp"
+                         android:textColor="@color/secondaryText"
+                         android:layout_alignParentLeft="true"
+                         android:layout_marginLeft="10dp"
+                         android:gravity="left"/>
+                     />
+                     <TextView
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:text="DD.MM.YYYY"
+                         android:id="@+id/date6"
+                         android:textSize="16dp"
+                         android:textColor="@color/secondaryText"
+                         android:layout_marginRight="10dp"
+                         android:layout_alignParentRight="true"
+                         android:layout_gravity="right"/>
+
+                 </RelativeLayout>
+
+             </LinearLayout>
+
+             <LinearLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:id="@+id/day7"
+                 android:background="@drawable/card"
+                 android:orientation="vertical"
+                 android:layout_marginLeft="16dp"
+                 android:layout_marginRight="16dp"
+                 android:layout_marginTop="16dp"
+                 android:elevation="@dimen/cardview_default_elevation">
+
+                 <RelativeLayout
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:orientation="horizontal">
+
+                     <TextView
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:text="Понедельник"
+                         android:textSize="16dp"
+                         android:textColor="@color/secondaryText"
+                         android:layout_alignParentLeft="true"
+                         android:layout_marginLeft="10dp"
+                         android:gravity="left"/>
+                     />
+                     <TextView
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:text="DD.MM.YYYY"
+                         android:id="@+id/date7"
+                         android:textSize="16dp"
+                         android:textColor="@color/secondaryText"
+                         android:layout_marginRight="10dp"
+                         android:layout_alignParentRight="true"
+                         android:layout_gravity="right"/>
+
+                 </RelativeLayout>
+
+             </LinearLayout>
+
+             <LinearLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:id="@+id/day8"
+                 android:background="@drawable/card"
+                 android:orientation="vertical"
+                 android:layout_marginLeft="16dp"
+                 android:layout_marginRight="16dp"
+                 android:layout_marginTop="16dp"
+                 android:elevation="@dimen/cardview_default_elevation">
+
+                 <RelativeLayout
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:orientation="horizontal">
+
+                     <TextView
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:text="Вторник"
+                         android:textSize="16dp"
+                         android:textColor="@color/secondaryText"
+                         android:layout_alignParentLeft="true"
+                         android:layout_marginLeft="10dp"
+                         android:gravity="left"/>
+                     />
+                     <TextView
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:text="DD.MM.YYYY"
+                         android:id="@+id/date8"
+                         android:textSize="16dp"
+                         android:textColor="@color/secondaryText"
+                         android:layout_marginRight="10dp"
+                         android:layout_alignParentRight="true"
+                         android:layout_gravity="right"/>
+
+                 </RelativeLayout>
+
+             </LinearLayout>
+
+             <LinearLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:id="@+id/day9"
+                 android:background="@drawable/card"
+                 android:orientation="vertical"
+                 android:layout_marginLeft="16dp"
+                 android:layout_marginRight="16dp"
+                 android:layout_marginTop="16dp"
+                 android:elevation="@dimen/cardview_default_elevation">
+
+                 <RelativeLayout
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:orientation="horizontal">
+
+                     <TextView
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:text="Среда"
+                         android:textSize="16dp"
+                         android:textColor="@color/secondaryText"
+                         android:layout_alignParentLeft="true"
+                         android:layout_marginLeft="10dp"
+                         android:gravity="left"/>
+                     />
+                     <TextView
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:text="DD.MM.YYYY"
+                         android:id="@+id/date9"
+                         android:textSize="16dp"
+                         android:textColor="@color/secondaryText"
+                         android:layout_marginRight="10dp"
+                         android:layout_alignParentRight="true"
+                         android:layout_gravity="right"/>
+
+                 </RelativeLayout>
+
+             </LinearLayout>
+
+             <LinearLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:id="@+id/day10"
+                 android:background="@drawable/card"
+                 android:orientation="vertical"
+                 android:layout_marginLeft="16dp"
+                 android:layout_marginRight="16dp"
+                 android:layout_marginTop="16dp"
+                 android:elevation="@dimen/cardview_default_elevation">
+
+                 <RelativeLayout
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:orientation="horizontal">
+
+                     <TextView
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:text="Четверг"
+                         android:textSize="16dp"
+                         android:textColor="@color/secondaryText"
+                         android:layout_alignParentLeft="true"
+                         android:layout_marginLeft="10dp"
+                         android:gravity="left"/>
+                     />
+                     <TextView
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:text="DD.MM.YYYY"
+                         android:id="@+id/date10"
+                         android:textSize="16dp"
+                         android:textColor="@color/secondaryText"
+                         android:layout_marginRight="10dp"
+                         android:layout_alignParentRight="true"
+                         android:layout_gravity="right"/>
+
+                 </RelativeLayout>
+
+             </LinearLayout>
+
+             <LinearLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:id="@+id/day11"
+                 android:background="@drawable/card"
+                 android:orientation="vertical"
+                 android:layout_marginLeft="16dp"
+                 android:layout_marginRight="16dp"
+                 android:layout_marginTop="16dp"
+                 android:elevation="@dimen/cardview_default_elevation">
+
+                 <RelativeLayout
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:orientation="horizontal">
+
+                     <TextView
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:text="Пятница"
+                         android:textSize="16dp"
+                         android:textColor="@color/secondaryText"
+                         android:layout_alignParentLeft="true"
+                         android:layout_marginLeft="10dp"
+                         android:gravity="left"/>
+                     />
+                     <TextView
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:text="DD.MM.YYYY"
+                         android:id="@+id/date11"
+                         android:textSize="16dp"
+                         android:textColor="@color/secondaryText"
+                         android:layout_marginRight="10dp"
+                         android:layout_alignParentRight="true"
+                         android:layout_gravity="right"/>
+
+                 </RelativeLayout>
+
+             </LinearLayout>
+
+             <LinearLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:id="@+id/day12"
+                 android:background="@drawable/card"
+                 android:orientation="vertical"
+                 android:layout_marginLeft="16dp"
+                 android:layout_marginRight="16dp"
+                 android:layout_marginTop="16dp"
+                 android:layout_marginBottom="25dp"
+                 android:elevation="@dimen/cardview_default_elevation">
+
+                 <RelativeLayout
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:orientation="horizontal">
+
+                     <TextView
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:text="Суббота"
+                         android:textSize="16dp"
+                         android:textColor="@color/secondaryText"
+                         android:layout_alignParentLeft="true"
+                         android:layout_marginLeft="10dp"
+                         android:gravity="left"/>
+                     />
+                     <TextView
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:text="DD.MM.YYYY"
+                         android:id="@+id/date12"
+                         android:textSize="16dp"
+                         android:textColor="@color/secondaryText"
+                         android:layout_marginRight="10dp"
+                         android:layout_alignParentRight="true"
+                         android:layout_gravity="right"/>
+
+                 </RelativeLayout>
+
+             </LinearLayout>
+
+
+         </LinearLayout>
 
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </ScrollView>
+
+</LinearLayout>
