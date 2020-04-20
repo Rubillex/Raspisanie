@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:id="@+id/my_toolbar"
     android:minHeight="?attr/actionBarSize"
-    android:background="@color/white"
+    android:background="?attr/colorPrimary"
     android:elevation="2dp">
 
     <TextView
@@ -16,6 +16,7 @@
         android:textStyle="bold"
         android:id="@+id/toolbar_text"
         android:textSize="24dp"
-        android:textColor="@color/primaryText"/>
+        android:textColor="?android:attr/textColorPrimary"/>
+
 
 </Toolbar>

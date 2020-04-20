@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".FUCKTABLE"
     android:id="@+id/linearLayout"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="?attr/colorPrimary">
 
     <include layout="@layout/toolbar" />
 
@@ -17,7 +18,9 @@
          <LinearLayout
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             android:orientation="vertical">
+             android:orientation="vertical"
+             android:id="@+id/linear_group"
+             android:layout_marginBottom="25dp">
 
              <LinearLayout
                  android:layout_width="match_parent"
@@ -40,7 +43,8 @@
                          android:layout_height="wrap_content"
                          android:text="Понедельник"
                          android:textSize="16dp"
-                         android:textColor="@color/secondaryText"
+                         android:id="@+id/daaaay1"
+                         android:textColor="?android:attr/textColorSecondary"
                          android:layout_alignParentLeft="true"
                          android:layout_marginLeft="10dp"
                          android:gravity="left"/>
@@ -51,7 +55,7 @@
                          android:text="DD.MM.YYYY"
                          android:id="@+id/date1"
                          android:textSize="16dp"
-                         android:textColor="@color/secondaryText"
+                         android:textColor="?android:attr/textColorSecondary"
                          android:layout_marginRight="10dp"
                          android:layout_alignParentRight="true"
                          android:layout_gravity="right"/>
@@ -81,7 +85,8 @@
                          android:layout_height="wrap_content"
                          android:text="Вторник"
                          android:textSize="16dp"
-                         android:textColor="@color/secondaryText"
+                         android:id="@+id/daaaay2"
+                         android:textColor="?android:attr/textColorSecondary"
                          android:layout_alignParentLeft="true"
                          android:layout_marginLeft="10dp"
                          android:gravity="left"/>
@@ -91,7 +96,7 @@
                          android:layout_height="wrap_content"
                          android:text="DD.MM.YYYY"
                          android:id="@+id/date2"
-                         android:textColor="@color/secondaryText"
+                         android:textColor="?android:attr/textColorSecondary"
                          android:textSize="16dp"
                          android:layout_marginRight="10dp"
                          android:layout_alignParentRight="true"
@@ -123,7 +128,8 @@
                          android:layout_height="wrap_content"
                          android:text="Среда"
                          android:textSize="16dp"
-                         android:textColor="@color/secondaryText"
+                         android:id="@+id/daaaay3"
+                         android:textColor="?android:attr/textColorSecondary"
                          android:layout_alignParentLeft="true"
                          android:layout_marginLeft="10dp"
                          android:gravity="left"/>
@@ -132,7 +138,7 @@
                          android:layout_width="wrap_content"
                          android:layout_height="wrap_content"
                          android:text="DD.MM.YYYY"
-                         android:textColor="@color/secondaryText"
+                         android:textColor="?android:attr/textColorSecondary"
                          android:id="@+id/date3"
                          android:textSize="16dp"
                          android:layout_marginRight="10dp"
@@ -165,7 +171,8 @@
                          android:layout_height="wrap_content"
                          android:text="Четверг"
                          android:textSize="16dp"
-                         android:textColor="@color/secondaryText"
+                         android:id="@+id/daaaay4"
+                         android:textColor="?android:attr/textColorSecondary"
                          android:layout_alignParentLeft="true"
                          android:layout_marginLeft="10dp"
                          android:gravity="left"/>
@@ -176,7 +183,7 @@
                          android:text="DD.MM.YYYY"
                          android:id="@+id/date4"
                          android:textSize="16dp"
-                         android:textColor="@color/secondaryText"
+                         android:textColor="?android:attr/textColorSecondary"
                          android:layout_marginRight="10dp"
                          android:layout_alignParentRight="true"
                          android:layout_gravity="right"/>
@@ -207,7 +214,8 @@
                          android:layout_height="wrap_content"
                          android:text="Пятница"
                          android:textSize="16dp"
-                         android:textColor="@color/secondaryText"
+                         android:id="@+id/daaaay5"
+                         android:textColor="?android:attr/textColorSecondary"
                          android:layout_alignParentLeft="true"
                          android:layout_marginLeft="10dp"
                          android:gravity="left"/>
@@ -218,7 +226,7 @@
                          android:text="DD.MM.YYYY"
                          android:id="@+id/date5"
                          android:textSize="16dp"
-                         android:textColor="@color/secondaryText"
+                         android:textColor="?android:attr/textColorSecondary"
                          android:layout_marginRight="10dp"
                          android:layout_alignParentRight="true"
                          android:layout_gravity="right"/>
@@ -248,7 +256,8 @@
                          android:layout_height="wrap_content"
                          android:text="Суббота"
                          android:textSize="16dp"
-                         android:textColor="@color/secondaryText"
+                         android:id="@+id/daaaay6"
+                         android:textColor="?android:attr/textColorSecondary"
                          android:layout_alignParentLeft="true"
                          android:layout_marginLeft="10dp"
                          android:gravity="left"/>
@@ -259,7 +268,7 @@
                          android:text="DD.MM.YYYY"
                          android:id="@+id/date6"
                          android:textSize="16dp"
-                         android:textColor="@color/secondaryText"
+                         android:textColor="?android:attr/textColorSecondary"
                          android:layout_marginRight="10dp"
                          android:layout_alignParentRight="true"
                          android:layout_gravity="right"/>
@@ -289,7 +298,8 @@
                          android:layout_height="wrap_content"
                          android:text="Понедельник"
                          android:textSize="16dp"
-                         android:textColor="@color/secondaryText"
+                         android:id="@+id/daaaay7"
+                         android:textColor="?android:attr/textColorSecondary"
                          android:layout_alignParentLeft="true"
                          android:layout_marginLeft="10dp"
                          android:gravity="left"/>
@@ -300,7 +310,7 @@
                          android:text="DD.MM.YYYY"
                          android:id="@+id/date7"
                          android:textSize="16dp"
-                         android:textColor="@color/secondaryText"
+                         android:textColor="?android:attr/textColorSecondary"
                          android:layout_marginRight="10dp"
                          android:layout_alignParentRight="true"
                          android:layout_gravity="right"/>
@@ -330,7 +340,8 @@
                          android:layout_height="wrap_content"
                          android:text="Вторник"
                          android:textSize="16dp"
-                         android:textColor="@color/secondaryText"
+                         android:id="@+id/daaaay8"
+                         android:textColor="?android:attr/textColorSecondary"
                          android:layout_alignParentLeft="true"
                          android:layout_marginLeft="10dp"
                          android:gravity="left"/>
@@ -341,7 +352,7 @@
                          android:text="DD.MM.YYYY"
                          android:id="@+id/date8"
                          android:textSize="16dp"
-                         android:textColor="@color/secondaryText"
+                         android:textColor="?android:attr/textColorSecondary"
                          android:layout_marginRight="10dp"
                          android:layout_alignParentRight="true"
                          android:layout_gravity="right"/>
@@ -371,7 +382,8 @@
                          android:layout_height="wrap_content"
                          android:text="Среда"
                          android:textSize="16dp"
-                         android:textColor="@color/secondaryText"
+                         android:id="@+id/daaaay9"
+                         android:textColor="?android:attr/textColorSecondary"
                          android:layout_alignParentLeft="true"
                          android:layout_marginLeft="10dp"
                          android:gravity="left"/>
@@ -382,7 +394,7 @@
                          android:text="DD.MM.YYYY"
                          android:id="@+id/date9"
                          android:textSize="16dp"
-                         android:textColor="@color/secondaryText"
+                         android:textColor="?android:attr/textColorSecondary"
                          android:layout_marginRight="10dp"
                          android:layout_alignParentRight="true"
                          android:layout_gravity="right"/>
@@ -412,7 +424,8 @@
                          android:layout_height="wrap_content"
                          android:text="Четверг"
                          android:textSize="16dp"
-                         android:textColor="@color/secondaryText"
+                         android:id="@+id/daaaay10"
+                         android:textColor="?android:attr/textColorSecondary"
                          android:layout_alignParentLeft="true"
                          android:layout_marginLeft="10dp"
                          android:gravity="left"/>
@@ -423,7 +436,7 @@
                          android:text="DD.MM.YYYY"
                          android:id="@+id/date10"
                          android:textSize="16dp"
-                         android:textColor="@color/secondaryText"
+                         android:textColor="?android:attr/textColorSecondary"
                          android:layout_marginRight="10dp"
                          android:layout_alignParentRight="true"
                          android:layout_gravity="right"/>
@@ -453,7 +466,8 @@
                          android:layout_height="wrap_content"
                          android:text="Пятница"
                          android:textSize="16dp"
-                         android:textColor="@color/secondaryText"
+                         android:id="@+id/daaaay11"
+                         android:textColor="?android:attr/textColorSecondary"
                          android:layout_alignParentLeft="true"
                          android:layout_marginLeft="10dp"
                          android:gravity="left"/>
@@ -464,7 +478,7 @@
                          android:text="DD.MM.YYYY"
                          android:id="@+id/date11"
                          android:textSize="16dp"
-                         android:textColor="@color/secondaryText"
+                         android:textColor="?android:attr/textColorSecondary"
                          android:layout_marginRight="10dp"
                          android:layout_alignParentRight="true"
                          android:layout_gravity="right"/>
@@ -482,7 +496,6 @@
                  android:layout_marginLeft="16dp"
                  android:layout_marginRight="16dp"
                  android:layout_marginTop="16dp"
-                 android:layout_marginBottom="25dp"
                  android:elevation="@dimen/cardview_default_elevation">
 
                  <RelativeLayout
@@ -495,7 +508,8 @@
                          android:layout_height="wrap_content"
                          android:text="Суббота"
                          android:textSize="16dp"
-                         android:textColor="@color/secondaryText"
+                         android:id="@+id/daaaay12"
+                         android:textColor="?android:attr/textColorSecondary"
                          android:layout_alignParentLeft="true"
                          android:layout_marginLeft="10dp"
                          android:gravity="left"/>
@@ -506,7 +520,7 @@
                          android:text="DD.MM.YYYY"
                          android:id="@+id/date12"
                          android:textSize="16dp"
-                         android:textColor="@color/secondaryText"
+                         android:textColor="?android:attr/textColorSecondary"
                          android:layout_marginRight="10dp"
                          android:layout_alignParentRight="true"
                          android:layout_gravity="right"/>
@@ -515,9 +529,17 @@
 
              </LinearLayout>
 
+             <LinearLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_marginTop="25dp">
+
+             </LinearLayout>
+
+
+
 
          </LinearLayout>
-
 
 
 

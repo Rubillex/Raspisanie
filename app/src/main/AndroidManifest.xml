@@ -11,13 +11,13 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_book"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/card"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/Light">
         <activity android:name=".FUCKTABLE"></activity>
-        <activity android:name=".Copy"></activity>
+        <activity android:name=".Ictef"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
