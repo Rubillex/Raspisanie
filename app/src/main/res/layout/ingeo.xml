@@ -16,7 +16,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="25dp">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -25,25 +26,25 @@
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/ftf1">
+                android:id="@+id/ingeo1">
 
                 <TextView
                     android:id="@+id/group_961rg"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:text="561"
+                    android:text="961 рг"
                     android:layout_marginTop="15dp"
                     android:layout_marginLeft="25dp"
                     android:textColor="?android:attr/textColorPrimary"
                     android:textSize="25dp" />
 
                 <TextView
-                    android:id="@+id/group_563"
+                    android:id="@+id/group_961fg"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:text="563"
+                    android:text="961 фг"
                     android:layout_marginTop="15dp"
                     android:layout_marginLeft="25dp"
                     android:textColor="?android:attr/textColorPrimary"
@@ -51,345 +52,334 @@
                     android:layout_below="@+id/group_961rg"/>
 
                 <TextView
-                    android:id="@+id/group_565"
+                    android:id="@+id/group_961eg"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:text="565"
+                    android:text="961 эг"
                     android:layout_marginTop="15dp"
                     android:layout_marginLeft="25dp"
                     android:textColor="?android:attr/textColorPrimary"
                     android:textSize="25dp"
-                    android:layout_below="@+id/group_563"/>
+                    android:layout_below="@+id/group_961fg"/>
 
                 <TextView
-                    android:id="@+id/group_566"
+                    android:id="@+id/group_962a"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:text="566"
+                    android:text="962а"
                     android:layout_marginTop="15dp"
                     android:layout_marginLeft="25dp"
                     android:textColor="?android:attr/textColorPrimary"
                     android:textSize="25dp"
-                    android:layout_below="@+id/group_565"/>
+                    android:layout_below="@+id/group_961eg"/>
 
                 <TextView
-                    android:id="@+id/group_567"
+                    android:id="@+id/group_962b"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:text="567"
+                    android:text="962б"
                     android:layout_marginTop="15dp"
                     android:layout_marginLeft="25dp"
                     android:textColor="?android:attr/textColorPrimary"
                     android:textSize="25dp"
-                    android:layout_below="@+id/group_566"/>
+                    android:layout_below="@+id/group_962a"/>
 
                 <TextView
-                    android:id="@+id/group_568"
+                    android:id="@+id/group_963"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:text="568"
+                    android:text="963"
                     android:layout_marginTop="15dp"
                     android:layout_marginLeft="25dp"
                     android:textColor="?android:attr/textColorPrimary"
                     android:textSize="25dp"
-                    android:layout_below="@+id/group_567"/>
+                    android:layout_below="@+id/group_962b"/>
 
                 <TextView
-                    android:id="@+id/group_571"
+                    android:id="@+id/group_964"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:text="571"
+                    android:text="964"
                     android:layout_marginTop="15dp"
                     android:layout_marginLeft="25dp"
                     android:textColor="?android:attr/textColorPrimary"
                     android:textSize="25dp"
-                    android:layout_below="@+id/group_568"/>
+                    android:layout_below="@+id/group_963"/>
 
                 <TextView
-                    android:id="@+id/group_571M"
+                    android:id="@+id/group_965"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:text="571М"
+                    android:text="965"
                     android:layout_marginTop="15dp"
                     android:layout_marginLeft="25dp"
                     android:textColor="?android:attr/textColorPrimary"
                     android:textSize="25dp"
-                    android:layout_below="@+id/group_571"/>
+                    android:layout_below="@+id/group_964"/>
 
                 <TextView
-                    android:id="@+id/group_572aM"
+                    android:id="@+id/group_971rg"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:text="572aM"
+                    android:text="971 рг"
                     android:layout_marginTop="15dp"
                     android:layout_marginLeft="25dp"
                     android:textColor="?android:attr/textColorPrimary"
                     android:textSize="25dp"
-                    android:layout_below="@+id/group_571M"/>
+                    android:layout_below="@+id/group_965"/>
 
                 <TextView
-                    android:id="@+id/group_572bM"
+                    android:id="@+id/group_971fg"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:text="572бМ"
+                    android:text="971 фг"
                     android:layout_marginTop="15dp"
                     android:layout_marginLeft="25dp"
                     android:textColor="?android:attr/textColorPrimary"
                     android:textSize="25dp"
-                    android:layout_below="@+id/group_572aM"/>
+                    android:layout_below="@+id/group_971rg"/>
 
                 <TextView
-                    android:id="@+id/group_573"
+                    android:id="@+id/group_971eg"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:text="573"
+                    android:text="971 эг"
                     android:layout_marginTop="15dp"
                     android:layout_marginLeft="25dp"
                     android:textColor="?android:attr/textColorPrimary"
                     android:textSize="25dp"
-                    android:layout_below="@+id/group_572bM"/>
+                    android:layout_below="@+id/group_971fg"/>
 
                 <TextView
-                    android:id="@+id/group_573M"
+                    android:id="@+id/group_972a"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:text="573M"
+                    android:text="972а"
                     android:layout_marginTop="15dp"
                     android:layout_marginLeft="25dp"
                     android:textColor="?android:attr/textColorPrimary"
                     android:textSize="25dp"
-                    android:layout_below="@+id/group_573"/>
+                    android:layout_below="@+id/group_971eg"/>
 
+                <TextView
+                    android:id="@+id/group_972b"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:text="972б"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginLeft="25dp"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textSize="25dp"
+                    android:layout_below="@+id/group_972a"/>
 
+                <TextView
+                    android:id="@+id/group_973a"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:text="973а"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginLeft="25dp"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textSize="25dp"
+                    android:layout_below="@+id/group_972b"/>
+
+                <TextView
+                    android:id="@+id/group_973b"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:text="973б"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginLeft="25dp"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textSize="25dp"
+                    android:layout_below="@+id/group_973a"/>
+
+                <TextView
+                    android:id="@+id/group_974ab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:text="974а, б"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginLeft="25dp"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textSize="25dp"
+                    android:layout_below="@+id/group_973b"/>
 
             </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/ftf2"
-                android:layout_toRightOf="@id/ftf1"
+                android:id="@+id/ingeo2"
+                android:layout_toRightOf="@id/ingeo1"
                 android:layout_marginLeft="30dp">
 
+
+
                 <TextView
-                    android:id="@+id/group_574M"
+                    android:id="@+id/group_975"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:text="574M"
+                    android:text="975"
                     android:layout_marginTop="15dp"
                     android:layout_marginLeft="25dp"
                     android:textColor="?android:attr/textColorPrimary"
                     android:textSize="25dp" />
 
                 <TextView
-                    android:id="@+id/group_575"
+                    android:id="@+id/group_976"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:text="575"
+                    android:text="976"
                     android:layout_marginTop="15dp"
                     android:layout_marginLeft="25dp"
                     android:textColor="?android:attr/textColorPrimary"
                     android:textSize="25dp"
-                    android:layout_below="@+id/group_574M"/>
+                    android:layout_below="@+id/group_975"/>
 
                 <TextView
-                    android:id="@+id/group_576"
+                    android:id="@+id/group_981asp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:text="576"
+                    android:text="981 асп"
                     android:layout_marginTop="15dp"
                     android:layout_marginLeft="25dp"
                     android:textColor="?android:attr/textColorPrimary"
                     android:textSize="25dp"
-                    android:layout_below="@+id/group_575"/>
+                    android:layout_below="@+id/group_976"/>
 
                 <TextView
-                    android:id="@+id/group_577"
+                    android:id="@+id/group_981m"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:text="577"
+                    android:text="981 м"
                     android:layout_marginTop="15dp"
                     android:layout_marginLeft="25dp"
                     android:textColor="?android:attr/textColorPrimary"
                     android:textSize="25dp"
-                    android:layout_below="@+id/group_576"/>
+                    android:layout_below="@+id/group_981asp"/>
 
                 <TextView
-                    android:id="@+id/group_578"
+                    android:id="@+id/group_981rg"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:text="578"
+                    android:text="981 рг"
                     android:layout_marginTop="15dp"
                     android:layout_marginLeft="25dp"
                     android:textColor="?android:attr/textColorPrimary"
                     android:textSize="25dp"
-                    android:layout_below="@+id/group_577"/>
+                    android:layout_below="@+id/group_981m"/>
 
                 <TextView
-                    android:id="@+id/group_581"
+                    android:id="@+id/group_981fg"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:text="581"
+                    android:text="981 фг"
                     android:layout_marginTop="15dp"
                     android:layout_marginLeft="25dp"
                     android:textColor="?android:attr/textColorPrimary"
                     android:textSize="25dp"
-                    android:layout_below="@+id/group_578"/>
+                    android:layout_below="@+id/group_981rg"/>
 
                 <TextView
-                    android:id="@+id/group_581M"
+                    android:id="@+id/group_981eg"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:text="581M"
+                    android:text="981 эг"
                     android:layout_marginTop="15dp"
                     android:layout_marginLeft="25dp"
                     android:textColor="?android:attr/textColorPrimary"
                     android:textSize="25dp"
-                    android:layout_below="@+id/group_581"/>
+                    android:layout_below="@+id/group_981fg"/>
+
 
                 <TextView
-                    android:id="@+id/group_582bM"
+                    android:id="@+id/group_982a"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:text="582бМ"
+                    android:text="982а"
                     android:layout_marginTop="15dp"
                     android:layout_marginLeft="25dp"
                     android:textColor="?android:attr/textColorPrimary"
                     android:textSize="25dp"
-                    android:layout_below="@+id/group_581M"/>
+                    android:layout_below="@+id/group_981eg"/>
 
                 <TextView
-                    android:id="@+id/group_583"
+                    android:id="@+id/group_982b"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:text="583"
+                    android:text="982б"
                     android:layout_marginTop="15dp"
                     android:layout_marginLeft="25dp"
                     android:textColor="?android:attr/textColorPrimary"
                     android:textSize="25dp"
-                    android:layout_below="@+id/group_582bM"/>
+                    android:layout_below="@+id/group_982a"/>
 
                 <TextView
-                    android:id="@+id/group_583M"
+                    android:id="@+id/group_982m"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:text="583M"
+                    android:text="982 м"
                     android:layout_marginTop="15dp"
                     android:layout_marginLeft="25dp"
                     android:textColor="?android:attr/textColorPrimary"
                     android:textSize="25dp"
-                    android:layout_below="@+id/group_583"/>
+                    android:layout_below="@+id/group_982b"/>
 
                 <TextView
-                    android:id="@+id/group_584M"
+                    android:id="@+id/group_983a"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:text="584M"
+                    android:text="983а"
                     android:layout_marginTop="15dp"
                     android:layout_marginLeft="25dp"
                     android:textColor="?android:attr/textColorPrimary"
                     android:textSize="25dp"
-                    android:layout_below="@+id/group_583M"/>
-
-
-                <TextView
-                    android:id="@+id/group_585"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:text="585"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginLeft="25dp"
-                    android:textColor="?android:attr/textColorPrimary"
-                    android:textSize="25dp"
-                    android:layout_below="@+id/group_584M"/>
-
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/ftf2"
-                android:layout_marginLeft="30dp">
-
-
-
-
-                <TextView
-                    android:id="@+id/group_587"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:text="587"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginLeft="25dp"
-                    android:textColor="?android:attr/textColorPrimary"
-                    android:textSize="25dp" />
-
-                <TextView
-                    android:id="@+id/group_588"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:text="588"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginLeft="25dp"
-                    android:textColor="?android:attr/textColorPrimary"
-                    android:textSize="25dp"
-                    android:layout_below="@+id/group_587"/>
-
-                <TextView
-                    android:id="@+id/group_591"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:text="591"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginLeft="25dp"
-                    android:textColor="?android:attr/textColorPrimary"
-                    android:textSize="25dp"
-                    android:layout_below="@+id/group_588"/>
+                    android:layout_below="@+id/group_982m"/>
 
                 <TextView
                     android:id="@+id/group_591M"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:text="591M"
+                    android:text="983б"
                     android:layout_marginTop="15dp"
                     android:layout_marginLeft="25dp"
                     android:textColor="?android:attr/textColorPrimary"
                     android:textSize="25dp"
-                    android:layout_below="@+id/group_591"/>
+                    android:layout_below="@+id/group_983a"/>
 
                 <TextView
                     android:id="@+id/group_592aM"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:text="592aM"
+                    android:text="983 м"
                     android:layout_marginTop="15dp"
                     android:layout_marginLeft="25dp"
                     android:textColor="?android:attr/textColorPrimary"
@@ -401,7 +391,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:text="592бМ"
+                    android:text="984"
                     android:layout_marginTop="15dp"
                     android:layout_marginLeft="25dp"
                     android:textColor="?android:attr/textColorPrimary"
@@ -413,7 +403,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:text="593"
+                    android:text="984 м"
                     android:layout_marginTop="15dp"
                     android:layout_marginLeft="25dp"
                     android:textColor="?android:attr/textColorPrimary"
@@ -425,31 +415,43 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:text="593M"
+                    android:text="985"
                     android:layout_marginTop="15dp"
                     android:layout_marginLeft="25dp"
                     android:textColor="?android:attr/textColorPrimary"
                     android:textSize="25dp"
                     android:layout_below="@+id/group_593"/>
 
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/ingeo2"
+                android:layout_marginLeft="30dp">
+
+
+
+
+
+
                 <TextView
                     android:id="@+id/group_594M"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:text="594M"
+                    android:text="985 м"
                     android:layout_marginTop="15dp"
                     android:layout_marginLeft="25dp"
                     android:textColor="?android:attr/textColorPrimary"
-                    android:textSize="25dp"
-                    android:layout_below="@+id/group_593M"/>
+                    android:textSize="25dp" />
 
                 <TextView
                     android:id="@+id/group_595"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:text="595"
+                    android:text="986"
                     android:layout_marginTop="15dp"
                     android:layout_marginLeft="25dp"
                     android:textColor="?android:attr/textColorPrimary"
@@ -461,7 +463,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:text="597"
+                    android:text="987"
                     android:layout_marginTop="15dp"
                     android:layout_marginLeft="25dp"
                     android:textColor="?android:attr/textColorPrimary"
@@ -473,12 +475,168 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:text="598"
+                    android:text="991а"
                     android:layout_marginTop="15dp"
                     android:layout_marginLeft="25dp"
                     android:textColor="?android:attr/textColorPrimary"
                     android:textSize="25dp"
                     android:layout_below="@+id/group_597"/>
+
+                <TextView
+                    android:id="@+id/group_991a"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:text="991а"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginLeft="25dp"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textSize="25dp"
+                    android:layout_below="@+id/group_597"/>
+
+                <TextView
+                    android:id="@+id/group_991b"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:text="991б"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginLeft="25dp"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textSize="25dp"
+                    android:layout_below="@+id/group_991a"/>
+
+                <TextView
+                    android:id="@+id/group_991m"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:text="991 м"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginLeft="25dp"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textSize="25dp"
+                    android:layout_below="@+id/group_991b"/>
+
+                <TextView
+                    android:id="@+id/group_992a"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:text="992 a"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginLeft="25dp"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textSize="25dp"
+                    android:layout_below="@+id/group_991m"/>
+
+                <TextView
+                    android:id="@+id/group_992b"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:text="992 б"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginLeft="25dp"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textSize="25dp"
+                    android:layout_below="@+id/group_992a"/>
+
+                <TextView
+                    android:id="@+id/group_992m"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:text="992 м"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginLeft="25dp"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textSize="25dp"
+                    android:layout_below="@+id/group_992b"/>
+
+                <TextView
+                    android:id="@+id/group_993"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:text="993"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginLeft="25dp"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textSize="25dp"
+                    android:layout_below="@+id/group_992m"/>
+
+                <TextView
+                    android:id="@+id/group_993m"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:text="993 м"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginLeft="25dp"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textSize="25dp"
+                    android:layout_below="@+id/group_993"/>
+
+                <TextView
+                    android:id="@+id/group_994"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:text="994"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginLeft="25dp"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textSize="25dp"
+                    android:layout_below="@+id/group_993m"/>
+
+                <TextView
+                    android:id="@+id/group_994m"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:text="994 м"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginLeft="25dp"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textSize="25dp"
+                    android:layout_below="@+id/group_994"/>
+
+                <TextView
+                    android:id="@+id/group_995"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:text="995"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginLeft="25dp"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textSize="25dp"
+                    android:layout_below="@+id/group_994m"/>
+
+                <TextView
+                    android:id="@+id/group_996"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:text="996"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginLeft="25dp"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textSize="25dp"
+                    android:layout_below="@+id/group_995"/>
+
+                <TextView
+                    android:id="@+id/group_997"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:text="997"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginLeft="25dp"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textSize="25dp"
+                    android:layout_below="@+id/group_996"/>
 
 
             </RelativeLayout>

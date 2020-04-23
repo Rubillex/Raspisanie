@@ -64,7 +64,7 @@ import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
 // ХЛЕБНЫЕ КРОШКИ
 
 
-public class Ictef extends AppCompatActivity implements View.OnClickListener{
+public class Ingeo extends AppCompatActivity implements View.OnClickListener{
 
 
     private static String theme;
@@ -78,12 +78,12 @@ public class Ictef extends AppCompatActivity implements View.OnClickListener{
 
         // Checking if permission is not granted
         if (ContextCompat.checkSelfPermission(
-                Ictef.this,
+                Ingeo.this,
                 permission)
                 == PackageManager.PERMISSION_DENIED) {
             ActivityCompat
                     .requestPermissions(
-                            Ictef.this,
+                            Ingeo.this,
                             new String[] { permission },
                             requestCode);
         }
@@ -132,17 +132,17 @@ public class Ictef extends AppCompatActivity implements View.OnClickListener{
         toolbar_text.setText("Выберите группу");
 
 
-        TextView group_961rg = (TextView) findViewById(R.id.group_961rg);
-        group_961rg.setOnClickListener(this);
-        TextView group_563 = (TextView) findViewById(R.id.group_563);
+        TextView group_561 = (TextView) findViewById(R.id.group_961rg);
+        group_561.setOnClickListener(this);
+        TextView group_563 = (TextView) findViewById(R.id.group_961fg);
         group_563.setOnClickListener(this);
-        TextView group_565 = (TextView) findViewById(R.id.group_565);
+        TextView group_565 = (TextView) findViewById(R.id.group_961eg);
         group_565.setOnClickListener(this);
-        TextView group_566 = (TextView) findViewById(R.id.group_566);
+        TextView group_566 = (TextView) findViewById(R.id.group_962a);
         group_566.setOnClickListener(this);
-        TextView group_567 = (TextView) findViewById(R.id.group_567);
+        TextView group_567 = (TextView) findViewById(R.id.group_962b);
         group_567.setOnClickListener(this);
-        TextView group_568 = (TextView) findViewById(R.id.group_568);
+        TextView group_568 = (TextView) findViewById(R.id.group_963);
         group_568.setOnClickListener(this);
         TextView group_571 = (TextView) findViewById(R.id.group_571);
         group_571.setOnClickListener(this);
@@ -351,7 +351,7 @@ public class Ictef extends AppCompatActivity implements View.OnClickListener{
     @Override
     public void onClick(View view)
     {
-        Intent intent = new Intent(Ictef.this, FUCKTABLE.class);
+        Intent intent = new Intent(Ingeo.this, FUCKTABLE.class);
         switch (view.getId())
         {
             case R.id.group_585:

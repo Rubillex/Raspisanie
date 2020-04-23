@@ -102,7 +102,6 @@ public class FUCKTABLE extends Activity {
         public LinearLayout day11;
         public LinearLayout day12;
         public LinearLayout linear_group;
-        public RelativeLayout bg_par;
 
         public Integer day_number;
 
@@ -379,7 +378,7 @@ public class FUCKTABLE extends Activity {
         final LinearLayout day10 = (LinearLayout) findViewById(R.id.day10);
         final LinearLayout day11 = (LinearLayout) findViewById(R.id.day11);
         final LinearLayout day12 = (LinearLayout) findViewById(R.id.day12);
-        bg_par = (RelativeLayout) findViewById(R.id.bg_par);
+
 
 
         Integer JJJ = date.size();
@@ -436,6 +435,8 @@ public class FUCKTABLE extends Activity {
 
                 final View view = getLayoutInflater().inflate(R.layout.fragment1, null);
 
+                final RelativeLayout bg_par = (RelativeLayout) view.findViewById(R.id.bg_par);
+
                 TextView start_par = (TextView) view.findViewById(R.id.start);
                 start_par.setText(start.get(j));
 
@@ -471,6 +472,8 @@ public class FUCKTABLE extends Activity {
                 String dateText = dateFormat.format(currentDate);
 
 
+//                Log.i("ТЕКУЩАЯ ДАТА",dateText);
+
 
                 String START_TIME[] = START.split(":");
                 String END_TIME[] = END.split(":");
@@ -478,6 +481,8 @@ public class FUCKTABLE extends Activity {
 
                 DateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
                 String curr_date = timeFormat.format(currentDate);
+
+//                Log.i("ТЕКУЩЕЕ ВРЕМЯ", curr_date);
 
                 String CURRENT_DATE[] = curr_date.split(":");
 
@@ -490,12 +495,43 @@ public class FUCKTABLE extends Activity {
                 int CURRENT_DATE_HH = Integer.parseInt(CURRENT_DATE[0]);
                 int CURRENT_DATE_mm = Integer.parseInt(CURRENT_DATE[1]);
 
+                double curr_dbl = (CURRENT_DATE_HH * 60) + CURRENT_DATE_mm;
 
-                if(     CURRENT_DATE_HH >= START_PAR_HH &&
-                        CURRENT_DATE_HH <= END_PAR_HH &&
-                        CURRENT_DATE_mm >= START_PAR_mm &&
-                        CURRENT_DATE_mm <= END_PAR_mm &&
-                dateText.equals(DATE)){
+                double start_dbl = (START_PAR_HH * 60) + START_PAR_mm;
+                double end_dbl = (END_PAR_HH * 60) + END_PAR_mm;
+
+                Log.i("СЕЙЧАС ЧАСОВ", String.valueOf(CURRENT_DATE_HH));
+                Log.i("СЕЙЧАС МИНУТ", String.valueOf(CURRENT_DATE_mm));
+                Log.i("СТАРТ ПАРЫ ЧАСОВ", String.valueOf(START_PAR_HH));
+                Log.i("СТАРТ ПАРЫ МИНУТ", String.valueOf(START_PAR_mm));
+                Log.i("КОНЕЦ ПАРЫ ЧАСОВ", String.valueOf(END_PAR_HH));
+                Log.i("КОНЕЦ ПАРЫ МИНУТ", String.valueOf(END_PAR_mm));
+
+
+
+
+
+
+
+
+
+                DateFormat df1 = new SimpleDateFormat("dd.MM.yyyy");
+
+                String date1 = df1.parse(DATE).toString();
+
+
+
+
+
+
+                TextView auditoria = (TextView) view.findViewById(R.id.auditoria);
+                auditoria.setText(location.get(j));
+
+                if(     curr_dbl >= start_dbl &&
+                        curr_dbl <= end_dbl &&
+                        dateText.equals(DATE)){
+
+                    Log.i("!!!!!!!!!!!!","СЕЙЧАС ИДЁТ ПАРА");
 
                     int currentNightMode = getResources().getConfiguration().uiMode
                             & Configuration.UI_MODE_NIGHT_MASK;
@@ -519,27 +555,10 @@ public class FUCKTABLE extends Activity {
 
 
 
-
-
-
-
-                DateFormat df1 = new SimpleDateFormat("dd.MM.yyyy");
-
-                String date1 = df1.parse(DATE).toString();
-
-
-
-
-
-
-                TextView auditoria = (TextView) view.findViewById(R.id.auditoria);
-                auditoria.setText(location.get(j));
-
-
-
-
-
                 allEds.add(view);
+
+
+
 
 
 
@@ -893,6 +912,9 @@ public class FUCKTABLE extends Activity {
 
                         break;
                 }
+
+
+
 
             }
 
