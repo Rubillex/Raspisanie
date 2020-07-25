@@ -16,8 +16,10 @@
         android:supportsRtl="true"
         android:theme="@style/Light">
         <activity android:name=".FUCKTABLE"></activity>
-        <activity android:name=".Ingeo"></activity>
-        <activity android:name=".Ictef"></activity>
+        <activity android:name=".Setting"></activity>
+        <activity android:name=".institut"></activity>
+        <activity android:name=".group_list"></activity>
+        <activity android:name=".maps"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

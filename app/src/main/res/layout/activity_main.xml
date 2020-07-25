@@ -4,35 +4,86 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".MainActivity"
+    android:orientation="vertical"
+    android:id="@+id/activity_main"
     android:background="?attr/colorPrimary">
 
 
 
-    <include layout="@layout/toolbar" />
+        <include layout="@layout/toolbar" />
 
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
 
         <RelativeLayout
+            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <TextView
+            <ProgressBar
+                android:id="@+id/progressBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="ИЦТЭФ"
-                android:id="@+id/ictef"
-                android:layout_marginTop="15dp"
-                android:layout_marginLeft="25dp"
-                android:textColor="?android:attr/textColorPrimary"
-                android:textSize="25dp"/>
+                android:layout_centerInParent="true"
+                android:layout_marginTop="150dp" />
+
 
         </RelativeLayout>
+
+
     </ScrollView>
 
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:elevation="@dimen/cardview_default_elevation">
+
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:text="Расписание"
+                android:textColor="?android:attr/textColorPrimary"
+                android:textSize="25dp"
+                android:textAppearance="@style/Widget.MaterialComponents.Button"
+                android:id="@+id/timetable"
+                app:rippleColor="?android:attr/colorControlHighlight"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_weight="1"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:text="Карта"
+                android:textColor="?android:attr/textColorPrimary"
+                android:textSize="25dp"
+                android:textAppearance="@style/Widget.MaterialComponents.Button"
+                android:id="@+id/maps"
+                app:rippleColor="?android:attr/colorControlHighlight"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_weight="1"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:text="Выбор темы"
+                android:textColor="?android:attr/textColorPrimary"
+                android:textSize="25dp"
+                android:textAppearance="@style/Widget.MaterialComponents.Button"
+                android:id="@+id/setting_button"
+                app:rippleColor="?android:attr/colorControlHighlight"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_weight="1"/>
+
+
+        </LinearLayout>
 
 </LinearLayout>

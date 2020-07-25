@@ -4,9 +4,12 @@ package dev.prokrostinatorbl.raspisanie;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -17,6 +20,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Button;
@@ -61,7 +65,19 @@ public class FUCKTABLE extends Activity {
         private int countID = 1;
 
 
-        public int temp = 1;
+    public static String APP_PREFERENCES;
+    public static String APP_PREFERENCES_THEME; // выбранная тема
+
+    public static String GROUP_LINK;
+    public static String GROUP_FILE;
+    public static String GROUP_JSON;
+
+    SharedPreferences mSettings;
+
+
+
+
+    public int temp = 1;
 
 
         public JSONArray group_numb;
@@ -115,7 +131,7 @@ public class FUCKTABLE extends Activity {
         public ArrayList<String> days;
         public ArrayList<String> months;
         public ArrayList<String> years;
-        private Handler h;
+        public static Handler h;
 
 
 
@@ -125,35 +141,59 @@ public class FUCKTABLE extends Activity {
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
 
+        mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
+        boolean hasVisited = mSettings.getBoolean("hasVisited", false);
         int currentNightMode = getResources().getConfiguration().uiMode
                 & Configuration.UI_MODE_NIGHT_MASK;
 
-        switch (currentNightMode) {
-            case Configuration.UI_MODE_NIGHT_NO:
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                    setTheme(R.style.Light_statusbar);
-                } else {
-                    setTheme(R.style.Light);
-                }
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-                }
-                break;
-            case Configuration.UI_MODE_NIGHT_YES:
-                setTheme(R.style.Dark);
-                break;
-            // Night mode is active, we're
-            default:
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                    setTheme(R.style.Light_statusbar);
-                } else {
-                    setTheme(R.style.Light);
-                }
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-                }
-                break;
-            // We don't know what mode we're in, assume notnight
+
+        if(mSettings.contains(APP_PREFERENCES_THEME)) {
+
+            String mCounter = mSettings.getString(APP_PREFERENCES_THEME, "auto");
+
+            if(!mCounter.equals("auto") && !mCounter.equals("white") && !mCounter.equals("black")){
+                mCounter = "auto";
+            }
+
+            switch(mCounter){
+                case "white":
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                        setTheme(R.style.Light_statusbar);
+                    } else {
+                        setTheme(R.style.Light);
+                        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+                    }
+                    break;
+                case "black":
+                    setTheme(R.style.Dark);
+                    break;
+                case "pink":
+                    break;
+                case "auto":
+                    switch (currentNightMode) {
+                        case Configuration.UI_MODE_NIGHT_NO:
+                            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                                setTheme(R.style.Light_statusbar);
+                            } else {
+                                setTheme(R.style.Light);
+                                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+                            }
+                            break;
+                        case Configuration.UI_MODE_NIGHT_YES:
+                            setTheme(R.style.Dark);
+                            break;
+                        default:
+                            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                                setTheme(R.style.Light_statusbar);
+                            } else {
+                                setTheme(R.style.Light);
+                                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+                            }
+                            break;
+                        // We don't know what mode we're in, assume notnight
+                    }
+                    break;
+            }
         }
 
         setContentView(R.layout.activity_fucktable);
@@ -169,118 +209,7 @@ public class FUCKTABLE extends Activity {
         destFileName = group_num + ".txt";
         json_db_name = group_num + ".json";
         toolbar_text.setText(institut + ": " + group_num);
-
-        switch (group_num) {
-            case "585":
-                src_file = "https://www.asu.ru/timetable/students/24/2129437031/?file=2129437031.ics";
-                break;
-            case "581":
-                src_file = "https://www.asu.ru/timetable/students/24/2129437028/?file=2129437028.ics";
-                break;
-            case "561":
-                src_file = "https://www.asu.ru/timetable/students/24/2129436560/?file=2129436560.ics";
-                break;
-            case "563":
-                src_file = "https://www.asu.ru/timetable/students/24/2129436562/?file=2129436562.ics";
-                break;
-            case "565":
-                src_file = "https://www.asu.ru/timetable/students/24/2129436563/?file=2129436563.ics";
-                break;
-            case "566":
-                src_file = "https://www.asu.ru/timetable/students/24/2129437286/?file=2129437286.ics";
-                break;
-            case "567":
-                src_file = "https://www.asu.ru/timetable/students/24/2129436564/?file=2129436564.ics";
-                break;
-            case "568":
-                src_file = "https://www.asu.ru/timetable/students/24/2129439087/?file=2129439087.ics";
-                break;
-            case "571":
-                src_file = "https://www.asu.ru/timetable/students/24/2129436721/?file=2129436721.ics";
-                break;
-            case "571M":
-                src_file = "";
-                break;
-            case "572aM":
-                src_file = "";
-                break;
-            case "572bM":
-                src_file = "";
-                break;
-            case "573":
-                src_file = "https://www.asu.ru/timetable/students/24/2129436723/?file=2129436723.ics";
-                break;
-            case "573M":
-                src_file = "";
-                break;
-            case "574M":
-                src_file = "";
-                break;
-            case "575":
-                src_file = "https://www.asu.ru/timetable/students/24/2129436724/?file=2129436724.ics";
-                break;
-            case "576":
-                src_file = "https://www.asu.ru/timetable/students/24/2129437577/?file=2129437577.ics";
-                break;
-            case "577":
-                src_file = "https://www.asu.ru/timetable/students/24/2129436725/?file=2129436725.ics";
-                break;
-            case "578":
-                src_file = "https://www.asu.ru/timetable/students/24/2129439426/?file=2129439426.ics";
-                break;
-            case "581M":
-                src_file = "";
-                break;
-            case "582bM":
-                src_file = "";
-                break;
-            case "583":
-                src_file = "https://www.asu.ru/timetable/students/24/2129437030/?file=2129437030.ics";
-                break;
-            case "583M":
-                src_file = "";
-                break;
-            case "584M":
-                src_file = "";
-                break;
-            case "587":
-                src_file = "https://www.asu.ru/timetable/students/24/2129437032/?file=2129437032.ics";
-                break;
-            case "588":
-                src_file = "https://www.asu.ru/timetable/students/24/2129439738/?file=2129439738.ics";
-                break;
-            case "591":
-                src_file = "https://www.asu.ru/timetable/students/24/2129437210/?file=2129437210.ics";
-                break;
-            case "591M":
-                src_file = "";
-                break;
-            case "592aM":
-                src_file = "";
-                break;
-            case "592bM":
-                src_file = "";
-                break;
-            case "593":
-                src_file = "https://www.asu.ru/timetable/students/24/2129437214/?file=2129437214.ics";
-                break;
-            case "593M":
-                src_file = "";
-                break;
-            case "594M":
-                src_file = "";
-                break;
-            case "595":
-                src_file = "https://www.asu.ru/timetable/students/24/2129437216/?file=2129437216.ics";
-                break;
-            case "597":
-                src_file = "https://www.asu.ru/timetable/students/24/2129437218/?file=2129437218.ics";
-                break;
-            case "598":
-                src_file = "https://www.asu.ru/timetable/students/24/2129439985/?file=2129439985.ics";
-                break;
-
-        }
+        src_file = intent.getStringExtra("link");
 
 
         if(src_file.equals("")){
@@ -298,8 +227,20 @@ public class FUCKTABLE extends Activity {
             end = new ArrayList<String>();
             date = new ArrayList<String>();
 
+            Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+                @Override
+                public void uncaughtException(Thread thread, Throwable ex) {
+                    handleUncaughtException(thread, ex);
+                }
+            });
 
-            Downloader();
+
+            Context c = getApplicationContext();
+            File file = new File(c.getFilesDir(), "/files");
+            String from = "FUCKTABLE";
+
+            Downloader.Download(src_file, file, destFileName, from);
+
 
             h = new Handler() {
                 public void handleMessage(android.os.Message msg) {
@@ -321,8 +262,16 @@ public class FUCKTABLE extends Activity {
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
-                        toolbar_text.setText(institut + ": " + group_num + " (оффлайн)");
-                        Log.i("header","оффлайн мод");
+                        toolbar_text.setText(institut + ": " + group_num + " (офлайн)");
+                        Log.i("header","офлайн мод");
+                    }
+                    if (msg.what == 3)
+                    {
+                        try {
+                            Read();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             };
@@ -331,10 +280,18 @@ public class FUCKTABLE extends Activity {
 
     }
 
-
-
-
-
+    public void handleUncaughtException (Thread thread, Throwable e)
+    {
+        String stackTrace = Log.getStackTraceString(e);
+        String message = e.getMessage();
+        Intent intent = new Intent (Intent.ACTION_SEND);
+        intent.setType("message/rfc822");
+        intent.putExtra (Intent.EXTRA_EMAIL, new String[] {"gubchenko.vadim@gmail.com"});
+        intent.putExtra (Intent.EXTRA_SUBJECT, "MyApp Crash log file");
+        intent.putExtra (Intent.EXTRA_TEXT, stackTrace);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // required when starting from Application
+        startActivity(intent);
+    }
 
     private void Parser() throws ParseException {
 
@@ -387,11 +344,14 @@ public class FUCKTABLE extends Activity {
 
         if(JJJ == 0){
             Toast toast = Toast.makeText(getApplicationContext(),
-                    "Расписания для этой группы нет в кэше!", Toast.LENGTH_SHORT);
+                    "Расписания для этой группы нет в кэше/на сайте!", Toast.LENGTH_SHORT);
             toast.show();
         }else{
 
             String date_temp = date.get(0);
+
+            Integer current_day = 1;
+            Integer buffer_day = 1;
 
             for(int j = 0; j < date.size(); j++){
 
@@ -429,8 +389,6 @@ public class FUCKTABLE extends Activity {
                         day_number++;
                     }
                 }
-
-
 
 
                 final View view = getLayoutInflater().inflate(R.layout.fragment1, null);
@@ -500,15 +458,18 @@ public class FUCKTABLE extends Activity {
                 double start_dbl = (START_PAR_HH * 60) + START_PAR_mm;
                 double end_dbl = (END_PAR_HH * 60) + END_PAR_mm;
 
-                Log.i("СЕЙЧАС ЧАСОВ", String.valueOf(CURRENT_DATE_HH));
-                Log.i("СЕЙЧАС МИНУТ", String.valueOf(CURRENT_DATE_mm));
-                Log.i("СТАРТ ПАРЫ ЧАСОВ", String.valueOf(START_PAR_HH));
-                Log.i("СТАРТ ПАРЫ МИНУТ", String.valueOf(START_PAR_mm));
-                Log.i("КОНЕЦ ПАРЫ ЧАСОВ", String.valueOf(END_PAR_HH));
-                Log.i("КОНЕЦ ПАРЫ МИНУТ", String.valueOf(END_PAR_mm));
-
-
-
+                LinearLayout dot1 = (LinearLayout) findViewById(R.id.dot1);
+                LinearLayout dot2 = (LinearLayout) findViewById(R.id.dot2);
+                LinearLayout dot3 = (LinearLayout) findViewById(R.id.dot3);
+                LinearLayout dot4 = (LinearLayout) findViewById(R.id.dot4);
+                LinearLayout dot5 = (LinearLayout) findViewById(R.id.dot5);
+                LinearLayout dot6 = (LinearLayout) findViewById(R.id.dot6);
+                LinearLayout dot7 = (LinearLayout) findViewById(R.id.dot7);
+                LinearLayout dot8 = (LinearLayout) findViewById(R.id.dot8);
+                LinearLayout dot9 = (LinearLayout) findViewById(R.id.dot9);
+                LinearLayout dot10 = (LinearLayout) findViewById(R.id.dot10);
+                LinearLayout dot11 = (LinearLayout) findViewById(R.id.dot11);
+                LinearLayout dot12 = (LinearLayout) findViewById(R.id.dot12);
 
 
 
@@ -527,40 +488,77 @@ public class FUCKTABLE extends Activity {
                 TextView auditoria = (TextView) view.findViewById(R.id.auditoria);
                 auditoria.setText(location.get(j));
 
+
+
+
                 if(     curr_dbl >= start_dbl &&
                         curr_dbl <= end_dbl &&
                         dateText.equals(DATE)){
 
-                    Log.i("!!!!!!!!!!!!","СЕЙЧАС ИДЁТ ПАРА");
-
                     int currentNightMode = getResources().getConfiguration().uiMode
                             & Configuration.UI_MODE_NIGHT_MASK;
 
+                    mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
 
-                    switch (currentNightMode) {
-                        case Configuration.UI_MODE_NIGHT_NO:
-                            bg_par.setBackgroundColor(getResources().getColor(R.color.colorAccent_light));
-                            break;
-                        case Configuration.UI_MODE_NIGHT_YES:
-                            bg_par.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-                            break;
-                        // Night mode is active, we're
-                        default:
-                            bg_par.setBackgroundColor(getResources().getColor(R.color.colorAccent_light));
-                            break;
-                        // We don't know what mode we're in, assume notnight
+                    if (mSettings.contains(APP_PREFERENCES_THEME)) {
+
+                        String mCounter = mSettings.getString(APP_PREFERENCES_THEME, "auto");
+
+                        if(!mCounter.equals("auto") && !mCounter.equals("white") && !mCounter.equals("black")){
+                            mCounter = "auto";
+                        }
+
+                        switch (mCounter) {
+                            case "white":
+                                bg_par.setBackgroundColor(getResources().getColor(R.color.colorAccent_light));
+                                break;
+                            case "black":
+                                bg_par.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+                                break;
+                            case "pink":
+                                break;
+                            case "auto":
+                                switch (currentNightMode) {
+                                    case Configuration.UI_MODE_NIGHT_NO:
+                                        bg_par.setBackgroundColor(getResources().getColor(R.color.colorAccent_light));
+                                        break;
+                                    case Configuration.UI_MODE_NIGHT_YES:
+                                        bg_par.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+                                        break;
+                                    default:
+                                        bg_par.setBackgroundColor(getResources().getColor(R.color.colorAccent_light));
+                                        break;
+                                    // We don't know what mode we're in, assume notnight
+                                }
+                                break;
+                        }
                     }
 
                 }
 
 
 
+
+
+
+                TextView nedel1 = (TextView) findViewById(R.id.second_nedel1);
+                TextView nedel2 = (TextView) findViewById(R.id.second_nedel2);
+                TextView nedel3 = (TextView) findViewById(R.id.second_nedel3);
+                TextView nedel4 = (TextView) findViewById(R.id.second_nedel4);
+                TextView nedel5 = (TextView) findViewById(R.id.second_nedel5);
+                TextView nedel6 = (TextView) findViewById(R.id.second_nedel6);
+                TextView nedel7 = (TextView) findViewById(R.id.second_nedel7);
+                TextView nedel8 = (TextView) findViewById(R.id.second_nedel8);
+                TextView nedel9 = (TextView) findViewById(R.id.second_nedel9);
+                TextView nedel10 = (TextView) findViewById(R.id.second_nedel10);
+                TextView nedel11 = (TextView) findViewById(R.id.second_nedel11);
+                TextView nedel12 = (TextView) findViewById(R.id.second_nedel12);
+
+
+
                 allEds.add(view);
 
-
-
-
-
+                Integer temp_day_number = day_number - 1;
 
                 switch (day_number) {
                     case 1:
@@ -572,21 +570,72 @@ public class FUCKTABLE extends Activity {
 
                         if(date1.startsWith("Mon")){
                             daaaay1.setText("Понедельник");
+                            current_day = 1;
                         }
                         if(date1.startsWith("Tue")){
                             daaaay1.setText("Вторник");
+                            current_day = 2;
                         }
                         if(date1.startsWith("Wed")){
                             daaaay1.setText("Среда");
+                            current_day = 3;
                         }
                         if(date1.startsWith("Thu")){
                             daaaay1.setText("Четверг");
+                            current_day = 4;
                         }
                         if(date1.startsWith("Fri")){
                             daaaay1.setText("Пятница");
+                            current_day = 5;
                         }
                         if(date1.startsWith("Sat")){
                             daaaay1.setText("Суббота");
+                            current_day = 6;
+                        }
+
+                        if (dateText.equals(DATE)){
+                            dot1.setVisibility(View.VISIBLE);
+                        }
+
+                        if(current_day < buffer_day){
+                            switch (temp_day_number){
+                                case 1:
+                                    nedel1.setVisibility(View.VISIBLE);
+                                    break;
+                                case 2:
+                                    nedel2.setVisibility(View.VISIBLE);
+                                    break;
+                                case 3:
+                                    nedel3.setVisibility(View.VISIBLE);
+                                    break;
+                                case 4:
+                                    nedel4.setVisibility(View.VISIBLE);
+                                    break;
+                                case 5:
+                                    nedel5.setVisibility(View.VISIBLE);
+                                    break;
+                                case 6:
+                                    nedel6.setVisibility(View.VISIBLE);
+                                    break;
+                                case 7:
+                                    nedel7.setVisibility(View.VISIBLE);
+                                    break;
+                                case 8:
+                                    nedel8.setVisibility(View.VISIBLE);
+                                    break;
+                                case 9:
+                                    nedel9.setVisibility(View.VISIBLE);
+                                    break;
+                                case 10:
+                                    nedel10.setVisibility(View.VISIBLE);
+                                    break;
+                                case 11:
+                                    nedel11.setVisibility(View.VISIBLE);
+                                    break;
+                                case 12:
+                                    nedel12.setVisibility(View.VISIBLE);
+                                    break;
+                            }
                         }
 
                         first_day.addView(view);
@@ -602,21 +651,72 @@ public class FUCKTABLE extends Activity {
 
                         if(date1.startsWith("Mon")){
                             daaaay2.setText("Понедельник");
+                            current_day = 1;
                         }
                         if(date1.startsWith("Tue")){
                             daaaay2.setText("Вторник");
+                            current_day = 2;
                         }
                         if(date1.startsWith("Wed")){
                             daaaay2.setText("Среда");
+                            current_day = 3;
                         }
                         if(date1.startsWith("Thu")){
                             daaaay2.setText("Четверг");
+                            current_day = 4;
                         }
                         if(date1.startsWith("Fri")){
                             daaaay2.setText("Пятница");
+                            current_day = 5;
                         }
                         if(date1.startsWith("Sat")){
                             daaaay2.setText("Суббота");
+                            current_day = 6;
+                        }
+
+                        if (dateText.equals(DATE)){
+                            dot2.setVisibility(View.VISIBLE);
+                        }
+
+                        if(current_day < buffer_day){
+                            switch (temp_day_number){
+                                case 1:
+                                    nedel1.setVisibility(View.VISIBLE);
+                                    break;
+                                case 2:
+                                    nedel2.setVisibility(View.VISIBLE);
+                                    break;
+                                case 3:
+                                    nedel3.setVisibility(View.VISIBLE);
+                                    break;
+                                case 4:
+                                    nedel4.setVisibility(View.VISIBLE);
+                                    break;
+                                case 5:
+                                    nedel5.setVisibility(View.VISIBLE);
+                                    break;
+                                case 6:
+                                    nedel6.setVisibility(View.VISIBLE);
+                                    break;
+                                case 7:
+                                    nedel7.setVisibility(View.VISIBLE);
+                                    break;
+                                case 8:
+                                    nedel8.setVisibility(View.VISIBLE);
+                                    break;
+                                case 9:
+                                    nedel9.setVisibility(View.VISIBLE);
+                                    break;
+                                case 10:
+                                    nedel10.setVisibility(View.VISIBLE);
+                                    break;
+                                case 11:
+                                    nedel11.setVisibility(View.VISIBLE);
+                                    break;
+                                case 12:
+                                    nedel12.setVisibility(View.VISIBLE);
+                                    break;
+                            }
                         }
 
 
@@ -633,21 +733,72 @@ public class FUCKTABLE extends Activity {
 
                         if(date1.startsWith("Mon")){
                             daaaay3.setText("Понедельник");
+                            current_day = 1;
                         }
                         if(date1.startsWith("Tue")){
                             daaaay3.setText("Вторник");
+                            current_day = 2;
                         }
                         if(date1.startsWith("Wed")){
                             daaaay3.setText("Среда");
+                            current_day = 3;
                         }
                         if(date1.startsWith("Thu")){
                             daaaay3.setText("Четверг");
+                            current_day = 4;
                         }
                         if(date1.startsWith("Fri")){
                             daaaay3.setText("Пятница");
+                            current_day = 5;
                         }
                         if(date1.startsWith("Sat")){
                             daaaay3.setText("Суббота");
+                            current_day = 6;
+                        }
+
+                        if (dateText.equals(DATE)){
+                            dot3.setVisibility(View.VISIBLE);
+                        }
+
+                        if(current_day < buffer_day){
+                            switch (temp_day_number){
+                                case 1:
+                                    nedel1.setVisibility(View.VISIBLE);
+                                    break;
+                                case 2:
+                                    nedel2.setVisibility(View.VISIBLE);
+                                    break;
+                                case 3:
+                                    nedel3.setVisibility(View.VISIBLE);
+                                    break;
+                                case 4:
+                                    nedel4.setVisibility(View.VISIBLE);
+                                    break;
+                                case 5:
+                                    nedel5.setVisibility(View.VISIBLE);
+                                    break;
+                                case 6:
+                                    nedel6.setVisibility(View.VISIBLE);
+                                    break;
+                                case 7:
+                                    nedel7.setVisibility(View.VISIBLE);
+                                    break;
+                                case 8:
+                                    nedel8.setVisibility(View.VISIBLE);
+                                    break;
+                                case 9:
+                                    nedel9.setVisibility(View.VISIBLE);
+                                    break;
+                                case 10:
+                                    nedel10.setVisibility(View.VISIBLE);
+                                    break;
+                                case 11:
+                                    nedel11.setVisibility(View.VISIBLE);
+                                    break;
+                                case 12:
+                                    nedel12.setVisibility(View.VISIBLE);
+                                    break;
+                            }
                         }
 
 
@@ -664,21 +815,72 @@ public class FUCKTABLE extends Activity {
 
                         if(date1.startsWith("Mon")){
                             daaaay4.setText("Понедельник");
+                            current_day = 1;
                         }
                         if(date1.startsWith("Tue")){
                             daaaay4.setText("Вторник");
+                            current_day = 2;
                         }
                         if(date1.startsWith("Wed")){
                             daaaay4.setText("Среда");
+                            current_day = 3;
                         }
                         if(date1.startsWith("Thu")){
                             daaaay4.setText("Четверг");
+                            current_day = 4;
                         }
                         if(date1.startsWith("Fri")){
                             daaaay4.setText("Пятница");
+                            current_day = 5;
                         }
                         if(date1.startsWith("Sat")){
                             daaaay4.setText("Суббота");
+                            current_day = 6;
+                        }
+
+                        if (dateText.equals(DATE)){
+                            dot4.setVisibility(View.VISIBLE);
+                        }
+
+                        if(current_day < buffer_day){
+                            switch (temp_day_number){
+                                case 1:
+                                    nedel1.setVisibility(View.VISIBLE);
+                                    break;
+                                case 2:
+                                    nedel2.setVisibility(View.VISIBLE);
+                                    break;
+                                case 3:
+                                    nedel3.setVisibility(View.VISIBLE);
+                                    break;
+                                case 4:
+                                    nedel4.setVisibility(View.VISIBLE);
+                                    break;
+                                case 5:
+                                    nedel5.setVisibility(View.VISIBLE);
+                                    break;
+                                case 6:
+                                    nedel6.setVisibility(View.VISIBLE);
+                                    break;
+                                case 7:
+                                    nedel7.setVisibility(View.VISIBLE);
+                                    break;
+                                case 8:
+                                    nedel8.setVisibility(View.VISIBLE);
+                                    break;
+                                case 9:
+                                    nedel9.setVisibility(View.VISIBLE);
+                                    break;
+                                case 10:
+                                    nedel10.setVisibility(View.VISIBLE);
+                                    break;
+                                case 11:
+                                    nedel11.setVisibility(View.VISIBLE);
+                                    break;
+                                case 12:
+                                    nedel12.setVisibility(View.VISIBLE);
+                                    break;
+                            }
                         }
 
                         day4.addView(view);
@@ -693,21 +895,72 @@ public class FUCKTABLE extends Activity {
 
                         if(date1.startsWith("Mon")){
                             daaaay5.setText("Понедельник");
+                            current_day = 1;
                         }
                         if(date1.startsWith("Tue")){
                             daaaay5.setText("Вторник");
+                            current_day = 2;
                         }
                         if(date1.startsWith("Wed")){
                             daaaay5.setText("Среда");
+                            current_day = 3;
                         }
                         if(date1.startsWith("Thu")){
                             daaaay5.setText("Четверг");
+                            current_day = 4;
                         }
                         if(date1.startsWith("Fri")){
                             daaaay5.setText("Пятница");
+                            current_day = 5;
                         }
                         if(date1.startsWith("Sat")){
                             daaaay5.setText("Суббота");
+                            current_day = 6;
+                        }
+
+                        if (dateText.equals(DATE)){
+                            dot5.setVisibility(View.VISIBLE);
+                        }
+
+                        if(current_day < buffer_day){
+                            switch (temp_day_number){
+                                case 1:
+                                    nedel1.setVisibility(View.VISIBLE);
+                                    break;
+                                case 2:
+                                    nedel2.setVisibility(View.VISIBLE);
+                                    break;
+                                case 3:
+                                    nedel3.setVisibility(View.VISIBLE);
+                                    break;
+                                case 4:
+                                    nedel4.setVisibility(View.VISIBLE);
+                                    break;
+                                case 5:
+                                    nedel5.setVisibility(View.VISIBLE);
+                                    break;
+                                case 6:
+                                    nedel6.setVisibility(View.VISIBLE);
+                                    break;
+                                case 7:
+                                    nedel7.setVisibility(View.VISIBLE);
+                                    break;
+                                case 8:
+                                    nedel8.setVisibility(View.VISIBLE);
+                                    break;
+                                case 9:
+                                    nedel9.setVisibility(View.VISIBLE);
+                                    break;
+                                case 10:
+                                    nedel10.setVisibility(View.VISIBLE);
+                                    break;
+                                case 11:
+                                    nedel11.setVisibility(View.VISIBLE);
+                                    break;
+                                case 12:
+                                    nedel12.setVisibility(View.VISIBLE);
+                                    break;
+                            }
                         }
 
                         day5.addView(view);
@@ -723,21 +976,72 @@ public class FUCKTABLE extends Activity {
 
                         if(date1.startsWith("Mon")){
                             daaaay6.setText("Понедельник");
+                            current_day = 1;
                         }
                         if(date1.startsWith("Tue")){
                             daaaay6.setText("Вторник");
+                            current_day = 2;
                         }
                         if(date1.startsWith("Wed")){
                             daaaay6.setText("Среда");
+                            current_day = 3;
                         }
                         if(date1.startsWith("Thu")){
                             daaaay6.setText("Четверг");
+                            current_day = 4;
                         }
                         if(date1.startsWith("Fri")){
                             daaaay6.setText("Пятница");
+                            current_day = 5;
                         }
                         if(date1.startsWith("Sat")){
                             daaaay6.setText("Суббота");
+                            current_day = 6;
+                        }
+
+                        if (dateText.equals(DATE)){
+                            dot6.setVisibility(View.VISIBLE);
+                        }
+
+                        if(current_day < buffer_day){
+                            switch (temp_day_number){
+                                case 1:
+                                    nedel1.setVisibility(View.VISIBLE);
+                                    break;
+                                case 2:
+                                    nedel2.setVisibility(View.VISIBLE);
+                                    break;
+                                case 3:
+                                    nedel3.setVisibility(View.VISIBLE);
+                                    break;
+                                case 4:
+                                    nedel4.setVisibility(View.VISIBLE);
+                                    break;
+                                case 5:
+                                    nedel5.setVisibility(View.VISIBLE);
+                                    break;
+                                case 6:
+                                    nedel6.setVisibility(View.VISIBLE);
+                                    break;
+                                case 7:
+                                    nedel7.setVisibility(View.VISIBLE);
+                                    break;
+                                case 8:
+                                    nedel8.setVisibility(View.VISIBLE);
+                                    break;
+                                case 9:
+                                    nedel9.setVisibility(View.VISIBLE);
+                                    break;
+                                case 10:
+                                    nedel10.setVisibility(View.VISIBLE);
+                                    break;
+                                case 11:
+                                    nedel11.setVisibility(View.VISIBLE);
+                                    break;
+                                case 12:
+                                    nedel12.setVisibility(View.VISIBLE);
+                                    break;
+                            }
                         }
 
                         day6.addView(view);
@@ -751,21 +1055,76 @@ public class FUCKTABLE extends Activity {
 
                         if(date1.startsWith("Mon")){
                             daaaay7.setText("Понедельник");
+                            current_day = 1;
                         }
                         if(date1.startsWith("Tue")){
                             daaaay7.setText("Вторник");
+                            current_day = 2;
                         }
                         if(date1.startsWith("Wed")){
                             daaaay7.setText("Среда");
+                            current_day = 3;
                         }
                         if(date1.startsWith("Thu")){
                             daaaay7.setText("Четверг");
+                            current_day = 4;
                         }
                         if(date1.startsWith("Fri")){
                             daaaay7.setText("Пятница");
+                            current_day = 5;
                         }
                         if(date1.startsWith("Sat")){
                             daaaay7.setText("Суббота");
+                            current_day = 6;
+                        }
+
+                        if (dateText.equals(DATE)){
+                            dot7.setVisibility(View.VISIBLE);
+                        }
+
+                        if(current_day < buffer_day){
+                            Log.i("111", "неделя кончилась");
+                            switch (temp_day_number){
+                                case 1:
+                                    nedel1.setVisibility(View.VISIBLE);
+                                    break;
+                                case 2:
+                                    nedel2.setVisibility(View.VISIBLE);
+                                    break;
+                                case 3:
+                                    nedel3.setVisibility(View.VISIBLE);
+                                    break;
+                                case 4:
+                                    nedel4.setVisibility(View.VISIBLE);
+                                    break;
+                                case 5:
+                                    nedel5.setVisibility(View.VISIBLE);
+                                    Log.i("111", "5 день");
+                                    break;
+                                case 6:
+                                    nedel6.setVisibility(View.VISIBLE);
+                                    Log.i("111", "6 день");
+                                    break;
+                                case 7:
+                                    nedel7.setVisibility(View.VISIBLE);
+                                    Log.i("111", "7 день");
+                                    break;
+                                case 8:
+                                    nedel8.setVisibility(View.VISIBLE);
+                                    break;
+                                case 9:
+                                    nedel9.setVisibility(View.VISIBLE);
+                                    break;
+                                case 10:
+                                    nedel10.setVisibility(View.VISIBLE);
+                                    break;
+                                case 11:
+                                    nedel11.setVisibility(View.VISIBLE);
+                                    break;
+                                case 12:
+                                    nedel12.setVisibility(View.VISIBLE);
+                                    break;
+                            }
                         }
 
                         day7.addView(view);
@@ -779,22 +1138,74 @@ public class FUCKTABLE extends Activity {
 
                         if(date1.startsWith("Mon")){
                             daaaay8.setText("Понедельник");
+                            current_day = 1;
                         }
                         if(date1.startsWith("Tue")){
                             daaaay8.setText("Вторник");
+                            current_day = 2;
                         }
                         if(date1.startsWith("Wed")){
                             daaaay8.setText("Среда");
+                            current_day = 3;
                         }
                         if(date1.startsWith("Thu")){
                             daaaay8.setText("Четверг");
+                            current_day = 4;
                         }
                         if(date1.startsWith("Fri")){
                             daaaay8.setText("Пятница");
+                            current_day = 5;
                         }
                         if(date1.startsWith("Sat")){
                             daaaay8.setText("Суббота");
+                            current_day = 6;
                         }
+
+                        if (dateText.equals(DATE)){
+                            dot8.setVisibility(View.VISIBLE);
+                        }
+
+                        if(current_day < buffer_day){
+                            switch (temp_day_number){
+                                case 1:
+                                    nedel1.setVisibility(View.VISIBLE);
+                                    break;
+                                case 2:
+                                    nedel2.setVisibility(View.VISIBLE);
+                                    break;
+                                case 3:
+                                    nedel3.setVisibility(View.VISIBLE);
+                                    break;
+                                case 4:
+                                    nedel4.setVisibility(View.VISIBLE);
+                                    break;
+                                case 5:
+                                    nedel5.setVisibility(View.VISIBLE);
+                                    break;
+                                case 6:
+                                    nedel6.setVisibility(View.VISIBLE);
+                                    break;
+                                case 7:
+                                    nedel7.setVisibility(View.VISIBLE);
+                                    break;
+                                case 8:
+                                    nedel8.setVisibility(View.VISIBLE);
+                                    break;
+                                case 9:
+                                    nedel9.setVisibility(View.VISIBLE);
+                                    break;
+                                case 10:
+                                    nedel10.setVisibility(View.VISIBLE);
+                                    break;
+                                case 11:
+                                    nedel11.setVisibility(View.VISIBLE);
+                                    break;
+                                case 12:
+                                    nedel12.setVisibility(View.VISIBLE);
+                                    break;
+                            }
+                        }
+
                         day8.addView(view);
 
                         break;
@@ -807,21 +1218,72 @@ public class FUCKTABLE extends Activity {
 
                         if(date1.startsWith("Mon")){
                             daaaay9.setText("Понедельник");
+                            current_day = 1;
                         }
                         if(date1.startsWith("Tue")){
                             daaaay9.setText("Вторник");
+                            current_day = 2;
                         }
                         if(date1.startsWith("Wed")){
                             daaaay9.setText("Среда");
+                            current_day = 3;
                         }
                         if(date1.startsWith("Thu")){
                             daaaay9.setText("Четверг");
+                            current_day = 4;
                         }
                         if(date1.startsWith("Fri")){
                             daaaay9.setText("Пятница");
+                            current_day = 5;
                         }
                         if(date1.startsWith("Sat")){
                             daaaay9.setText("Суббота");
+                            current_day = 6;
+                        }
+
+                        if (dateText.equals(DATE)){
+                            dot9.setVisibility(View.VISIBLE);
+                        }
+
+                        if(current_day < buffer_day){
+                            switch (temp_day_number){
+                                case 1:
+                                    nedel1.setVisibility(View.VISIBLE);
+                                    break;
+                                case 2:
+                                    nedel2.setVisibility(View.VISIBLE);
+                                    break;
+                                case 3:
+                                    nedel3.setVisibility(View.VISIBLE);
+                                    break;
+                                case 4:
+                                    nedel4.setVisibility(View.VISIBLE);
+                                    break;
+                                case 5:
+                                    nedel5.setVisibility(View.VISIBLE);
+                                    break;
+                                case 6:
+                                    nedel6.setVisibility(View.VISIBLE);
+                                    break;
+                                case 7:
+                                    nedel7.setVisibility(View.VISIBLE);
+                                    break;
+                                case 8:
+                                    nedel8.setVisibility(View.VISIBLE);
+                                    break;
+                                case 9:
+                                    nedel9.setVisibility(View.VISIBLE);
+                                    break;
+                                case 10:
+                                    nedel10.setVisibility(View.VISIBLE);
+                                    break;
+                                case 11:
+                                    nedel11.setVisibility(View.VISIBLE);
+                                    break;
+                                case 12:
+                                    nedel12.setVisibility(View.VISIBLE);
+                                    break;
+                            }
                         }
 
                         day9.addView(view);
@@ -835,21 +1297,72 @@ public class FUCKTABLE extends Activity {
 
                         if(date1.startsWith("Mon")){
                             daaaay10.setText("Понедельник");
+                            current_day = 1;
                         }
                         if(date1.startsWith("Tue")){
                             daaaay10.setText("Вторник");
+                            current_day = 2;
                         }
                         if(date1.startsWith("Wed")){
                             daaaay10.setText("Среда");
+                            current_day = 3;
                         }
                         if(date1.startsWith("Thu")){
                             daaaay10.setText("Четверг");
+                            current_day = 4;
                         }
                         if(date1.startsWith("Fri")){
                             daaaay10.setText("Пятница");
+                            current_day = 5;
                         }
                         if(date1.startsWith("Sat")){
                             daaaay10.setText("Суббота");
+                            current_day = 6;
+                        }
+
+                        if (dateText.equals(DATE)){
+                            dot10.setVisibility(View.VISIBLE);
+                        }
+
+                        if(current_day < buffer_day){
+                            switch (temp_day_number){
+                                case 1:
+                                    nedel1.setVisibility(View.VISIBLE);
+                                    break;
+                                case 2:
+                                    nedel2.setVisibility(View.VISIBLE);
+                                    break;
+                                case 3:
+                                    nedel3.setVisibility(View.VISIBLE);
+                                    break;
+                                case 4:
+                                    nedel4.setVisibility(View.VISIBLE);
+                                    break;
+                                case 5:
+                                    nedel5.setVisibility(View.VISIBLE);
+                                    break;
+                                case 6:
+                                    nedel6.setVisibility(View.VISIBLE);
+                                    break;
+                                case 7:
+                                    nedel7.setVisibility(View.VISIBLE);
+                                    break;
+                                case 8:
+                                    nedel8.setVisibility(View.VISIBLE);
+                                    break;
+                                case 9:
+                                    nedel9.setVisibility(View.VISIBLE);
+                                    break;
+                                case 10:
+                                    nedel10.setVisibility(View.VISIBLE);
+                                    break;
+                                case 11:
+                                    nedel11.setVisibility(View.VISIBLE);
+                                    break;
+                                case 12:
+                                    nedel12.setVisibility(View.VISIBLE);
+                                    break;
+                            }
                         }
 
                         day10.addView(view);
@@ -863,21 +1376,72 @@ public class FUCKTABLE extends Activity {
 
                         if(date1.startsWith("Mon")){
                             daaaay11.setText("Понедельник");
+                            current_day = 1;
                         }
                         if(date1.startsWith("Tue")){
                             daaaay11.setText("Вторник");
+                            current_day = 2;
                         }
                         if(date1.startsWith("Wed")){
                             daaaay11.setText("Среда");
+                            current_day = 3;
                         }
                         if(date1.startsWith("Thu")){
                             daaaay11.setText("Четверг");
+                            current_day = 4;
                         }
                         if(date1.startsWith("Fri")){
                             daaaay11.setText("Пятница");
+                            current_day = 5;
                         }
                         if(date1.startsWith("Sat")){
                             daaaay11.setText("Суббота");
+                            current_day = 6;
+                        }
+
+                        if (dateText.equals(DATE)){
+                            dot11.setVisibility(View.VISIBLE);
+                        }
+
+                        if(current_day < buffer_day){
+                            switch (temp_day_number){
+                                case 1:
+                                    nedel1.setVisibility(View.VISIBLE);
+                                    break;
+                                case 2:
+                                    nedel2.setVisibility(View.VISIBLE);
+                                    break;
+                                case 3:
+                                    nedel3.setVisibility(View.VISIBLE);
+                                    break;
+                                case 4:
+                                    nedel4.setVisibility(View.VISIBLE);
+                                    break;
+                                case 5:
+                                    nedel5.setVisibility(View.VISIBLE);
+                                    break;
+                                case 6:
+                                    nedel6.setVisibility(View.VISIBLE);
+                                    break;
+                                case 7:
+                                    nedel7.setVisibility(View.VISIBLE);
+                                    break;
+                                case 8:
+                                    nedel8.setVisibility(View.VISIBLE);
+                                    break;
+                                case 9:
+                                    nedel9.setVisibility(View.VISIBLE);
+                                    break;
+                                case 10:
+                                    nedel10.setVisibility(View.VISIBLE);
+                                    break;
+                                case 11:
+                                    nedel11.setVisibility(View.VISIBLE);
+                                    break;
+                                case 12:
+                                    nedel12.setVisibility(View.VISIBLE);
+                                    break;
+                            }
                         }
 
                         day11.addView(view);
@@ -891,21 +1455,72 @@ public class FUCKTABLE extends Activity {
 
                         if(date1.startsWith("Mon")){
                             daaaay12.setText("Понедельник");
+                            current_day = 1;
                         }
                         if(date1.startsWith("Tue")){
                             daaaay12.setText("Вторник");
+                            current_day = 2;
                         }
                         if(date1.startsWith("Wed")){
                             daaaay12.setText("Среда");
+                            current_day = 3;
                         }
                         if(date1.startsWith("Thu")){
                             daaaay12.setText("Четверг");
+                            current_day = 4;
                         }
                         if(date1.startsWith("Fri")){
                             daaaay12.setText("Пятница");
+                            current_day = 5;
                         }
                         if(date1.startsWith("Sat")){
                             daaaay12.setText("Суббота");
+                            current_day = 6;
+                        }
+
+                        if (dateText.equals(DATE)){
+                            dot12.setVisibility(View.VISIBLE);
+                        }
+
+                        if(current_day < buffer_day){
+                            switch (temp_day_number){
+                                case 1:
+                                    nedel1.setVisibility(View.VISIBLE);
+                                    break;
+                                case 2:
+                                    nedel2.setVisibility(View.VISIBLE);
+                                    break;
+                                case 3:
+                                    nedel3.setVisibility(View.VISIBLE);
+                                    break;
+                                case 4:
+                                    nedel4.setVisibility(View.VISIBLE);
+                                    break;
+                                case 5:
+                                    nedel5.setVisibility(View.VISIBLE);
+                                    break;
+                                case 6:
+                                    nedel6.setVisibility(View.VISIBLE);
+                                    break;
+                                case 7:
+                                    nedel7.setVisibility(View.VISIBLE);
+                                    break;
+                                case 8:
+                                    nedel8.setVisibility(View.VISIBLE);
+                                    break;
+                                case 9:
+                                    nedel9.setVisibility(View.VISIBLE);
+                                    break;
+                                case 10:
+                                    nedel10.setVisibility(View.VISIBLE);
+                                    break;
+                                case 11:
+                                    nedel11.setVisibility(View.VISIBLE);
+                                    break;
+                                case 12:
+                                    nedel12.setVisibility(View.VISIBLE);
+                                    break;
+                            }
                         }
 
                         day12.addView(view);
@@ -914,11 +1529,30 @@ public class FUCKTABLE extends Activity {
                 }
 
 
-
+                buffer_day = current_day;
 
             }
 
+            ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar);
+
+            progressBar.setVisibility(View.GONE);
+            day12.setVisibility(View.VISIBLE);
+            day11.setVisibility(View.VISIBLE);
+            day10.setVisibility(View.VISIBLE);
+            day9.setVisibility(View.VISIBLE);
+            day8.setVisibility(View.VISIBLE);
+            day7.setVisibility(View.VISIBLE);
+            day6.setVisibility(View.VISIBLE);
+            day5.setVisibility(View.VISIBLE);
+            day4.setVisibility(View.VISIBLE);
+            day3.setVisibility(View.VISIBLE);
+            second_day.setVisibility(View.VISIBLE);
+            first_day.setVisibility(View.VISIBLE);
+
+
             Integer number_of_day = day_number;
+
+            TextView second_nedel = (TextView) findViewById(R.id.second_nedel1);
 
             if(number_of_day != 12){
                 if(number_of_day == 11){
@@ -953,6 +1587,7 @@ public class FUCKTABLE extends Activity {
                     day9.setVisibility(View.GONE);
                     day8.setVisibility(View.GONE);
                     day7.setVisibility(View.GONE);
+                    second_nedel.setVisibility(View.GONE);
                 }
                 if(number_of_day == 5) {
                     day12.setVisibility(View.GONE);
@@ -962,6 +1597,8 @@ public class FUCKTABLE extends Activity {
                     day8.setVisibility(View.GONE);
                     day7.setVisibility(View.GONE);
                     day6.setVisibility(View.GONE);
+                    second_nedel.setVisibility(View.GONE);
+
                 }
                 if(number_of_day == 4) {
                     day12.setVisibility(View.GONE);
@@ -972,6 +1609,8 @@ public class FUCKTABLE extends Activity {
                     day7.setVisibility(View.GONE);
                     day6.setVisibility(View.GONE);
                     day5.setVisibility(View.GONE);
+                    second_nedel.setVisibility(View.GONE);
+
                 }
                 if(number_of_day == 3) {
                     day12.setVisibility(View.GONE);
@@ -983,6 +1622,8 @@ public class FUCKTABLE extends Activity {
                     day6.setVisibility(View.GONE);
                     day5.setVisibility(View.GONE);
                     day4.setVisibility(View.GONE);
+                    second_nedel.setVisibility(View.GONE);
+
                 }
                 if(number_of_day == 2) {
                     day12.setVisibility(View.GONE);
@@ -995,6 +1636,8 @@ public class FUCKTABLE extends Activity {
                     day5.setVisibility(View.GONE);
                     day4.setVisibility(View.GONE);
                     day3.setVisibility(View.GONE);
+                    second_nedel.setVisibility(View.GONE);
+
                 }
                 if(number_of_day == 1) {
                     day12.setVisibility(View.GONE);
@@ -1008,6 +1651,8 @@ public class FUCKTABLE extends Activity {
                     day4.setVisibility(View.GONE);
                     day3.setVisibility(View.GONE);
                     second_day.setVisibility(View.GONE);
+                    second_nedel.setVisibility(View.GONE);
+
                 }
             }
 
@@ -1024,82 +1669,13 @@ public class FUCKTABLE extends Activity {
 
     }
 
-
-
-    private void Downloader(){
-        //        String destFileName = "585.txt";
-        Log.i("***", src_file);
-        File dest = new File(Environment.getExternalStorageDirectory() + "/Android/data/dev.prokrostinatorbl.raspisanie/files/" + destFileName);
-        new LoadFile(src_file, dest).start();
-
-    }
-
-    private void onDownloadComplete(boolean success) {
-        // файл скачался, можно как-то реагировать
-        Log.i("***", "СКАЧАЛ " + success);
-    }
-
-    private class LoadFile extends Thread {
-        private final String src;
-        private final File dest;
-
-        LoadFile(String src, File dest) {
-            this.src = src;
-            this.dest = dest;
-        }
-
-        @Override
-        public void run() {
-            try {
-                FileUtils.copyURLToFile(new URL(src), dest);
-                onDownloadComplete(true);
-
-                Read();
-                new Reader().start();
-
-
-            } catch (IOException e) {
-                e.printStackTrace();
-                onDownloadComplete(false);
-
-
-                try {
-                    Log.i("header","Read() запущен в оффлайн моде");
-                    Read();
-
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-                new Reader_offline().start();
-            }
-        }
-    }
-
-    private class Reader extends Thread {
-
-
-        Reader(){
-        }
-
-        @Override
-        public void run() {
-            h.sendEmptyMessage(1);
-        }
-    }
-    private class Reader_offline extends Thread {
-
-
-        Reader_offline(){
-        }
-
-        @Override
-        public void run() {
-            h.sendEmptyMessage(2);
-        }
-    }
-
     public void Read() throws IOException {
-        File dest = new File(Environment.getExternalStorageDirectory() + "/Android/data/dev.prokrostinatorbl.raspisanie/files/" + destFileName);
+        Context c = getApplicationContext();
+        File file = new File(c.getFilesDir(), "/files");
+
+        File dir = new File(Environment.getExternalStorageDirectory() + "Android/data/dev.prokrostinatorbl.raspisanie/files/");
+
+        File dest = new File(file + destFileName);
         Scanner in = new Scanner(dest);
 
         Log.i("***", "  " + "я читаю");
@@ -1126,21 +1702,6 @@ public class FUCKTABLE extends Activity {
         month_js = new JsonArray();
         year_js = new JsonArray();
 
-
-
-        //        ArrayList<String> number = new ArrayList<String>();
-        //        ArrayList<String> prepod = new ArrayList<String>();
-        //        ArrayList<String> location = new ArrayList<String>();
-        //        ArrayList<String> par_names = new ArrayList<String>();
-        //        ArrayList<String> start = new ArrayList<String>();
-        //        ArrayList<String> end = new ArrayList<String>();
-        //        ArrayList<String> date = new ArrayList<String>();
-        //
-        //        ArrayList<String> days = new ArrayList<>();
-        //        ArrayList<String> months = new ArrayList<>();
-        //        ArrayList<String> years = new ArrayList<>();
-        //
-
         while(in.hasNextLine()){
 
             s = in.nextLine();
@@ -1149,7 +1710,7 @@ public class FUCKTABLE extends Activity {
 
             try {
                 // Create a new instance of a JSONObject
-                File json_db = new File(Environment.getExternalStorageDirectory() + "/Android/data/dev.prokrostinatorbl.raspisanie/files/" + json_db_name);
+                File json_db = new File(dir + json_db_name);
                 final JSONObject object = new JSONObject();
 
 
@@ -1159,12 +1720,8 @@ public class FUCKTABLE extends Activity {
                     String words_line[] = words[1].split(",");
 
                     String number_group = words_line[0];
-                    //                    group_numb.put(number_group);
                     number.add(number_group);
 
-                    //                    group_numb.put(number_group); // в json добавляем номер группы
-                    //                Log.i("!!!", "номер группы: " + words_line[0]);
-                    //                Log.i("!!!", "Место учёбы: " + words_line[1]);
                 }
 
                 if (word.equals(prep))
@@ -1181,8 +1738,6 @@ public class FUCKTABLE extends Activity {
                             prepodav += words_line[i] + " "; //в вышесозданную переменную мы скидываем встречающиеся слова и ставим между ними пробелы
 
                         }
-                        //                    Log.i("!!!", "преподаватель: " + prepodav);
-                        //                        prepod_name.put(prepodav); // в json добавляем имя препода
                         prepod.add(prepodav);
 
                     } else {
@@ -1197,10 +1752,13 @@ public class FUCKTABLE extends Activity {
                 {
                     if (words.length > 1 && words[1] != null) { // аналогично проверяем существование данных
                         String words_line[] = words[1].split(" ");
-                        //                    Log.i("!!!", "Аудитория: " + words_line[0]);
-                        //                        auditor.put(words_line[0]); // в json добавляем номер аудитории
 
                         location.add(words_line[0]);
+                    }   else {
+
+                        String rand = "";
+                        location.add(rand);
+
                     }
                 }
 
@@ -1215,8 +1773,6 @@ public class FUCKTABLE extends Activity {
                         String paar_name[] = par.split("\\(");
                         String paar;
                         paar = paar_name[0];
-                        //                    Log.i("!!!", "Пара: " + par);
-                        //                        par_name.put(paar); // в json добавляем название пары
 
                         par_names.add(paar);
 
@@ -1274,32 +1830,15 @@ public class FUCKTABLE extends Activity {
                         end.add(t);
                     }
                 }
-                //
-                //                JSONArray group_numb = new JSONArray();
-                //                JSONArray prepod_name = new JSONArray();
-                //                JSONArray auditor = new JSONArray();
-                //                JSONArray par_name = new JSONArray();
-                //                JSONArray start_par = new JSONArray();
-                //                JSONArray end_par = new JSONArray();
-                //                JSONArray date_par = new JSONArray();
 
-
-
-                //                object.put("number", group_numb);
-                //                object.put("prepod", prepod_name);
-                //                object.put("location", auditor);
-                //                object.put("par_name", par_name);
-                //                object.put("start", start_par);
-                //                object.put("end", end_par);
                 object.put("date", date_par);
 
 
                 try{
-                    FileWriter file = new FileWriter(json_db); // сохраняем всё это в json
-                    file.write(object.toString());
-                    file.flush();
-                    file.close();
-//                        Log.i("***", "JSON создан");
+                    FileWriter js = new FileWriter(json_db); // сохраняем всё это в json
+                    js.write(object.toString());
+                    js.flush();
+                    js.close();
                 } catch (IOException ex){
                     ex.printStackTrace();
                 }
