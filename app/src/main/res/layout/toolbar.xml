@@ -15,7 +15,7 @@
         android:text="SomeText"
         android:textStyle="bold"
         android:id="@+id/toolbar_text"
-        android:textSize="24dp"
+        android:textSize="24sp"
         android:textColor="?android:attr/textColorPrimary"/>
 
 

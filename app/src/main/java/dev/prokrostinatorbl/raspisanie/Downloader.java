@@ -26,6 +26,7 @@ public class Downloader {
         destFileName = m_destFileName;
         from = m_from;
 
+
         File dir = new File(Environment.getExternalStorageDirectory() + "Android/data/dev.prokrostinatorbl.raspisanie/files/");
 
         if (file.exists())
@@ -44,6 +45,8 @@ public class Downloader {
 
 
         File dest = new File(file + destFileName);
+
+
 
         new LoadFile(src_file, dest).start();
 

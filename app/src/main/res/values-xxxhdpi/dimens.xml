@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="text">16sp</dimen>
+    <dimen name="text_small">14sp</dimen>
+    <dimen name="text_big">18sp</dimen>
+
+    <dimen name="icon_note">24dp</dimen>
+    <dimen name="icon_setting">36dp</dimen>
+
+</resources>

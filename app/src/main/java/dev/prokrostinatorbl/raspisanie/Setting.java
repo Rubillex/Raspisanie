@@ -2,18 +2,24 @@ package dev.prokrostinatorbl.raspisanie;
 
 import android.app.Activity;
 import android.app.AlarmManager;
+import android.app.Dialog;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toolbar;
 
@@ -29,7 +35,7 @@ public class Setting extends Activity {
     RadioGroup radioTheme;
 
     private Toolbar toolbar;
-
+    Dialog theme_swith;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,24 +101,60 @@ public class Setting extends Activity {
 
         setContentView(R.layout.setting);
 
+        String versionName = BuildConfig.VERSION_NAME;
+
+        TextView version = (TextView)findViewById(R.id.info_sub);
+        version.setText(versionName);
+
+
+        theme_swith = new Dialog(this);
+        theme_swith.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        theme_swith.setContentView(R.layout.theme_swich);
+        theme_swith.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        TextView current_theme = (TextView)findViewById(R.id.current_theme);
+
+
+
 
         toolbar  = (Toolbar) findViewById(R.id.my_toolbar);
         TextView toolbar_text = (TextView) findViewById(R.id.toolbar_text);
-        toolbar_text.setText("Выберите тему приложения");
+        toolbar_text.setText("Настройки");
 
-        RadioButton whiteRadioButton = (RadioButton)findViewById(R.id.radio_white);
+        RadioButton whiteRadioButton = (RadioButton)theme_swith.findViewById(R.id.radio_white);
         whiteRadioButton.setOnClickListener(radioButtonClickListener);
 
-        RadioButton blackRadioButton = (RadioButton)findViewById(R.id.radio_black);
+        RadioButton blackRadioButton = (RadioButton)theme_swith.findViewById(R.id.radio_black);
         blackRadioButton.setOnClickListener(radioButtonClickListener);
 
-        RadioButton autoRadioButton = (RadioButton)findViewById(R.id.radio_auto);
+        RadioButton autoRadioButton = (RadioButton)theme_swith.findViewById(R.id.radio_auto);
         autoRadioButton.setOnClickListener(radioButtonClickListener);
+
+
+
+        RelativeLayout them = (RelativeLayout) findViewById(R.id.Theme_swicher);
+        them.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                theme_swith.show();
+            }
+        });
+
+        RelativeLayout info = (RelativeLayout)findViewById(R.id.info);
+        info.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent app_info = new Intent(Setting.this, app_info.class);
+                startActivity(app_info);
+            }
+        });
 
 
         if(mSettings.contains(APP_PREFERENCES_THEME)) {
 
             String mCounter = mSettings.getString(APP_PREFERENCES_THEME, "auto");
+
+
 
             if(!mCounter.equals("auto") && !mCounter.equals("white") && !mCounter.equals("black")){
                 mCounter = "auto";
@@ -122,14 +164,17 @@ public class Setting extends Activity {
                 case "white":
                     Log.i("!!!!", mCounter);
                     whiteRadioButton.setChecked(true);
+                    current_theme.setText("Текущая тема: светлая");
                     break;
                 case "black":
                     Log.i("!!!!", mCounter);
                     blackRadioButton.setChecked(true);
+                    current_theme.setText("Текущая тема: тёмная");
                     break;
                 case "auto":
                     Log.i("!!!!", mCounter);
                     autoRadioButton.setChecked(true);
+                    current_theme.setText("Текущая тема: авто");
                     break;
             }
 
@@ -148,14 +193,18 @@ public class Setting extends Activity {
             mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = mSettings.edit();
 
+
             switch (rb.getId()) {
                 case R.id.radio_white:
+                    theme_swith.dismiss();
                     editor.putString(APP_PREFERENCES_THEME, "white");
                     break;
                 case R.id.radio_black:
+                    theme_swith.dismiss();
                     editor.putString(APP_PREFERENCES_THEME, "black");
                     break;
                 case R.id.radio_auto:
+                    theme_swith.dismiss();
                     editor.putString(APP_PREFERENCES_THEME, "auto");
                     break;
 //                case R.id.radio_pink:
@@ -166,10 +215,11 @@ public class Setting extends Activity {
                     break;
             }
             editor.apply();
-            Intent i = getBaseContext().getPackageManager()
-                    .getLaunchIntentForPackage( getBaseContext().getPackageName() );
-            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(i);
+//            Intent i = getBaseContext().getPackageManager()
+//                    .getLaunchIntentForPackage( getBaseContext().getPackageName() );
+//            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//            startActivity(i);
+            recreate();
         }
     };
 

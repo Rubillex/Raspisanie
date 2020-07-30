@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".app_info"
+    android:background="?attr/colorPrimary">
+
+    <include layout="@layout/toolbar"
+        android:id="@+id/tools"/>
+    
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tools">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="180dp">
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/card_white"
+                    android:padding="9dp"
+                    android:src="@drawable/ic_book"
+                    android:layout_centerInParent="true"/>
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"/>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Поддержать автора"
+                android:textSize="16sp"
+                android:layout_marginLeft="46dp"
+                android:layout_marginTop="46dp"
+                android:id="@+id/donate"
+                android:textColor="?android:attr/textColorPrimary"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="logout"
+                android:layout_marginLeft="46dp"
+                android:layout_marginTop="90dp"
+                android:textColor="@color/colorPrimary"
+                android:id="@+id/logout"/>
+
+
+            <include layout="@layout/fragment_timetable_custom"
+                android:id="@+id/tools"/>
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    
+
+</RelativeLayout>

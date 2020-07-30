@@ -230,7 +230,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         countID = 0;
         USERID = 0;
 
-        Cheker();
+//        Cheker();
 
         try {
             Creator();
@@ -262,7 +262,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         @SuppressLint("HandlerLeak")
         @Override
         protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
+
 
             mSettings = getSharedPreferences("dev.prokrostinatorbl.raspisanie", MODE_PRIVATE);
 
@@ -326,6 +326,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
 
+            super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
 
             Cheker();

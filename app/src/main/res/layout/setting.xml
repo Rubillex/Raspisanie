@@ -4,59 +4,126 @@
     android:layout_height="match_parent"
     android:background="?attr/colorPrimary">
 
-    <include layout="@layout/toolbar" />
+    <include layout="@layout/toolbar"
+        android:id="@+id/tools"/>
 
-    <RadioGroup
-        android:layout_marginTop="50dp"
-        android:id="@+id/Theme_radio"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_below="@id/tools">
 
-        <RadioButton
-            android:id="@+id/radio_white"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="25dp"
-            android:layout_marginTop="16dp"
-            android:text="Светлая тема"
-            android:textSize="16dp"
-            android:textColor="?android:attr/textColorPrimary"
-            android:layout_weight="1"
-            android:checked="true"/>
+            android:orientation="vertical">
 
-        <RadioButton
-            android:id="@+id/radio_black"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:text="Тёмная тема"
-            android:textColor="?android:attr/textColorPrimary"
-            android:layout_marginLeft="25dp"
-            android:layout_marginTop="16dp"
-            android:layout_weight="1" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/Theme_swicher"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true">
 
-        <RadioButton
-            android:id="@+id/radio_auto"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:textColor="?android:attr/textColorPrimary"
-            android:text="Менять тему вместе с темой системы"
-            android:layout_marginLeft="25dp"
-            android:layout_marginTop="16dp"
-            android:layout_weight="1" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_drawing"
+                    android:id="@+id/theme_icon"
+                    android:clickable="false"
+                    android:layout_marginLeft="16dp"
+                    android:layout_centerVertical="true"/>
 
-<!--        <RadioButton-->
-<!--            android:id="@+id/radio_pink"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:textColor="?android:attr/textColorPrimary"-->
-<!--            android:text="Розовая тема"-->
-<!--            android:textSize="16dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginLeft="25dp"-->
-<!--            android:layout_marginTop="16dp"-->
-<!--            android:layout_weight="1" />-->
-    </RadioGroup>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="56dp"
+                    android:layout_alignLeft="@+id/theme_icon"
+                    android:text="Выбор темы"
+                    android:textSize="@dimen/text_big"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:id="@+id/theme_text"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="56dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_alignLeft="@+id/theme_icon"
+                    android:textSize="@dimen/text_big"
+                    android:text="Текущая тема: "
+                    android:id="@+id/current_theme"
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:layout_below="@+id/theme_text"/>
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/info"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_information"
+                    android:id="@+id/info_icon"
+                    android:clickable="false"
+                    android:layout_marginLeft="16dp"
+                    android:layout_centerVertical="true"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="56dp"
+                    android:layout_alignLeft="@+id/info_icon"
+                    android:text="О приложении"
+                    android:textSize="@dimen/text_big"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:id="@+id/info_text"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="56dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_alignLeft="@+id/info_icon"
+                    android:text="123"
+                    android:textSize="@dimen/text_big"
+                    android:id="@+id/info_sub"
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:layout_below="@+id/info_text"/>
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"/>
+
+
+        </LinearLayout>
+
+
+
+
+    </ScrollView>
+
 
 </RelativeLayout>
