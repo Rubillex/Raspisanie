@@ -17,6 +17,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toolbar;
 
+import org.w3c.dom.Text;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -121,29 +123,22 @@ public class group_list extends Activity implements View.OnClickListener {
         TextView toolbar_text = (TextView) findViewById(R.id.toolbar_text);
         toolbar_text.setText(institut_name);
 
+        findViewById(R.id.back_arrow).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
         Button setButton = (Button) findViewById(R.id.setting_button);
-        Button mapsButton = (Button) findViewById(R.id.maps);
-        Button timeButton = (Button) findViewById(R.id.timetable);
+
 
         setButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent setting = new Intent(group_list.this, Setting.class);
                 startActivity(setting);
-            }
-        });
-        mapsButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                Intent maps = new Intent(group_list.this, maps.class);
-                startActivity(maps);
-            }
-        });
-        timeButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                Intent time = new Intent(group_list.this, MainActivity.class);
-                startActivity(time);
             }
         });
 
@@ -175,6 +170,14 @@ public class group_list extends Activity implements View.OnClickListener {
         };
 
     }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        intent.putExtra("back", "true");
+        startActivity(intent);
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -234,21 +237,29 @@ public class group_list extends Activity implements View.OnClickListener {
         }
 
 
+        setContentView(R.layout.group_list);
 
         Intent intent = getIntent();
         final String institut = intent.getStringExtra("key");
         institut_name = institut;
         Log.i("LOGER_AAAAAA", institut_name);
-        setContentView(R.layout.group_list);
 
 
         toolbar  = (Toolbar) findViewById(R.id.my_toolbar);
         TextView toolbar_text = (TextView) findViewById(R.id.toolbar_text);
         toolbar_text.setText(institut_name);
 
+        findViewById(R.id.back_arrow).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.putExtra("back", "true");
+                startActivity(intent);
+            }
+        });
+
         Button setButton = (Button) findViewById(R.id.setting_button);
-        Button mapsButton = (Button) findViewById(R.id.maps);
-        Button timeButton = (Button) findViewById(R.id.timetable);
+
 
         setButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -257,20 +268,7 @@ public class group_list extends Activity implements View.OnClickListener {
                 startActivity(setting);
             }
         });
-        mapsButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                Intent maps = new Intent(group_list.this, maps.class);
-                startActivity(maps);
-            }
-        });
-        timeButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                Intent time = new Intent(group_list.this, MainActivity.class);
-                startActivity(time);
-            }
-        });
+
 
 
         countID = 0;

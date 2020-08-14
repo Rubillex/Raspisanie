@@ -15,11 +15,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "646645078300-vsc1po9v88e01knqqoo41akdmpuci0u1.apps.googleusercontent.com",
+          "client_id": "646645078300-t8kp8p6kbunrfcat91m6svvk9pa2pd62.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "dev.prokrostinatorbl.raspisanie",
-            "certificate_hash": "481926c3c5d6e1566926e1b265263e55904607ad"
+            "certificate_hash": "c13404d194da059c453507825b9e2a62bcae14bb"
           }
         },
         {
@@ -36,7 +36,7 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "646645078300-5u5n2jncj9lro0hepdikamcqkt6lu6km.apps.googleusercontent.com",
+              "client_id": "646645078300-kr7b1hj5t6pdu6j4gubhee1idfr2moao.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

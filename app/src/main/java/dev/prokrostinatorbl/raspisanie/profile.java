@@ -1,37 +1,30 @@
 package dev.prokrostinatorbl.raspisanie;
 
-import android.app.Activity;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.RadioGroup;
-import android.widget.TextView;
-import android.widget.Toolbar;
-
-import androidx.annotation.NonNull;
 
 
-public class maps extends Activity implements View.OnClickListener {
+import com.bumptech.glide.Glide;
+
+
+import de.hdodenhof.circleimageview.CircleImageView;
+
+public class profile extends AppCompatActivity {
 
     public static String APP_PREFERENCES;
     public static String APP_PREFERENCES_THEME; // выбранная тема
 
     SharedPreferences mSettings;
 
-    private Toolbar toolbar;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 
         int currentNightMode = getResources().getConfiguration().uiMode
                 & Configuration.UI_MODE_NIGHT_MASK;
@@ -39,15 +32,15 @@ public class maps extends Activity implements View.OnClickListener {
 
         mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
 
-        if (mSettings.contains(APP_PREFERENCES_THEME)) {
+        if(mSettings.contains(APP_PREFERENCES_THEME)) {
 
             String mCounter = mSettings.getString(APP_PREFERENCES_THEME, "auto");
 
-            if (!mCounter.equals("auto") && !mCounter.equals("white") && !mCounter.equals("black")) {
+            if(!mCounter.equals("auto") && !mCounter.equals("white") && !mCounter.equals("black")){
                 mCounter = "auto";
             }
 
-            switch (mCounter) {
+            switch(mCounter){
                 case "white":
                     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
                         setTheme(R.style.Light_statusbar);
@@ -88,56 +81,17 @@ public class maps extends Activity implements View.OnClickListener {
             }
         }
 
+        setContentView(R.layout.activity_profile);
 
-        setContentView(R.layout.maps);
+        String imageUrl = "https://sun9-37.userapi.com/c857324/v857324301/f2ece/ZesOqNllrX8.jpg";
 
-        Button setButton = (Button) findViewById(R.id.setting_button);
-        setButton.setOnClickListener(this);
-        Button mapsButton = (Button) findViewById(R.id.maps);
-        mapsButton.setOnClickListener(this);
-        Button timeButton = (Button) findViewById(R.id.timetable);
-        timeButton.setOnClickListener(this);
+        CircleImageView imageView = (CircleImageView) findViewById(R.id.profile_image);
 
-
-        toolbar = (Toolbar) findViewById(R.id.my_toolbar);
-        TextView toolbar_text = (TextView) findViewById(R.id.toolbar_text);
-        toolbar_text.setText("Карта");
-
-        Button asu_k = (Button) findViewById(R.id.asu_k);
-        asu_k.setOnClickListener(this);
-
-    }
-
-    @Override
-    public void onClick(View view)
-    {
-
-        switch (view.getId())
-        {
-            case R.id.setting_button:
-                Intent setting = new Intent(maps.this, Setting.class);
-                startActivity(setting);
-                break;
-            case R.id.maps:
-
-                break;
-            case R.id.timetable:
-                Intent timetable = new Intent(maps.this, MainActivity.class);
-                startActivity(timetable);
-                break;
-            case R.id.asu_k:
-                Uri gmmIntentUri = Uri.parse("geo:53.342760, 83.771518?q=53.342760, 83.771518");
-                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                mapIntent.setPackage("com.google.android.apps.maps");
-                startActivity(mapIntent);
-                break;
-        }
-
-    }
-
-
-    @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
+        Glide.with(this)
+                .load(imageUrl)
+                .placeholder(R.drawable.ic_baseline_person_24)
+                .error(R.drawable.ic_baseline_error_24)
+                .into(imageView);
 
     }
 }

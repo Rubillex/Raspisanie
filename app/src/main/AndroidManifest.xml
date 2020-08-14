@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="dev.prokrostinatorbl.raspisanie">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -15,7 +16,9 @@
         android:roundIcon="@drawable/card"
         android:supportsRtl="true"
         android:theme="@style/Light">
-        <activity android:name=".donate"></activity>
+        <activity android:name=".profile"></activity>
+        <activity android:name=".license" />
+        <activity android:name=".donate" />
         <activity android:name=".splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,8 +32,11 @@
         <activity android:name=".Setting" />
         <activity android:name=".institut" />
         <activity android:name=".group_list" />
-        <activity android:name=".maps" />
         <activity android:name=".MainActivity" />
+
+        <meta-data
+            android:name="com.google.android.gms.wallet.api.enabled"
+            android:value="true" />
     </application>
 
 </manifest>

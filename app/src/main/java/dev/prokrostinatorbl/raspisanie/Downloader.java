@@ -3,6 +3,7 @@ package dev.prokrostinatorbl.raspisanie;
 import android.content.Context;
 import android.os.Environment;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.apache.commons.io.FileUtils;
 
@@ -16,6 +17,8 @@ public class Downloader {
     private static File file;
     private static String destFileName;
     private static String from;
+
+    public static String toggle = "false";
 
     public static void Download(String m_src_file, File m_file, String m_destFileName, String m_from){
 
@@ -74,8 +77,10 @@ public class Downloader {
                 Log.i("Source_file", String.valueOf(src));
                 Log.i("Source_file", String.valueOf(dest));
 
-                FileUtils.copyURLToFile(new URL(src), dest);
-                onDownloadComplete(true);
+                if (!toggle.equals("true")){
+                    FileUtils.copyURLToFile(new URL(src), dest);
+                    onDownloadComplete(true);
+                }
 
                 switch (from){
                     case "MainActivity":

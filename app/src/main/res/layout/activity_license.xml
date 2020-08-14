@@ -1,0 +1,483 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorPrimary">
+
+    <include layout="@layout/toolbar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="SQLite"
+                android:layout_margin="16dp"
+                android:textSize="@dimen/text_bigest"
+                android:textColor="?android:attr/textColorPrimary"
+                android:textStyle="bold"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Copyright (C) 2009 The Android Open Source Project"
+                android:layout_marginLeft="16dp"
+                android:textSize="@dimen/text"
+                android:textColor="?android:attr/textColorPrimary" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Licensed under the Apache License, Version 2.0 (the ''License''); you may not use this file except in compliance with the License. You may obtain a copy of the License at"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="10dp"
+                android:textSize="@dimen/text"
+                android:textColor="?android:attr/textColorPrimary" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="http://www.apache.org/licenses/LICENSE-2.0"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="10dp"
+                android:textSize="@dimen/text"
+                android:textColor="?android:attr/textColorPrimary" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an ''AS IS'' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License."
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="10dp"
+                android:textSize="@dimen/text"
+                android:textColor="?android:attr/textColorPrimary" />
+
+
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="CircleImageView"
+                android:layout_margin="16dp"
+                android:textSize="@dimen/text_bigest"
+                android:textColor="?android:attr/textColorPrimary"
+                android:textStyle="bold"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Copyright 2014 - 2020 Henning Dodenhof"
+                android:layout_marginLeft="16dp"
+                android:textSize="@dimen/text"
+                android:textColor="?android:attr/textColorPrimary" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Licensed under the Apache License, Version 2.0 (the ''License''); you may not use this file except in compliance with the License. You may obtain a copy of the License at"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="10dp"
+                android:textSize="@dimen/text"
+                android:textColor="?android:attr/textColorPrimary" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="http://www.apache.org/licenses/LICENSE-2.0"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="10dp"
+                android:textSize="@dimen/text"
+                android:textColor="?android:attr/textColorPrimary" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an ''AS IS'' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License."
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="10dp"
+                android:textSize="@dimen/text"
+                android:textColor="?android:attr/textColorPrimary" />
+
+
+            
+
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Espresso"
+                android:layout_margin="16dp"
+                android:textSize="@dimen/text_bigest"
+                android:textColor="?android:attr/textColorPrimary"
+                android:textStyle="bold"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Copyright (C) 2014 The Android Open Source Project"
+                android:layout_marginLeft="16dp"
+                android:textSize="@dimen/text"
+                android:textColor="?android:attr/textColorPrimary" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Licensed under the Apache License, Version 2.0 (the ''License'');
+        you may not use this file except in compliance with the License.
+        You may obtain a copy of the License at"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="10dp"
+                android:textSize="@dimen/text"
+                android:textColor="?android:attr/textColorPrimary" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="http://www.apache.org/licenses/LICENSE-2.0"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="10dp"
+                android:textSize="@dimen/text"
+                android:textColor="?android:attr/textColorPrimary" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Unless required by applicable law or agreed to in writing, software
+        distributed under the License is distributed on an ''AS IS'' BASIS,
+        WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+        See the License for the specific language governing permissions and
+        limitations under the License."
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="10dp"
+                android:textSize="@dimen/text"
+                android:textColor="?android:attr/textColorPrimary" />
+
+
+
+
+
+
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Apache Commons IO"
+                android:layout_margin="16dp"
+                android:textSize="@dimen/text_bigest"
+                android:textColor="?android:attr/textColorPrimary"
+                android:textStyle="bold"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Copyright 2002-2020 The Apache Software Foundation"
+                android:layout_marginLeft="16dp"
+                android:textSize="@dimen/text"
+                android:textColor="?android:attr/textColorPrimary" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Licensed under the Apache License, Version 2.0 (the ''License'');
+        you may not use this file except in compliance with the License.
+        You may obtain a copy of the License at"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="10dp"
+                android:textSize="@dimen/text"
+                android:textColor="?android:attr/textColorPrimary" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="http://www.apache.org/licenses/LICENSE-2.0"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="10dp"
+                android:textSize="@dimen/text"
+                android:textColor="?android:attr/textColorPrimary" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Unless required by applicable law or agreed to in writing, software
+        distributed under the License is distributed on an ''AS IS'' BASIS,
+        WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+        See the License for the specific language governing permissions and
+        limitations under the License."
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="10dp"
+                android:textSize="@dimen/text"
+                android:textColor="?android:attr/textColorPrimary" />
+
+
+
+
+
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="annotations-java"
+                android:layout_margin="16dp"
+                android:textSize="@dimen/text_bigest"
+                android:textColor="?android:attr/textColorPrimary"
+                android:textStyle="bold"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Copyright 2000-2016 JetBrains s.r.o."
+                android:layout_marginLeft="16dp"
+                android:textSize="@dimen/text"
+                android:textColor="?android:attr/textColorPrimary" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Licensed under the Apache License, Version 2.0 (the ''License'');
+        you may not use this file except in compliance with the License.
+        You may obtain a copy of the License at"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="10dp"
+                android:textSize="@dimen/text"
+                android:textColor="?android:attr/textColorPrimary" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="http://www.apache.org/licenses/LICENSE-2.0"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="10dp"
+                android:textSize="@dimen/text"
+                android:textColor="?android:attr/textColorPrimary" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Unless required by applicable law or agreed to in writing, software
+        distributed under the License is distributed on an ''AS IS'' BASIS,
+        WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+        See the License for the specific language governing permissions and
+        limitations under the License."
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="10dp"
+                android:textSize="@dimen/text"
+                android:textColor="?android:attr/textColorPrimary" />
+
+
+
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="AppCompat and AndroidX Library by Google"
+                android:layout_margin="16dp"
+                android:textSize="@dimen/text_bigest"
+                android:textColor="?android:attr/textColorPrimary"
+                android:textStyle="bold"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Copyright (C) The Android Open Source Project"
+                android:layout_marginLeft="16dp"
+                android:textSize="@dimen/text"
+                android:textColor="?android:attr/textColorPrimary" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Licensed under the Apache License, Version 2.0 (the ''License'');
+        you may not use this file except in compliance with the License.
+        You may obtain a copy of the License at"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="10dp"
+                android:textSize="@dimen/text"
+                android:textColor="?android:attr/textColorPrimary" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="http://www.apache.org/licenses/LICENSE-2.0"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="10dp"
+                android:textSize="@dimen/text"
+                android:textColor="?android:attr/textColorPrimary" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Unless required by applicable law or agreed to in writing, software
+        distributed under the License is distributed on an ''AS IS'' BASIS,
+        WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+        See the License for the specific language governing permissions and
+        limitations under the License."
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="10dp"
+                android:textSize="@dimen/text"
+                android:textColor="?android:attr/textColorPrimary" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="JSON.org"
+                android:layout_margin="16dp"
+                android:textSize="@dimen/text_bigest"
+                android:textColor="?android:attr/textColorPrimary"
+                android:textStyle="bold"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Copyright (c) 2002 JSON.org"
+                android:layout_marginLeft="16dp"
+                android:textSize="@dimen/text"
+                android:textColor="?android:attr/textColorPrimary" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Licensed under the Apache License, Version 2.0 (the ''License'');
+        you may not use this file except in compliance with the License.
+        You may obtain a copy of the License at"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="10dp"
+                android:textSize="@dimen/text"
+                android:textColor="?android:attr/textColorPrimary" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="http://www.apache.org/licenses/LICENSE-2.0"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="10dp"
+                android:textSize="@dimen/text"
+                android:textColor="?android:attr/textColorPrimary" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Unless required by applicable law or agreed to in writing, software
+        distributed under the License is distributed on an ''AS IS'' BASIS,
+        WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+        See the License for the specific language governing permissions and
+        limitations under the License."
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="10dp"
+                android:textSize="@dimen/text"
+                android:textColor="?android:attr/textColorPrimary" />
+
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Gson"
+                android:layout_margin="16dp"
+                android:textSize="@dimen/text_bigest"
+                android:textColor="?android:attr/textColorPrimary"
+                android:textStyle="bold"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Copyright 2008 Google Inc."
+                android:layout_marginLeft="16dp"
+                android:textSize="@dimen/text"
+                android:textColor="?android:attr/textColorPrimary" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Licensed under the Apache License, Version 2.0 (the ''License'');
+        you may not use this file except in compliance with the License.
+        You may obtain a copy of the License at"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="10dp"
+                android:textSize="@dimen/text"
+                android:textColor="?android:attr/textColorPrimary" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="http://www.apache.org/licenses/LICENSE-2.0"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="10dp"
+                android:textSize="@dimen/text"
+                android:textColor="?android:attr/textColorPrimary" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Unless required by applicable law or agreed to in writing, software
+        distributed under the License is distributed on an ''AS IS'' BASIS,
+        WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+        See the License for the specific language governing permissions and
+        limitations under the License."
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="10dp"
+                android:textSize="@dimen/text"
+                android:textColor="?android:attr/textColorPrimary" />
+
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Glide"
+                android:layout_margin="16dp"
+                android:textSize="@dimen/text_bigest"
+                android:textColor="?android:attr/textColorPrimary"
+                android:textStyle="bold"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Copyright 2012 Jake Wharton"
+                android:layout_marginLeft="16dp"
+                android:textSize="@dimen/text"
+                android:textColor="?android:attr/textColorPrimary" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Copyright 2011 The Android Open Source Project"
+                android:layout_marginLeft="16dp"
+                android:textSize="@dimen/text"
+                android:textColor="?android:attr/textColorPrimary" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Licensed under the Apache License, Version 2.0 (the ''License''); you may not use this file except in compliance with the License. You may obtain a copy of the License at"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="10dp"
+                android:textSize="@dimen/text"
+                android:textColor="?android:attr/textColorPrimary" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="http://www.apache.org/licenses/LICENSE-2.0"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="10dp"
+                android:textSize="@dimen/text"
+                android:textColor="?android:attr/textColorPrimary" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an ''AS IS'' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License."
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="10dp"
+                android:textSize="@dimen/text"
+                android:textColor="?android:attr/textColorPrimary" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

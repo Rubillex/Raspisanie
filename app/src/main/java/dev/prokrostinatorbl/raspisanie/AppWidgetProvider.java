@@ -53,24 +53,55 @@
 //    public ArrayList<String> end;
 //    public ArrayList<String> date;
 //
+//    String link = mSettings.getString(GROUP_LINK, "");
+//    String file = mSettings.getString(GROUP_FILE, "");
+//    String json = mSettings.getString(GROUP_JSON, "");
+//
 //    final String LOG_TAG = "myLogs";
 //
 //    @Override
 //    public void onEnabled(Context context) {
 //
 //        super.onEnabled(context);
+//
+//
+//    }
+//
+//
+//
+//
+//    @Override
+//    public void onUpdate(Context context, AppWidgetManager appWidgetManager,
+//                         int[] appWidgetIds) {
+//        super.onUpdate(context, appWidgetManager, appWidgetIds);
+//        Log.d(LOG_TAG, "onUpdate " + Arrays.toString(appWidgetIds));
+//    }
+//
+//    @Override
+//    public void onDeleted(Context context, int[] appWidgetIds) {
+//        super.onDeleted(context, appWidgetIds);
+//        Log.d(LOG_TAG, "onDeleted " + Arrays.toString(appWidgetIds));
+//    }
+//
+//    @Override
+//    public void onDisabled(Context context) {
+//        super.onDisabled(context);
+//        Log.d(LOG_TAG, "onDisabled");
+//    }
+//
+//
+//    public void Read() throws IOException {
+//
 //        String link = mSettings.getString(GROUP_LINK, "");
 //        String file = mSettings.getString(GROUP_FILE, "");
 //        String json = mSettings.getString(GROUP_JSON, "");
 //
 //
-//        File dest = new File(Environment.getExternalStorageDirectory() + "/Android/data/dev.prokrostinatorbl.raspisanie/files/" + file);
-//        Scanner in = null;
-//        try {
-//            in = new Scanner(dest);
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        }
+//
+//        Downloader.Download(link, file, destFileName, from);
+//
+//
+//        Scanner in = new Scanner(file);
 //
 //        Log.i("***", "  " + "я читаю");
 //
@@ -96,21 +127,6 @@
 //        month_js = new JsonArray();
 //        year_js = new JsonArray();
 //
-//
-//
-//        //        ArrayList<String> number = new ArrayList<String>();
-//        //        ArrayList<String> prepod = new ArrayList<String>();
-//        //        ArrayList<String> location = new ArrayList<String>();
-//        //        ArrayList<String> par_names = new ArrayList<String>();
-//        //        ArrayList<String> start = new ArrayList<String>();
-//        //        ArrayList<String> end = new ArrayList<String>();
-//        //        ArrayList<String> date = new ArrayList<String>();
-//        //
-//        //        ArrayList<String> days = new ArrayList<>();
-//        //        ArrayList<String> months = new ArrayList<>();
-//        //        ArrayList<String> years = new ArrayList<>();
-//        //
-//
 //        while(in.hasNextLine()){
 //
 //            s = in.nextLine();
@@ -119,7 +135,7 @@
 //
 //            try {
 //                // Create a new instance of a JSONObject
-//                File json_db = new File(Environment.getExternalStorageDirectory() + "/Android/data/dev.prokrostinatorbl.raspisanie/files/" + json);
+//                File json_db = new File(json);
 //                final JSONObject object = new JSONObject();
 //
 //
@@ -129,12 +145,8 @@
 //                    String words_line[] = words[1].split(",");
 //
 //                    String number_group = words_line[0];
-//                    //                    group_numb.put(number_group);
 //                    number.add(number_group);
 //
-//                    //                    group_numb.put(number_group); // в json добавляем номер группы
-//                    //                Log.i("!!!", "номер группы: " + words_line[0]);
-//                    //                Log.i("!!!", "Место учёбы: " + words_line[1]);
 //                }
 //
 //                if (word.equals(prep))
@@ -151,8 +163,6 @@
 //                            prepodav += words_line[i] + " "; //в вышесозданную переменную мы скидываем встречающиеся слова и ставим между ними пробелы
 //
 //                        }
-//                        //                    Log.i("!!!", "преподаватель: " + prepodav);
-//                        //                        prepod_name.put(prepodav); // в json добавляем имя препода
 //                        prepod.add(prepodav);
 //
 //                    } else {
@@ -167,8 +177,6 @@
 //                {
 //                    if (words.length > 1 && words[1] != null) { // аналогично проверяем существование данных
 //                        String words_line[] = words[1].split(" ");
-//                        //                    Log.i("!!!", "Аудитория: " + words_line[0]);
-//                        //                        auditor.put(words_line[0]); // в json добавляем номер аудитории
 //
 //                        location.add(words_line[0]);
 //                    }   else {
@@ -190,8 +198,6 @@
 //                        String paar_name[] = par.split("\\(");
 //                        String paar;
 //                        paar = paar_name[0];
-//                        //                    Log.i("!!!", "Пара: " + par);
-//                        //                        par_name.put(paar); // в json добавляем название пары
 //
 //                        par_names.add(paar);
 //
@@ -249,32 +255,15 @@
 //                        end.add(t);
 //                    }
 //                }
-//                //
-//                //                JSONArray group_numb = new JSONArray();
-//                //                JSONArray prepod_name = new JSONArray();
-//                //                JSONArray auditor = new JSONArray();
-//                //                JSONArray par_name = new JSONArray();
-//                //                JSONArray start_par = new JSONArray();
-//                //                JSONArray end_par = new JSONArray();
-//                //                JSONArray date_par = new JSONArray();
 //
-//
-//
-//                //                object.put("number", group_numb);
-//                //                object.put("prepod", prepod_name);
-//                //                object.put("location", auditor);
-//                //                object.put("par_name", par_name);
-//                //                object.put("start", start_par);
-//                //                object.put("end", end_par);
 //                object.put("date", date_par);
 //
 //
 //                try{
-//                    FileWriter file = new FileWriter(json_db); // сохраняем всё это в json
-//                    file.write(object.toString());
-//                    file.flush();
-//                    file.close();
-////                        Log.i("***", "JSON создан");
+//                    FileWriter js = new FileWriter(json_db); // сохраняем всё это в json
+//                    js.write(object.toString());
+//                    js.flush();
+//                    js.close();
 //                } catch (IOException ex){
 //                    ex.printStackTrace();
 //                }
@@ -288,34 +277,11 @@
 //        in.close();
 //
 //
-//        temp = 0;
-//
 //        Log.i("@@@@@", "Read завершёл");
 //
 //
 //
 //    }
 //
-//
-//}
-//
-//    @Override
-//    public void onUpdate(Context context, AppWidgetManager appWidgetManager,
-//                         int[] appWidgetIds) {
-//        super.onUpdate(context, appWidgetManager, appWidgetIds);
-//        Log.d(LOG_TAG, "onUpdate " + Arrays.toString(appWidgetIds));
-//    }
-//
-//    @Override
-//    public void onDeleted(Context context, int[] appWidgetIds) {
-//        super.onDeleted(context, appWidgetIds);
-//        Log.d(LOG_TAG, "onDeleted " + Arrays.toString(appWidgetIds));
-//    }
-//
-//    @Override
-//    public void onDisabled(Context context) {
-//        super.onDisabled(context);
-//        Log.d(LOG_TAG, "onDisabled");
-//    }
 //
 //}

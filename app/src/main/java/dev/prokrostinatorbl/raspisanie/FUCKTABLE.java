@@ -10,6 +10,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.content.res.Configuration;
@@ -18,6 +19,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -27,6 +29,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -67,18 +70,23 @@ import java.util.concurrent.TimeUnit;
 
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import eightbitlab.com.blurview.BlurView;
+import eightbitlab.com.blurview.RenderScriptBlur;
+
+import static dev.prokrostinatorbl.raspisanie.Setting.APP_PREFERENCES_PREMIUM;
+
 
 public class FUCKTABLE extends Activity {
 
-        private List<View> allEds;
+    private List<View> allEds;
 
-        MyDatabaseHelper dbHelper;
+    MyDatabaseHelper dbHelper;
 
-        public static Integer NOTE_FRAGMENT_NUMBER = 1;
+    public static Integer NOTE_FRAGMENT_NUMBER = 1;
 
 
-        private final int USERID = 6000;
-        private int countID = 1;
+    private final int USERID = 6000;
+    private int countID = 1;
 
 
     public static String APP_PREFERENCES;
@@ -90,72 +98,75 @@ public class FUCKTABLE extends Activity {
 
     SharedPreferences mSettings;
 
-
+    public static String instit_list;
 
 
     public int temp = 1;
 
 
-        public JSONArray group_numb;
-        public JSONArray prepod_name;
-        public JSONArray auditor;
-        public JSONArray par_name;
-        public JSONArray start_par;
-        public JSONArray end_par;
-        public JSONArray date_par;
-        public JSONArray day_js;
-        public JsonArray month_js;
-        public JsonArray year_js;
+    public JSONArray group_numb;
+    public JSONArray prepod_name;
+    public JSONArray auditor;
+    public JSONArray par_name;
+    public JSONArray start_par;
+    public JSONArray end_par;
+    public JSONArray date_par;
+    public JSONArray day_js;
+    public JsonArray month_js;
+    public JsonArray year_js;
 
 
-        public ArrayList<String> number;
-        public ArrayList<String> prepod;
-        public ArrayList<String> location;
-        public ArrayList<String> par_names;
-        public ArrayList<String> start;
-        public ArrayList<String> end;
-        public ArrayList<String> date;
+    public ArrayList<String> number;
+    public ArrayList<String> prepod;
+    public ArrayList<String> location;
+    public ArrayList<String> par_names;
+    public ArrayList<String> start;
+    public ArrayList<String> end;
+    public ArrayList<String> date;
 
 
-        public String destFileName;
-        public String src_file;
-        public String json_db_name;
+    public String destFileName;
+    public String src_file;
+    public String json_db_name;
 
-        public LinearLayout first_day;
-        public LinearLayout second_day;
-        public LinearLayout day3;
-        public LinearLayout day4;
-        public LinearLayout day5;
-        public LinearLayout day6;
-        public LinearLayout day7;
-        public LinearLayout day8;
-        public LinearLayout day9;
-        public LinearLayout day10;
-        public LinearLayout day11;
-        public LinearLayout day12;
-        public LinearLayout linear_group;
+    public LinearLayout first_day;
+    public LinearLayout second_day;
+    public LinearLayout day3;
+    public LinearLayout day4;
+    public LinearLayout day5;
+    public LinearLayout day6;
+    public LinearLayout day7;
+    public LinearLayout day8;
+    public LinearLayout day9;
+    public LinearLayout day10;
+    public LinearLayout day11;
+    public LinearLayout day12;
+    public LinearLayout linear_group;
 
-        public Integer day_number;
-
-
+    public Integer day_number;
 
 
-        private Toolbar toolbar;
 
-        private TextView toolbar_text;
 
-        public ArrayList<String> days;
-        public ArrayList<String> months;
-        public ArrayList<String> years;
-        public static Handler h;
+    private Toolbar toolbar;
 
-        Dialog note_dialog;
+    private TextView toolbar_text;
+
+    public ArrayList<String> days;
+    public ArrayList<String> months;
+    public ArrayList<String> years;
+    public static Handler h;
+
+    Dialog note_dialog;
+
+    Dialog dialog;
+
 
 
 
     @Override
-        protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
         mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
         boolean hasVisited = mSettings.getBoolean("hasVisited", false);
@@ -215,14 +226,16 @@ public class FUCKTABLE extends Activity {
         setContentView(R.layout.activity_fucktable);
 
 
-
-
         note_dialog = new Dialog(this);
         note_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         note_dialog.setContentView(R.layout.dialog_note);
         note_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
 
+        dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.donate_alarm);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
 
 
@@ -236,9 +249,68 @@ public class FUCKTABLE extends Activity {
         final String group_num = intent.getStringExtra("key");
         final String institut = intent.getStringExtra("instit");
 
+        instit_list = institut;
 
 
         dbHelper = new MyDatabaseHelper(this, group_num);
+
+
+        //-----------------------------------
+        SQLiteDatabase database = dbHelper.getWritableDatabase();
+
+        Cursor cursor = database.query(MyDatabaseHelper.TABLE_NOTE, null, null, null, null, null, null);
+
+
+        Date currentDate = new Date();
+        DateFormat dateFormat = new SimpleDateFormat("MM", Locale.getDefault());
+        Integer dateText = Integer.valueOf(dateFormat.format(currentDate));
+
+        String temper = "";
+        String[] temp_word;
+        Integer temp1;
+        Integer temp2;
+
+        String table_date;
+
+
+        if (cursor.moveToFirst()) {
+            int dateIndex = cursor.getColumnIndex(MyDatabaseHelper.KEY_DATE);
+            int noteIndex = cursor.getColumnIndex(MyDatabaseHelper.KEY_NOTE);
+
+            Log.i("МЕСЯЦ", cursor.getString(dateIndex));
+
+            do {
+
+
+                temper = cursor.getString(dateIndex);
+                Log.i("TEMPER", temper);
+                temp_word = temper.split("\\.");
+
+                temp1 = Integer.valueOf(temp_word[1]);
+                temp2 = Math.abs(dateText - temp1);
+
+
+                table_date = cursor.getString(dateIndex);
+
+                if(temp2 > 1){
+                    Log.i("TEMPER", "temp2=" + String.valueOf(temp2));
+                    database.delete(MyDatabaseHelper.TABLE_NOTE, MyDatabaseHelper.KEY_DATE + " = ?", new String[]{String.valueOf(cursor.getString(dateIndex))});
+                }
+
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        //-------------------------------------------------------------------------------------
+
+        findViewById(R.id.back_arrow).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), group_list.class);
+                intent.putExtra("key", instit_list);
+                startActivity(intent);
+            }
+        });
 
 
 
@@ -248,7 +320,7 @@ public class FUCKTABLE extends Activity {
         src_file = intent.getStringExtra("link");
 
 
-        if(src_file.equals("")){
+        if(src_file.equals("link")){
             Toast toast = Toast.makeText(getApplicationContext(),
                     "Расписания для этой группы нет на сайте!", Toast.LENGTH_SHORT);
             toast.show();
@@ -315,6 +387,7 @@ public class FUCKTABLE extends Activity {
         }
 
     }
+
 
     public void handleUncaughtException (Thread thread, Throwable e)
     {
@@ -1943,63 +2016,67 @@ public class FUCKTABLE extends Activity {
             }
 
 
-             final TextView note_subtext = (TextView) note_dialog.findViewById(R.id.note_subtext);
-             final EditText note_text = (EditText) note_dialog.findViewById(R.id.note_text);
-             MaterialButton note_button = (MaterialButton) note_dialog.findViewById(R.id.note_button);
+            final TextView note_subtext = (TextView) note_dialog.findViewById(R.id.note_subtext);
+            final EditText note_text = (EditText) note_dialog.findViewById(R.id.note_text);
+            MaterialButton note_button = (MaterialButton) note_dialog.findViewById(R.id.note_button);
 
-             note_button.setOnClickListener(new View.OnClickListener() {
-                 @Override
-                 public void onClick(View v) {
-                     SQLiteDatabase database = dbHelper.getWritableDatabase();
+            note_button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    SQLiteDatabase database = dbHelper.getWritableDatabase();
 
-                     ContentValues contentValues = new ContentValues();
+                    ContentValues contentValues = new ContentValues();
 
-                     contentValues.put(MyDatabaseHelper.KEY_DATE, (String) note_subtext.getText());
-                     contentValues.put(MyDatabaseHelper.KEY_NOTE, note_text.getText().toString());
+                    contentValues.put(MyDatabaseHelper.KEY_DATE, (String) note_subtext.getText());
+                    contentValues.put(MyDatabaseHelper.KEY_NOTE, note_text.getText().toString());
 
-                     Cursor cursor = database.query(MyDatabaseHelper.TABLE_NOTE, null, null, null, null, null, null);
+                    Cursor cursor = database.query(MyDatabaseHelper.TABLE_NOTE, null, null, null, null, null, null);
 
-                     int updater = 0;
+                    int updater = 0;
 
-                     if (cursor.moveToFirst()) {
-                         int dateIndex = cursor.getColumnIndex(MyDatabaseHelper.KEY_DATE);
-                         int noteIndex = cursor.getColumnIndex(MyDatabaseHelper.KEY_NOTE);
+                    if (cursor.moveToFirst()) {
+                        int dateIndex = cursor.getColumnIndex(MyDatabaseHelper.KEY_DATE);
+                        int noteIndex = cursor.getColumnIndex(MyDatabaseHelper.KEY_NOTE);
 
-                         do {
+                        Log.i("МЕСЯЦ", cursor.getString(dateIndex));
 
-                             if(cursor.getString(dateIndex).equals(note_subtext.getText())){
+                        do {
 
-                                 String date_db = (String) note_subtext.getText();
-                                 Log.i("date_db",  date_db);
+                            if(cursor.getString(dateIndex).equals(note_subtext.getText())){
 
-                                 database.delete(MyDatabaseHelper.TABLE_NOTE, MyDatabaseHelper.KEY_DATE + " =?", null);
-                                 database.insert(MyDatabaseHelper.TABLE_NOTE, null, contentValues);
+                                String date_db = (String) note_subtext.getText();
+                                Log.i("date_db",  date_db);
 
-                                 if (note_text.getText().toString().equals("") ||
-                                         note_text.getText().toString().equals(" ") ||
-                                         note_text.getText().toString().equals(null)){
-                                     database.delete(MyDatabaseHelper.TABLE_NOTE, MyDatabaseHelper.KEY_DATE + " =?", null);
-                                 }
+
+                                database.delete(MyDatabaseHelper.TABLE_NOTE, MyDatabaseHelper.KEY_DATE + " = ?", new String[]{String.valueOf(cursor.getString(dateIndex))});
+                                database.insert(MyDatabaseHelper.TABLE_NOTE, null, contentValues);
+
+                                if (note_text.getText().toString().equals("") ||
+                                        note_text.getText().toString().equals(" ") ||
+                                        note_text.getText().toString().equals(null)){
+
+                                    database.delete(MyDatabaseHelper.TABLE_NOTE, MyDatabaseHelper.KEY_DATE + " = ?", new String[]{String.valueOf(cursor.getString(dateIndex))});
+                                }
 
                                 updater = 1;
-                             }
+                            }
 
-                         } while (cursor.moveToNext());
-                     }
-                     cursor.close();
+                        } while (cursor.moveToNext());
+                    }
+                    cursor.close();
 
-                     if (updater == 0){
-                         database.insert(MyDatabaseHelper.TABLE_NOTE, null, contentValues);
-                         if (note_text.getText().toString().equals("") ||
-                                 note_text.getText().toString().equals(" ") ||
-                                 note_text.getText().toString().equals(null)){
-                             database.delete(MyDatabaseHelper.TABLE_NOTE, MyDatabaseHelper.KEY_DATE + " =?", null);
-                         }
-                     }
+                    if (updater == 0){
+                        database.insert(MyDatabaseHelper.TABLE_NOTE, null, contentValues);
+                        if (note_text.getText().toString().equals("") ||
+                                note_text.getText().toString().equals(" ") ||
+                                note_text.getText().toString().equals(null)){
+                            database.delete(MyDatabaseHelper.TABLE_NOTE, MyDatabaseHelper.KEY_DATE, null);
+                        }
+                    }
 
-                     recreate();
-                 }
-             });
+                    recreate();
+                }
+            });
 
 
             for (int g = 1; g < 13; g++){
@@ -2088,14 +2165,23 @@ public class FUCKTABLE extends Activity {
                             Log.d("mLog","0 rows");
                         cursor.close();
 
+                        String mPremium = mSettings.getString(APP_PREFERENCES_PREMIUM, "false");
 
+                        if (!mPremium.equals("true") && !mPremium.equals("false")){
+                            mPremium = "false";
+                        }
 
-                        note_dialog.show();
+                        if(!mPremium.equals("false")){
+                            note_dialog.show();
+                        } else {
+                            dialog.show();
+                        }
+
                     }
                 });
 
                 String SUBTEXT;
-                
+
                 switch (g){
                     case 1:
                         SUBTEXT = (String) date_activ1.getText();

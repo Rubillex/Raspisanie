@@ -120,45 +120,19 @@ public class app_info extends AppCompatActivity {
         TextView toolbar_text = (TextView) findViewById(R.id.toolbar_text);
         toolbar_text.setText("О приложении");
 
-        clipboardManager=(ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
-
-        donate_dialog.findViewById(R.id.donate_1).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.license).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData clip = ClipData.newPlainText("", "4276020019417903");
-                clipboard.setPrimaryClip(clip);
-
-                Toast.makeText(getApplicationContext(),"Text Copied ", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        donate_dialog.findViewById(R.id.donate_2).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData clip = ClipData.newPlainText("", "2200240879544613");
-                clipboard.setPrimaryClip(clip);
-
-                Toast.makeText(getApplicationContext(),"Text Copied ", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-
-
-        findViewById(R.id.logout).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(getApplicationContext(), auth.class);
+                Intent intent = new Intent(getApplicationContext(), license.class);
                 startActivity(intent);
             }
         });
 
-        findViewById(R.id.donate).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.profile_test).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                donate_dialog.show();
+                Intent intent = new Intent(getApplicationContext(), profile.class);
+                startActivity(intent);
             }
         });
 

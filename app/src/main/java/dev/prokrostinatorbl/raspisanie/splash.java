@@ -22,7 +22,10 @@ public class splash extends AppCompatActivity {
         new Handler().postDelayed(new Runnable(){
             @Override
             public void run() {
-                starter();
+//                starter();
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.putExtra("back", "false");
+                startActivity(intent);
             }
         }, SPLASH_DISPLAY_LENGTH);
 
@@ -34,6 +37,7 @@ public class splash extends AppCompatActivity {
         GoogleSignInAccount signInAccount = GoogleSignIn.getLastSignedInAccount(this);
         if(signInAccount != null){
             Intent intent = new Intent(this, MainActivity.class);
+            intent.putExtra("back", "false");
             startActivity(intent);
         } else {
             Intent intent = new Intent(this, auth.class);
@@ -42,3 +46,5 @@ public class splash extends AppCompatActivity {
 
     }
 }
+
+

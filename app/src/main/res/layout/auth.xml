@@ -33,4 +33,11 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@id/text_logo"
         />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/sign_in_button"
+        android:id="@+id/go"/>
+
 </RelativeLayout>

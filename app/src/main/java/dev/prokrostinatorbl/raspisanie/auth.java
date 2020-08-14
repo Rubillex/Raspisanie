@@ -48,7 +48,6 @@ public class auth extends AppCompatActivity {
     private static final int INTERNET_PERMISSION_CODE = 100;
     private static final int STORAGE_PERMISSION_CODE = 101;
 
-
     public void checkPermission(String permission, int requestCode)
     {
         // Checking if permission is not granted
@@ -83,7 +82,6 @@ public class auth extends AppCompatActivity {
     }
 
 
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -105,9 +103,19 @@ public class auth extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.auth);
 
+        Cheker();
+
         mAuth = FirebaseAuth.getInstance();
 
         createRequest();
+
+        findViewById(R.id.go).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+            }
+        });
 
         findViewById(R.id.sign_in_button).setOnClickListener(new View.OnClickListener() {
             @Override

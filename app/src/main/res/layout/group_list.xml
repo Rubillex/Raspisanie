@@ -26,7 +26,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:elevation="@dimen/cardview_default_elevation"
         android:layout_above="@+id/scroll_list">
@@ -37,9 +37,10 @@
             android:layout_centerHorizontal="true"
             android:text="Расписание"
             android:textColor="?android:attr/textColorPrimary"
-            android:textSize="25dp"
+            android:textSize="@dimen/text_bigest"
             android:textAppearance="@style/Widget.MaterialComponents.Button"
             android:id="@+id/timetable"
+            android:visibility="gone"
             app:rippleColor="?android:attr/colorControlHighlight"
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_weight="1"/>
@@ -49,8 +50,9 @@
             android:layout_height="match_parent"
             android:layout_centerHorizontal="true"
             android:text="Карта"
+            android:visibility="gone"
             android:textColor="?android:attr/textColorPrimary"
-            android:textSize="25dp"
+            android:textSize="@dimen/text_bigest"
             android:textAppearance="@style/Widget.MaterialComponents.Button"
             android:id="@+id/maps"
             app:rippleColor="?android:attr/colorControlHighlight"
@@ -62,8 +64,8 @@
             android:layout_height="match_parent"
             android:layout_centerHorizontal="true"
             android:text="Настройки"
-            android:textColor="?android:attr/textColorPrimary"
-            android:textSize="25dp"
+            android:textSize="@dimen/icon_note"
+            android:textColor="?attr/colorAccent"
             android:textAppearance="@style/Widget.MaterialComponents.Button"
             android:id="@+id/setting_button"
             app:rippleColor="?android:attr/colorControlHighlight"

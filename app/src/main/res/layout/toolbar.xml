@@ -7,6 +7,12 @@
     android:background="?attr/colorPrimary"
     android:elevation="2dp">
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_arrow"
+        android:id="@+id/back_arrow"/>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -15,8 +21,8 @@
         android:text="SomeText"
         android:textStyle="bold"
         android:id="@+id/toolbar_text"
-        android:textSize="24sp"
-        android:textColor="?android:attr/textColorPrimary"/>
+        android:textSize="@dimen/icon_note"
+        android:textColor="?attr/colorAccent"/>
 
 
 </Toolbar>

@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:background="@drawable/card"
+        android:background="@drawable/card_premium"
         android:padding="14dp">
 
         <TextView
@@ -15,10 +15,10 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:id="@+id/info_card"
-            android:text="Банковские карты"
-            android:textSize="24sp"
+            android:text="Премиум"
+            android:textSize="@dimen/icon_note"
             android:textStyle="bold"
-            android:textColor="?android:attr/textColorPrimary"
+            android:textColor="@color/colorPrimary_light"
             android:layout_marginBottom="10dp"/>
 
         <LinearLayout
@@ -27,36 +27,109 @@
             android:orientation="vertical"
             android:layout_below="@id/info_card">
 
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Сбербанк - 4276 0200 1941 7903"
-                android:textSize="16sp"
-                android:id="@+id/donate_1"
+                android:text="Цена премиум доступа"
+                android:textSize="@dimen/text_bigest"
+                android:textStyle="bold"
                 android:layout_marginTop="16dp"
-                android:textColor="?android:attr/textColorPrimary"/>
+                android:textColor="@color/colorPrimary_light"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="50 рублей"
+                android:layout_marginTop="10dp"
+                android:textSize="@dimen/text_big"
+                android:textColor="@color/colorPrimary_light"/>
+
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="1dp"
-                android:background="?android:attr/listDivider"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"/>
+                android:background="@color/secondaryText"
+                android:layout_marginTop="8dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="ВТБ - 2200 2408 7954 4613"
-                android:textSize="16sp"
-                android:id="@+id/donate_2"
-                android:layout_marginTop="16dp"
-                android:textColor="?android:attr/textColorPrimary"/>
+                android:text="Что даёт премиум"
+                android:textStyle="bold"
+                android:textSize="@dimen/text_bigest"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/colorPrimaryDark_light"/>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="- Использование заметок"
+                android:textSize="@dimen/text_big"
+                android:background="?attr/selectableItemBackground"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/colorPrimary_light"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="- Поддержка разработчика"
+                android:textSize="@dimen/text_big"
+                android:background="?attr/selectableItemBackground"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/colorPrimary_light"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Данный список будет пополняться"
+                android:textSize="@dimen/text_big"
+                android:background="?attr/selectableItemBackground"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/secondaryText"/>
+
+
 
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="1dp"
-                android:background="?android:attr/listDivider"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"/>
+                android:background="@color/secondaryText"
+                android:layout_marginTop="8dp"/>
+
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/vk"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:orientation="vertical"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Купить"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/text_bigest"
+                    android:textColor="@color/colorPrimary_light"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="оплата производится с помощью Google Play"
+                    android:textSize="@dimen/text"
+                    android:textColor="@color/secondaryText"/>
+
+            </LinearLayout>
+
+
+
+
 
 
         </LinearLayout>

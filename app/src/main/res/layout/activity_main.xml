@@ -9,8 +9,7 @@
     android:id="@+id/activity_main"
     android:background="?attr/colorPrimary">
 
-
-
+    
         <include layout="@layout/toolbar" />
 
 
@@ -19,28 +18,38 @@
         android:layout_height="wrap_content"
         android:layout_weight="1">
 
-        <RelativeLayout
-            android:id="@+id/linearLayout"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/linearLayout"
             android:orientation="vertical">
 
-            <ProgressBar
-                android:id="@+id/progressBar"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_marginTop="150dp" />
+                android:orientation="vertical">
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="150dp" />
 
 
-        </RelativeLayout>
+            </RelativeLayout>
+
+        </LinearLayout>
+
+
 
 
     </ScrollView>
 
+
     <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:elevation="@dimen/cardview_default_elevation">
 
@@ -50,7 +59,8 @@
                 android:layout_centerHorizontal="true"
                 android:text="Расписание"
                 android:textColor="?android:attr/textColorPrimary"
-                android:textSize="25sp"
+                android:textSize="@dimen/icon_note"
+                android:visibility="gone"
                 android:textAppearance="@style/Widget.MaterialComponents.Button"
                 android:id="@+id/timetable"
                 app:rippleColor="?android:attr/colorControlHighlight"
@@ -61,11 +71,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_centerHorizontal="true"
-                android:text="Карта"
-                android:textColor="?android:attr/textColorPrimary"
-                android:textSize="25sp"
+                android:text="Поиск"
+                android:textColor="?attr/colorAccent"
+                android:textSize="@dimen/icon_note"
                 android:textAppearance="@style/Widget.MaterialComponents.Button"
-                android:id="@+id/maps"
+                android:id="@+id/search"
+                android:visibility="gone"
                 app:rippleColor="?android:attr/colorControlHighlight"
                 style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_weight="1"/>
@@ -75,8 +86,8 @@
                 android:layout_height="match_parent"
                 android:layout_centerHorizontal="true"
                 android:text="Настройки"
-                android:textColor="?android:attr/textColorPrimary"
-                android:textSize="25sp"
+                android:textColor="?attr/colorAccent"
+                android:textSize="@dimen/icon_note"
                 android:textAppearance="@style/Widget.MaterialComponents.Button"
                 android:id="@+id/setting_button"
                 app:rippleColor="?android:attr/colorControlHighlight"

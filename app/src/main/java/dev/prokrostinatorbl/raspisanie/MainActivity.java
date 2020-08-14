@@ -10,6 +10,7 @@ import androidx.core.app.CoreComponentFactory;
 import android.Manifest;
 
 import android.annotation.SuppressLint;
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -22,14 +23,20 @@ import android.os.Environment;
 import android.os.Handler;
 
 import android.os.Message;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
 
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -51,7 +58,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.functions.FirebaseFunctions;
 import com.google.firebase.iid.FirebaseInstanceId;
-import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.io.*;
 import java.util.*;
@@ -66,19 +72,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static String theme;
     private Toolbar toolbar;
 
+
     public static String APP_PREFERENCES;
     public static String APP_PREFERENCES_THEME; // выбранная тема
     public static String APP_PREFERENCES_NEW;
 
     SharedPreferences mSettings;
     public ArrayList<String> number;
-    private RelativeLayout relativeLayout;
+    private LinearLayout relativeLayout;
     private int USERID = 0;
     private int countID;
 
     private FirebaseAuth mAuth;
 
     public Throwable ex;
+    private List<View> allEds;
 
 
 
@@ -219,12 +227,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             TextView toolbar_text = (TextView) findViewById(R.id.toolbar_text);
             toolbar_text.setText("Выберите институт");
 
+            findViewById(R.id.back_arrow).setVisibility(View.GONE);
+
+
             Button setButton = (Button) findViewById(R.id.setting_button);
             setButton.setOnClickListener(this);
-            Button mapsButton = (Button) findViewById(R.id.maps);
-            mapsButton.setOnClickListener(this);
-            Button timeButton = (Button) findViewById(R.id.timetable);
-            timeButton.setOnClickListener(this);
 
 
         countID = 0;
@@ -329,18 +336,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
 
+
             Cheker();
+
+
 
             toolbar  = (Toolbar) findViewById(R.id.my_toolbar);
             TextView toolbar_text = (TextView) findViewById(R.id.toolbar_text);
             toolbar_text.setText("Выберите институт");
 
+            findViewById(R.id.back_arrow).setVisibility(View.GONE);
+
+
             Button setButton = (Button) findViewById(R.id.setting_button);
             setButton.setOnClickListener(this);
-            Button mapsButton = (Button) findViewById(R.id.maps);
-            mapsButton.setOnClickListener(this);
-            Button timeButton = (Button) findViewById(R.id.timetable);
-            timeButton.setOnClickListener(this);
 
             FirebaseApp.initializeApp(this);
             FirebaseInstanceId.getInstance().getToken();
@@ -363,11 +372,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             String src_file = "https://raw.githubusercontent.com/Rubillex/Raspisanie/master/timetable.txt";
 
-            Context c = getApplicationContext();
+            final Context c = getApplicationContext();
             File file = new File(c.getFilesDir(), "/files");
             String from = "MainActivity";
 
-            Downloader.Download(src_file, file, destFileName, from);
+            Intent intent = getIntent();
+            final String back = intent.getStringExtra("back");
+            String toggle = back;
+//            Toast.makeText(this, toggle, Toast.LENGTH_SHORT).show();
+
+            if (!toggle.equals("true")){
+                Downloader.Download(src_file, file, destFileName, from);
+            } else {
+                Downloader.toggle = toggle;
+                Downloader.Download(src_file, file, destFileName, from);
+            }
 
             h = new Handler() {
                 @SuppressLint("ResourceType")
@@ -384,13 +403,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             Boolean butt = false;
                             Log.i("AAA", "НЕ СКАЧАЛ");
 
-                            relativeLayout = (RelativeLayout) findViewById(R.id.linearLayout);
+                            relativeLayout = (LinearLayout) findViewById(R.id.linearLayout);
                             String Logs = "отправить логи автору приложения";
+
+
 
                             if (!butt){
                                 Button b = new Button(getApplicationContext());
                                 b.setText(Logs);
-                                RelativeLayout layout = (RelativeLayout) findViewById(R.id.linearLayout);
+                                LinearLayout layout = (LinearLayout) findViewById(R.id.linearLayout);
                                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                                 params.setMargins(0, 25, 0, 0);
                                 b.setLayoutParams(params);
@@ -486,6 +507,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
+
+
     @Override
     public void onClick(View view)
     {
@@ -494,12 +517,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.setting_button:
                 Intent setting = new Intent(MainActivity.this, Setting.class);
                 startActivity(setting);
-                break;
-            case R.id.maps:
-                Intent maps = new Intent(MainActivity.this, maps.class);
-                startActivity(maps);
-                break;
-            case R.id.timetable:
                 break;
         }
 
@@ -538,11 +555,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         number = new ArrayList<String>();
 
-        relativeLayout = (RelativeLayout) findViewById(R.id.linearLayout);
+//        relativeLayout = (RelativeLayout) findViewById(R.id.linearLayout);
+
+        allEds = new ArrayList<View>();
 
         String buffer_name = "buffer";
 
         Integer size = 0;
+
+        LinearLayout linearlayout = (LinearLayout) findViewById(R.id.linearLayout);
 
         while(in.hasNextLine()){
 
@@ -551,20 +572,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             String word = words[0];
 
             if (!word.equals(buffer_name)){
-                    number.add(word);
-                    Button b = new Button(getApplicationContext());
-                    b.setText(word);
-                    RelativeLayout layout = (RelativeLayout) findViewById(R.id.linearLayout);
-                    RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-                    params.setMargins(0, 25 + size, 0, 0);
-                    params.addRule(RelativeLayout.CENTER_HORIZONTAL);
-                    b.setLayoutParams(params);
-                    size+=120;
-                    b.setBackgroundColor(Color.TRANSPARENT);
-                    b.setId(USERID + countID);
-                    b.setTag(USERID + countID);
-                    b.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 25);
 
+                    final View view = getLayoutInflater().inflate(R.layout.fragment_institut, null);
+
+                    Button institut = (Button) view.findViewById(R.id.institut_text);
+
+                    number.add(word);
+                    TextView b = new TextView(getApplicationContext());
+                    institut.setText(word);
+
+                    institut.setId(USERID + countID);
+                    institut.setTag(USERID + countID);
 
 
                     int currentNightMode = getResources().getConfiguration().uiMode
@@ -572,53 +590,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                     mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
 
-                    if(mSettings.contains(APP_PREFERENCES_THEME)) {
-
-                        String mCounter = mSettings.getString(APP_PREFERENCES_THEME, "auto");
-
-                        if(!mCounter.equals("auto") && !mCounter.equals("white") && !mCounter.equals("black")){
-                            mCounter = "auto";
-                        }
-
-                        switch(mCounter){
-                            case "white":
-                                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                                    b.setTextColor(getResources().getColor(R.color.primaryText_light));
-                                } else {
-                                    b.setTextColor(getResources().getColor(R.color.primaryText_light));
-                                }
-                                break;
-                            case "black":
-                                b.setTextColor(getResources().getColor(R.color.primaryText));
-                                break;
-                            case "pink":
-                                break;
-                            case "auto":
-                                switch (currentNightMode) {
-                                    case Configuration.UI_MODE_NIGHT_NO:
-                                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                                            b.setTextColor(getResources().getColor(R.color.primaryText_light));
-                                        } else {
-                                            b.setTextColor(getResources().getColor(R.color.primaryText_light));
-                                        }
-                                        break;
-                                    case Configuration.UI_MODE_NIGHT_YES:
-                                        b.setTextColor(getResources().getColor(R.color.primaryText));
-                                        break;
-                                    default:
-                                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                                            b.setTextColor(getResources().getColor(R.color.primaryText_light));
-                                        } else {
-                                            b.setTextColor(getResources().getColor(R.color.primaryText_light));
-                                        }
-                                        break;
-                                    // We don't know what mode we're in, assume notnight
-                                }
-                                break;
-                        }
-                    }
-
-                    b.setOnClickListener(new View.OnClickListener() {
+                    institut.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             int resourceID = (int) v.getTag();
@@ -628,9 +600,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             startActivity(intent);
                         }
                     });
-                    relativeLayout.addView(b);
                     countID++;
                     buffer_name = word;
+                    allEds.add(view);
+                    linearlayout.addView(view);
+
+
+
                 }
 
         }
