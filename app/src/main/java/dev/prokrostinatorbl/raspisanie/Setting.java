@@ -80,6 +80,11 @@ public class Setting extends AppCompatActivity {
     public static String APP_PREFERENCES_THEME; // выбранная тема
     public static String APP_PREFERENCES_PREMIUM;
 
+    public static String APP_PREFERENCES_STARTFRAME;
+    public static String APP_PREFERENCES_START_UNI;
+    public static String APP_PREFERENCES_START_GROUP;
+    public static String APP_PREFERENCES_LINK;
+
     private Map<String, SkuDetails> mSkuDetailsMap = new HashMap<>();
     private final static String mSkuId = "premium";
 
@@ -96,8 +101,6 @@ public class Setting extends AppCompatActivity {
     ClipboardManager clipboardManager;
     ClipData clipData;
 
-    BlurView blurView;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,59 +109,48 @@ public class Setting extends AppCompatActivity {
         int currentNightMode = getResources().getConfiguration().uiMode
                 & Configuration.UI_MODE_NIGHT_MASK;
 
+        Saved.init(getApplicationContext());
+        new Saved().load_setting();
 
-
-        mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
-
-        if(mSettings.contains(APP_PREFERENCES_THEME)) {
-
-            String mCounter = mSettings.getString(APP_PREFERENCES_THEME, "auto");
-
-            if(!mCounter.equals("auto") && !mCounter.equals("white") && !mCounter.equals("black")){
-                mCounter = "auto";
-            }
-
-            switch(mCounter){
-                case "white":
-                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                        setTheme(R.style.Light_statusbar);
-                    } else {
-                        setTheme(R.style.Light);
-                        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-                    }
-                    break;
-                case "black":
-                    setTheme(R.style.Dark);
-                    break;
-                case "pink":
-                    break;
-                case "auto":
-                    switch (currentNightMode) {
-                        case Configuration.UI_MODE_NIGHT_NO:
-                            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                                setTheme(R.style.Light_statusbar);
-                            } else {
-                                setTheme(R.style.Light);
-                                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-                            }
-                            break;
-                        case Configuration.UI_MODE_NIGHT_YES:
-                            setTheme(R.style.Dark);
-                            break;
-                        default:
-                            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                                setTheme(R.style.Light_statusbar);
-                            } else {
-                                setTheme(R.style.Light);
-                                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-                            }
-                            break;
-                        // We don't know what mode we're in, assume notnight
-                    }
-                    break;
-            }
+        switch(APP_PREFERENCES_THEME){
+            case "white":
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                    setTheme(R.style.Light_statusbar);
+                } else {
+                    setTheme(R.style.Light);
+                    getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+                }
+                break;
+            case "black":
+                setTheme(R.style.Dark);
+                break;
+            case "pink":
+                break;
+            case "auto":
+                switch (currentNightMode) {
+                    case Configuration.UI_MODE_NIGHT_NO:
+                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                            setTheme(R.style.Light_statusbar);
+                        } else {
+                            setTheme(R.style.Light);
+                            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+                        }
+                        break;
+                    case Configuration.UI_MODE_NIGHT_YES:
+                        setTheme(R.style.Dark);
+                        break;
+                    default:
+                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                            setTheme(R.style.Light_statusbar);
+                        } else {
+                            setTheme(R.style.Light);
+                            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+                        }
+                        break;
+                    // We don't know what mode we're in, assume notnight
+                }
+                break;
         }
-
 
         setContentView(R.layout.setting);
 
@@ -215,8 +207,6 @@ public class Setting extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 theme_swith.show();
-
-                blurView.setVisibility(View.VISIBLE);
             }
         });
 
@@ -240,52 +230,55 @@ public class Setting extends AppCompatActivity {
 
         //---------------------------------------------------------------------------------------
 
-        String mPremium = mSettings.getString(APP_PREFERENCES_PREMIUM, "false");
-
-        if (!mPremium.equals("true") && !mPremium.equals("false")){
-            mPremium = "false";
-        }
 
         TextView premium_subtext = (TextView) findViewById(R.id.premium_subtext);
-        premium_subtext.setText(mPremium);
+        premium_subtext.setText(APP_PREFERENCES_PREMIUM);
 
         //---------------------------------------------------------------------------------------
 
-
-        //---------------------------------------------------------------------------------------
-
-        if(mSettings.contains(APP_PREFERENCES_THEME)) {
-
-            String mCounter = mSettings.getString(APP_PREFERENCES_THEME, "auto");
-
-
-
-            if(!mCounter.equals("auto") && !mCounter.equals("white") && !mCounter.equals("black")){
-                mCounter = "auto";
-            }
-
-            switch(mCounter){
-                case "white":
-                    Log.i("!!!!", mCounter);
-                    whiteRadioButton.setChecked(true);
-                    current_theme.setText("Текущая тема: светлая");
-                    break;
-                case "black":
-                    Log.i("!!!!", mCounter);
-                    blackRadioButton.setChecked(true);
-                    current_theme.setText("Текущая тема: тёмная");
-                    break;
-                case "auto":
-                    Log.i("!!!!", mCounter);
-                    autoRadioButton.setChecked(true);
-                    current_theme.setText("Текущая тема: авто");
-                    break;
-            }
-
-
+        if(APP_PREFERENCES_START_GROUP.equals("standart")){
+            TextView start_text = (TextView) findViewById(R.id.start_page_subtext);
+            start_text.setText("Главное меню");
+        } else {
+            TextView start_text = (TextView) findViewById(R.id.start_page_subtext);
+            start_text.setText(APP_PREFERENCES_START_GROUP);
         }
 
+        findViewById(R.id.start_page).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Saved().save_setting();
+                new Saved().load_setting();
+                if(APP_PREFERENCES_START_GROUP.equals("standart")){
+                    TextView start_text = (TextView) findViewById(R.id.start_page_subtext);
+                    start_text.setText("Главное меню");
+                } else {
+                    TextView start_text = (TextView) findViewById(R.id.start_page_subtext);
+                    start_text.setText(APP_PREFERENCES_START_GROUP);
+                }
+            }
+        });
 
+        //---------------------------------------------------------------------------------------
+
+
+        switch(APP_PREFERENCES_THEME){
+            case "white":
+//                Log.i("!!!!", mCounter);
+                whiteRadioButton.setChecked(true);
+                current_theme.setText("Текущая тема: светлая");
+                break;
+            case "black":
+//                Log.i("!!!!", mCounter);
+                blackRadioButton.setChecked(true);
+                current_theme.setText("Текущая тема: тёмная");
+                break;
+            case "auto":
+//                Log.i("!!!!", mCounter);
+                autoRadioButton.setChecked(true);
+                current_theme.setText("Текущая тема: авто");
+                break;
+        }
 
     }
 
@@ -301,15 +294,8 @@ public class Setting extends AppCompatActivity {
 
     public void premium_cheker(){
 
-        String mPremium = mSettings.getString(APP_PREFERENCES_PREMIUM, "false");
-
-        if (!mPremium.equals("true") && !mPremium.equals("false")){
-            mPremium = "false";
-        }
-
-        Toast.makeText(this, "Состаяние премиум: " + mPremium, Toast.LENGTH_SHORT).show();
         TextView premium_subtext = (TextView) findViewById(R.id.premium_subtext);
-        premium_subtext.setText(mPremium);
+        premium_subtext.setText(APP_PREFERENCES_PREMIUM);
 
         donate_dialog = new Dialog(this);
         donate_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -317,10 +303,8 @@ public class Setting extends AppCompatActivity {
         donate_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
 
-        if(mPremium.equals("false")){
+        if(APP_PREFERENCES_PREMIUM.equals("false")){
             donate_dialog.show();
-
-            blurView.setVisibility(View.VISIBLE);
 
             clipboardManager=(ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
 
@@ -340,28 +324,30 @@ public class Setting extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             RadioButton rb = (RadioButton)v;
-            mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = mSettings.edit();
+//            mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
+//            SharedPreferences.Editor editor = mSettings.edit();
 
 
             switch (rb.getId()) {
                 case R.id.radio_white:
                     theme_swith.dismiss();
-                    editor.putString(APP_PREFERENCES_THEME, "white");
+                    APP_PREFERENCES_THEME = "white";
                     break;
                 case R.id.radio_black:
                     theme_swith.dismiss();
-                    editor.putString(APP_PREFERENCES_THEME, "black");
+                    APP_PREFERENCES_THEME = "black";
                     break;
                 case R.id.radio_auto:
                     theme_swith.dismiss();
-                    editor.putString(APP_PREFERENCES_THEME, "auto");
+                    APP_PREFERENCES_THEME = "auto";
                     break;
 
                 default:
                     break;
             }
-            editor.apply();
+            new Saved().save_setting();
+//            editor.apply();
+            new Saved().save_setting();
             recreate();
 
 
@@ -400,13 +386,13 @@ public class Setting extends AppCompatActivity {
 
                                 Log.i("ОПЛАТА", "ПРОШЛА");
 
-                                mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
-                                SharedPreferences.Editor editor = mSettings.edit();
-                                editor.putString(APP_PREFERENCES_PREMIUM, "true");
-                                editor.apply();
+//                                mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
+//                                SharedPreferences.Editor editor = mSettings.edit();
+//                                editor.putString(APP_PREFERENCES_PREMIUM, "true");
+//                                editor.apply();
 
-                    String mPremium = mSettings.getString(APP_PREFERENCES_PREMIUM, "true");
-//                    Toast.makeText(_this, mPremium, Toast.LENGTH_SHORT).show();
+                                APP_PREFERENCES_PREMIUM = "true";
+                                new Saved().save_setting();
 
                 } else if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.USER_CANCELED) {
                     // Handle an error caused by a user cancelling the purchase flow.
@@ -435,10 +421,13 @@ public class Setting extends AppCompatActivity {
                     for (int i = 0; i < purchasesList.size(); i++) {
                         String purchaseId = purchasesList.get(i).getSku();
                         if(TextUtils.equals(mSkuId, purchaseId)) {
-                            mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
-                            SharedPreferences.Editor editor = mSettings.edit();
-                            editor.putString(APP_PREFERENCES_PREMIUM, "true");
-                            editor.apply();
+//                            mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
+//                            SharedPreferences.Editor editor = mSettings.edit();
+//                            editor.putString(APP_PREFERENCES_PREMIUM, "true");
+//                            editor.apply();
+                            APP_PREFERENCES_PREMIUM = "true";
+                            new Saved().save_setting();
+
                         }
                     }
 

@@ -91,12 +91,9 @@ public class FUCKTABLE extends Activity {
 
     public static String APP_PREFERENCES;
     public static String APP_PREFERENCES_THEME; // выбранная тема
+    public static String APP_PREFERENCES_PREMIUM;
 
-    public static String GROUP_LINK;
-    public static String GROUP_FILE;
-    public static String GROUP_JSON;
-
-    SharedPreferences mSettings;
+//    SharedPreferences mSettings;
 
     public static String instit_list;
 
@@ -168,60 +165,102 @@ public class FUCKTABLE extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
-        boolean hasVisited = mSettings.getBoolean("hasVisited", false);
+//        mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
+//        boolean hasVisited = mSettings.getBoolean("hasVisited", false);
         int currentNightMode = getResources().getConfiguration().uiMode
                 & Configuration.UI_MODE_NIGHT_MASK;
 
+        Saved.init(getApplicationContext());
+        new Saved().load_fucktable();
 
-        if(mSettings.contains(APP_PREFERENCES_THEME)) {
-
-            String mCounter = mSettings.getString(APP_PREFERENCES_THEME, "auto");
-
-            if(!mCounter.equals("auto") && !mCounter.equals("white") && !mCounter.equals("black")){
-                mCounter = "auto";
-            }
-
-            switch(mCounter){
-                case "white":
-                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                        setTheme(R.style.Light_statusbar);
-                    } else {
-                        setTheme(R.style.Light);
-                        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-                    }
-                    break;
-                case "black":
-                    setTheme(R.style.Dark);
-                    break;
-                case "pink":
-                    break;
-                case "auto":
-                    switch (currentNightMode) {
-                        case Configuration.UI_MODE_NIGHT_NO:
-                            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                                setTheme(R.style.Light_statusbar);
-                            } else {
-                                setTheme(R.style.Light);
-                                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-                            }
-                            break;
-                        case Configuration.UI_MODE_NIGHT_YES:
-                            setTheme(R.style.Dark);
-                            break;
-                        default:
-                            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                                setTheme(R.style.Light_statusbar);
-                            } else {
-                                setTheme(R.style.Light);
-                                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-                            }
-                            break;
-                        // We don't know what mode we're in, assume notnight
-                    }
-                    break;
-            }
+        switch(APP_PREFERENCES_THEME){
+            case "white":
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                    setTheme(R.style.Light_statusbar);
+                } else {
+                    setTheme(R.style.Light);
+                    getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+                }
+                break;
+            case "black":
+                setTheme(R.style.Dark);
+                break;
+            case "pink":
+                break;
+            case "auto":
+                switch (currentNightMode) {
+                    case Configuration.UI_MODE_NIGHT_NO:
+                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                            setTheme(R.style.Light_statusbar);
+                        } else {
+                            setTheme(R.style.Light);
+                            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+                        }
+                        break;
+                    case Configuration.UI_MODE_NIGHT_YES:
+                        setTheme(R.style.Dark);
+                        break;
+                    default:
+                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                            setTheme(R.style.Light_statusbar);
+                        } else {
+                            setTheme(R.style.Light);
+                            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+                        }
+                        break;
+                    // We don't know what mode we're in, assume notnight
+                }
+                break;
         }
+
+//        if(mSettings.contains(APP_PREFERENCES_THEME)) {
+//
+//            String mCounter = mSettings.getString(APP_PREFERENCES_THEME, "auto");
+//
+//            if(!mCounter.equals("auto") && !mCounter.equals("white") && !mCounter.equals("black")){
+//                mCounter = "auto";
+//            }
+//
+//            switch(mCounter){
+//                case "white":
+//                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+//                        setTheme(R.style.Light_statusbar);
+//                    } else {
+//                        setTheme(R.style.Light);
+//                        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+//                    }
+//                    break;
+//                case "black":
+//                    setTheme(R.style.Dark);
+//                    break;
+//                case "pink":
+//                    break;
+//                case "auto":
+//                    switch (currentNightMode) {
+//                        case Configuration.UI_MODE_NIGHT_NO:
+//                            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+//                                setTheme(R.style.Light_statusbar);
+//                            } else {
+//                                setTheme(R.style.Light);
+//                                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+//                            }
+//                            break;
+//                        case Configuration.UI_MODE_NIGHT_YES:
+//                            setTheme(R.style.Dark);
+//                            break;
+//                        default:
+//                            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+//                                setTheme(R.style.Light_statusbar);
+//                            } else {
+//                                setTheme(R.style.Light);
+//                                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+//                            }
+//                            break;
+//                        // We don't know what mode we're in, assume notnight
+//                    }
+//                    break;
+//            }
+//        }
 
         setContentView(R.layout.activity_fucktable);
 
@@ -709,52 +748,82 @@ public class FUCKTABLE extends Activity {
                         dateText.equals(DATE)) {
 
                     gb_par_fragment.setBackgroundResource(R.drawable.study_timetable_bg_on);
-                    mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
+//                    mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
                     int currentNightMode = getResources().getConfiguration().uiMode
                             & Configuration.UI_MODE_NIGHT_MASK;
 
 
-                    if (mSettings.contains(APP_PREFERENCES_THEME)) {
-
-                        String mCounter = mSettings.getString(APP_PREFERENCES_THEME, "auto");
-
-                        if (!mCounter.equals("auto") && !mCounter.equals("white") && !mCounter.equals("black")) {
-                            mCounter = "auto";
-                        }
-
-                        switch (mCounter) {
-                            case "white":
-                                name_of_par.setTextColor(getResources().getColor(R.color.colorPrimary_light));
-                                docent.setTextColor(getResources().getColor(R.color.colorPrimary_light));
-                                auditoria.setTextColor(getResources().getColor(R.color.colorPrimary_light));
-                                break;
-                            case "black":
-                                name_of_par.setTextColor(getResources().getColor(R.color.colorPrimary));
-                                docent.setTextColor(getResources().getColor(R.color.colorPrimary));
-                                auditoria.setTextColor(getResources().getColor(R.color.colorPrimary));
-                                break;
-                            case "auto":
-                                switch (currentNightMode) {
-                                    case Configuration.UI_MODE_NIGHT_NO:
-                                        name_of_par.setTextColor(getResources().getColor(R.color.colorPrimary_light));
-                                        docent.setTextColor(getResources().getColor(R.color.colorPrimary_light));
-                                        auditoria.setTextColor(getResources().getColor(R.color.colorPrimary_light));
-                                        break;
-                                    case Configuration.UI_MODE_NIGHT_YES:
-                                        name_of_par.setTextColor(getResources().getColor(R.color.colorPrimary));
-                                        docent.setTextColor(getResources().getColor(R.color.colorPrimary));
-                                        auditoria.setTextColor(getResources().getColor(R.color.colorPrimary));
-                                        break;
-                                    default:
-                                        name_of_par.setTextColor(getResources().getColor(R.color.colorPrimary_light));
-                                        docent.setTextColor(getResources().getColor(R.color.colorPrimary_light));
-                                        auditoria.setTextColor(getResources().getColor(R.color.colorPrimary_light));
-                                        break;
-                                }
-                                break;
-                        }
+//                    if (mSettings.contains(APP_PREFERENCES_THEME)) {
+//
+//                        String mCounter = mSettings.getString(APP_PREFERENCES_THEME, "auto");
+//
+//                        if (!mCounter.equals("auto") && !mCounter.equals("white") && !mCounter.equals("black")) {
+//                            mCounter = "auto";
+//                        }
+//
+//                        switch (APP_PREFERENCES_THEME) {
+//                            case "white":
+//                                name_of_par.setTextColor(getResources().getColor(R.color.colorPrimary_light));
+//                                docent.setTextColor(getResources().getColor(R.color.colorPrimary_light));
+//                                auditoria.setTextColor(getResources().getColor(R.color.colorPrimary_light));
+//                                break;
+//                            case "black":
+//                                name_of_par.setTextColor(getResources().getColor(R.color.colorPrimary));
+//                                docent.setTextColor(getResources().getColor(R.color.colorPrimary));
+//                                auditoria.setTextColor(getResources().getColor(R.color.colorPrimary));
+//                                break;
+//                            case "auto":
+//                                switch (currentNightMode) {
+//                                    case Configuration.UI_MODE_NIGHT_NO:
+//                                        name_of_par.setTextColor(getResources().getColor(R.color.colorPrimary_light));
+//                                        docent.setTextColor(getResources().getColor(R.color.colorPrimary_light));
+//                                        auditoria.setTextColor(getResources().getColor(R.color.colorPrimary_light));
+//                                        break;
+//                                    case Configuration.UI_MODE_NIGHT_YES:
+//                                        name_of_par.setTextColor(getResources().getColor(R.color.colorPrimary));
+//                                        docent.setTextColor(getResources().getColor(R.color.colorPrimary));
+//                                        auditoria.setTextColor(getResources().getColor(R.color.colorPrimary));
+//                                        break;
+//                                    default:
+//                                        name_of_par.setTextColor(getResources().getColor(R.color.colorPrimary_light));
+//                                        docent.setTextColor(getResources().getColor(R.color.colorPrimary_light));
+//                                        auditoria.setTextColor(getResources().getColor(R.color.colorPrimary_light));
+//                                        break;
+//                                }
+//                                break;
+//                        }
+//                    }
+                    switch (APP_PREFERENCES_THEME) {
+                        case "white":
+                            name_of_par.setTextColor(getResources().getColor(R.color.colorPrimary_light));
+                            docent.setTextColor(getResources().getColor(R.color.colorPrimary_light));
+                            auditoria.setTextColor(getResources().getColor(R.color.colorPrimary_light));
+                            break;
+                        case "black":
+                            name_of_par.setTextColor(getResources().getColor(R.color.colorPrimary));
+                            docent.setTextColor(getResources().getColor(R.color.colorPrimary));
+                            auditoria.setTextColor(getResources().getColor(R.color.colorPrimary));
+                            break;
+                        case "auto":
+                            switch (currentNightMode) {
+                                case Configuration.UI_MODE_NIGHT_NO:
+                                    name_of_par.setTextColor(getResources().getColor(R.color.colorPrimary_light));
+                                    docent.setTextColor(getResources().getColor(R.color.colorPrimary_light));
+                                    auditoria.setTextColor(getResources().getColor(R.color.colorPrimary_light));
+                                    break;
+                                case Configuration.UI_MODE_NIGHT_YES:
+                                    name_of_par.setTextColor(getResources().getColor(R.color.colorPrimary));
+                                    docent.setTextColor(getResources().getColor(R.color.colorPrimary));
+                                    auditoria.setTextColor(getResources().getColor(R.color.colorPrimary));
+                                    break;
+                                default:
+                                    name_of_par.setTextColor(getResources().getColor(R.color.colorPrimary_light));
+                                    docent.setTextColor(getResources().getColor(R.color.colorPrimary_light));
+                                    auditoria.setTextColor(getResources().getColor(R.color.colorPrimary_light));
+                                    break;
+                            }
+                            break;
                     }
-
                 }
 
 
@@ -2165,13 +2234,14 @@ public class FUCKTABLE extends Activity {
                             Log.d("mLog","0 rows");
                         cursor.close();
 
-                        String mPremium = mSettings.getString(APP_PREFERENCES_PREMIUM, "false");
+//                        String mPremium = mSettings.getString(APP_PREFERENCES_PREMIUM, "false");
 
-                        if (!mPremium.equals("true") && !mPremium.equals("false")){
-                            mPremium = "false";
-                        }
+//                        if (!mPremium.equals("true") && !mPremium.equals("false")){
+//                            mPremium = "false";
+//                        }
 
-                        if(!mPremium.equals("false")){
+
+                        if(!APP_PREFERENCES_PREMIUM.equals("false")){
                             note_dialog.show();
                         } else {
                             dialog.show();

@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.Toolbar;
 
 import org.w3c.dom.Text;
@@ -24,6 +25,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 
 
@@ -32,6 +34,12 @@ public class group_list extends Activity implements View.OnClickListener {
     private Handler h;
     public static String APP_PREFERENCES;
     public static String APP_PREFERENCES_THEME; // выбранная тема
+
+    public static String APP_PREFERENCES_STARTFRAME;
+    public static String APP_PREFERENCES_START_UNI;
+    public static String APP_PREFERENCES_START_GROUP;
+    public static String APP_PREFERENCES_LINK;
+
 
     private LinearLayout linearLayout;
 
@@ -52,63 +60,112 @@ public class group_list extends Activity implements View.OnClickListener {
     public String destFileName = "list.txt";
     SharedPreferences mSettings;
 
+    public String mStart;
+    public String mGroup;
+    public String mLink;
+    public String mUni;
+
     @Override
     protected void onRestart(){
         super.onRestart();
 
+        Saved.init(getApplicationContext());
+        new Saved().load_grouplist();
+
         int currentNightMode = getResources().getConfiguration().uiMode
                 & Configuration.UI_MODE_NIGHT_MASK;
 
-        mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
+//        mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
 
-        if (mSettings.contains(APP_PREFERENCES_THEME)) {
-
-            String mCounter = mSettings.getString(APP_PREFERENCES_THEME, "auto");
-
-            if(!mCounter.equals("auto") && !mCounter.equals("white") && !mCounter.equals("black")){
-                mCounter = "auto";
-            }
-
-            switch (mCounter) {
-                case "white":
-                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                        setTheme(R.style.Light_statusbar);
-                    } else {
-                        setTheme(R.style.Light);
-                        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-                    }
-                    break;
-                case "black":
-                    setTheme(R.style.Dark);
-                    break;
-                case "pink":
-                    break;
-                case "auto":
-                    switch (currentNightMode) {
-                        case Configuration.UI_MODE_NIGHT_NO:
-                            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                                setTheme(R.style.Light_statusbar);
-                            } else {
-                                setTheme(R.style.Light);
-                                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-                            }
-                            break;
-                        case Configuration.UI_MODE_NIGHT_YES:
-                            setTheme(R.style.Dark);
-                            break;
-                        default:
-                            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                                setTheme(R.style.Light_statusbar);
-                            } else {
-                                setTheme(R.style.Light);
-                                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-                            }
-                            break;
-                        // We don't know what mode we're in, assume notnight
-                    }
-                    break;
-            }
+        switch (APP_PREFERENCES_THEME) {
+            case "white":
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                    setTheme(R.style.Light_statusbar);
+                } else {
+                    setTheme(R.style.Light);
+                    getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+                }
+                break;
+            case "black":
+                setTheme(R.style.Dark);
+                break;
+            case "pink":
+                break;
+            case "auto":
+                switch (currentNightMode) {
+                    case Configuration.UI_MODE_NIGHT_NO:
+                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                            setTheme(R.style.Light_statusbar);
+                        } else {
+                            setTheme(R.style.Light);
+                            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+                        }
+                        break;
+                    case Configuration.UI_MODE_NIGHT_YES:
+                        setTheme(R.style.Dark);
+                        break;
+                    default:
+                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                            setTheme(R.style.Light_statusbar);
+                        } else {
+                            setTheme(R.style.Light);
+                            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+                        }
+                        break;
+                    // We don't know what mode we're in, assume notnight
+                }
+                break;
         }
+
+
+//        if (mSettings.contains(APP_PREFERENCES_THEME)) {
+//
+//            String mCounter = mSettings.getString(APP_PREFERENCES_THEME, "auto");
+//
+//            if(!mCounter.equals("auto") && !mCounter.equals("white") && !mCounter.equals("black")){
+//                mCounter = "auto";
+//            }
+//
+//            switch (mCounter) {
+//                case "white":
+//                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+//                        setTheme(R.style.Light_statusbar);
+//                    } else {
+//                        setTheme(R.style.Light);
+//                        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+//                    }
+//                    break;
+//                case "black":
+//                    setTheme(R.style.Dark);
+//                    break;
+//                case "pink":
+//                    break;
+//                case "auto":
+//                    switch (currentNightMode) {
+//                        case Configuration.UI_MODE_NIGHT_NO:
+//                            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+//                                setTheme(R.style.Light_statusbar);
+//                            } else {
+//                                setTheme(R.style.Light);
+//                                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+//                            }
+//                            break;
+//                        case Configuration.UI_MODE_NIGHT_YES:
+//                            setTheme(R.style.Dark);
+//                            break;
+//                        default:
+//                            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+//                                setTheme(R.style.Light_statusbar);
+//                            } else {
+//                                setTheme(R.style.Light);
+//                                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+//                            }
+//                            break;
+//                        // We don't know what mode we're in, assume notnight
+//                    }
+//                    break;
+//            }
+//        }
 
 
 
@@ -127,6 +184,7 @@ public class group_list extends Activity implements View.OnClickListener {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.putExtra("back", "true");
                 startActivity(intent);
             }
         });
@@ -182,60 +240,103 @@ public class group_list extends Activity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Saved.init(getApplicationContext());
+        new Saved().load_grouplist();
+
         int currentNightMode = getResources().getConfiguration().uiMode
                 & Configuration.UI_MODE_NIGHT_MASK;
 
-        mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
+//        mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
+//
+//        if (mSettings.contains(APP_PREFERENCES_THEME)) {
+//
+//            String mCounter = mSettings.getString(APP_PREFERENCES_THEME, "auto");
+//
+//            if(!mCounter.equals("auto") && !mCounter.equals("white") && !mCounter.equals("black")){
+//                mCounter = "auto";
+//            }
+//
+//            switch (mCounter) {
+//                case "white":
+//                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+//                        setTheme(R.style.Light_statusbar);
+//                    } else {
+//                        setTheme(R.style.Light);
+//                        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+//                    }
+//                    break;
+//                case "black":
+//                    setTheme(R.style.Dark);
+//                    break;
+//                case "pink":
+//                    break;
+//                case "auto":
+//                    switch (currentNightMode) {
+//                        case Configuration.UI_MODE_NIGHT_NO:
+//                            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+//                                setTheme(R.style.Light_statusbar);
+//                            } else {
+//                                setTheme(R.style.Light);
+//                                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+//                            }
+//                            break;
+//                        case Configuration.UI_MODE_NIGHT_YES:
+//                            setTheme(R.style.Dark);
+//                            break;
+//                        default:
+//                            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+//                                setTheme(R.style.Light_statusbar);
+//                            } else {
+//                                setTheme(R.style.Light);
+//                                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+//                            }
+//                            break;
+//                        // We don't know what mode we're in, assume notnight
+//                    }
+//                    break;
+//            }
+//        }
 
-        if (mSettings.contains(APP_PREFERENCES_THEME)) {
-
-            String mCounter = mSettings.getString(APP_PREFERENCES_THEME, "auto");
-
-            if(!mCounter.equals("auto") && !mCounter.equals("white") && !mCounter.equals("black")){
-                mCounter = "auto";
-            }
-
-            switch (mCounter) {
-                case "white":
-                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                        setTheme(R.style.Light_statusbar);
-                    } else {
-                        setTheme(R.style.Light);
-                        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-                    }
-                    break;
-                case "black":
-                    setTheme(R.style.Dark);
-                    break;
-                case "pink":
-                    break;
-                case "auto":
-                    switch (currentNightMode) {
-                        case Configuration.UI_MODE_NIGHT_NO:
-                            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                                setTheme(R.style.Light_statusbar);
-                            } else {
-                                setTheme(R.style.Light);
-                                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-                            }
-                            break;
-                        case Configuration.UI_MODE_NIGHT_YES:
-                            setTheme(R.style.Dark);
-                            break;
-                        default:
-                            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                                setTheme(R.style.Light_statusbar);
-                            } else {
-                                setTheme(R.style.Light);
-                                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-                            }
-                            break;
-                        // We don't know what mode we're in, assume notnight
-                    }
-                    break;
-            }
+        switch (APP_PREFERENCES_THEME) {
+            case "white":
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                    setTheme(R.style.Light_statusbar);
+                } else {
+                    setTheme(R.style.Light);
+                    getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+                }
+                break;
+            case "black":
+                setTheme(R.style.Dark);
+                break;
+            case "pink":
+                break;
+            case "auto":
+                switch (currentNightMode) {
+                    case Configuration.UI_MODE_NIGHT_NO:
+                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                            setTheme(R.style.Light_statusbar);
+                        } else {
+                            setTheme(R.style.Light);
+                            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+                        }
+                        break;
+                    case Configuration.UI_MODE_NIGHT_YES:
+                        setTheme(R.style.Dark);
+                        break;
+                    default:
+                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                            setTheme(R.style.Light_statusbar);
+                        } else {
+                            setTheme(R.style.Light);
+                            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+                        }
+                        break;
+                    // We don't know what mode we're in, assume notnight
+                }
+                break;
         }
-
 
         setContentView(R.layout.group_list);
 
@@ -458,6 +559,15 @@ public class group_list extends Activity implements View.OnClickListener {
                 }
             });
 
+            group1.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    int resourceID = (int) v.getTag();
+                    status_check(resourceID);
+                    return true;
+                }
+            });
+
             countID++;
             if (i+1 < number.size()){
                 group2.setText(number.get(i+1));
@@ -472,6 +582,15 @@ public class group_list extends Activity implements View.OnClickListener {
                         intent.putExtra("instit", institut_name);
                         intent.putExtra("key", number.get(resourceID));
                         startActivity(intent);
+                    }
+                });
+
+                group2.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        int resourceID = (int) v.getTag();
+                        status_check(resourceID);
+                        return true;
                     }
                 });
 
@@ -495,6 +614,15 @@ public class group_list extends Activity implements View.OnClickListener {
                     }
                 });
 
+                group3.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        int resourceID = (int) v.getTag();
+                        status_check(resourceID);
+                        return true;
+                    }
+                });
+
                 countID++;
             } else{
                 group3.setVisibility(View.GONE);
@@ -504,5 +632,45 @@ public class group_list extends Activity implements View.OnClickListener {
         }
 
     }
+
+    private void status_check(int resourceID) {
+
+//        mStart = mSettings.getString(APP_PREFERENCES_STARTFRAME, "main");
+//        mGroup = mSettings.getString(APP_PREFERENCES_START_GROUP, "000");
+//        mLink = mSettings.getString(APP_PREFERENCES_LINK, "111");
+//        mUni = mSettings.getString(APP_PREFERENCES_START_UNI, "1");
+
+
+
+//        Log.i("STARTOVLA", mStart + " " + mGroup + " " + mLink + " " + mUni);
+
+        if (APP_PREFERENCES_LINK.equals(link_list.get(resourceID))
+        && APP_PREFERENCES_START_UNI.equals(institut_name)
+        && APP_PREFERENCES_START_GROUP.equals(number.get(resourceID)))
+            {
+                Toast.makeText(this, "запуск по умолчанию", Toast.LENGTH_SHORT).show();
+                APP_PREFERENCES_STARTFRAME = "main";
+                APP_PREFERENCES_START_GROUP = "standart";
+                APP_PREFERENCES_START_UNI = "0";
+                APP_PREFERENCES_LINK = "0";
+                new Saved().save_grouplist();
+            } else {
+                APP_PREFERENCES_STARTFRAME = "table";
+            APP_PREFERENCES_START_GROUP = number.get(resourceID);
+            APP_PREFERENCES_LINK = link_list.get(resourceID);
+            APP_PREFERENCES_START_UNI = institut_name;
+            new Saved().save_grouplist();
+            Toast.makeText(this, "Открываю расписание " + APP_PREFERENCES_START_GROUP + " при старте", Toast.LENGTH_SHORT).show();
+        }
+
+
+        new Saved().load_grouplist();
+        Log.i("STARTOVLA", APP_PREFERENCES_STARTFRAME + " " + APP_PREFERENCES_START_GROUP + " " + APP_PREFERENCES_LINK + " " + APP_PREFERENCES_START_UNI);
+
+
+
+
+    }
+
 
 }

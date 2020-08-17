@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public static String APP_PREFERENCES;
     public static String APP_PREFERENCES_THEME; // выбранная тема
-    public static String APP_PREFERENCES_NEW;
+    public static Boolean firstrun;
 
     SharedPreferences mSettings;
     public ArrayList<String> number;
@@ -137,20 +137,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onResume() {
         super.onResume();
 
-        if (mSettings.getBoolean("firstrun", true)) {
+        Saved.init(getApplicationContext());
+        new Saved().load_main();
+
+        if (firstrun) {
             // При первом запуске (или если юзер удалял все данные приложения)
             // мы попадаем сюда. Делаем что-то
-            mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = mSettings.edit();
-            editor.putString(APP_PREFERENCES_THEME, "auto");
-            editor.apply();
+            firstrun = false;
+            new Saved().save_main();
             Intent i = getBaseContext().getPackageManager()
                     .getLaunchIntentForPackage( getBaseContext().getPackageName() );
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(i);
             //и после действия записывам false в переменную firstrun
             //Итого при следующих запусках этот код не вызывается.
-            mSettings.edit().putBoolean("firstrun", false).commit();
+//            mSettings.edit().putBoolean("firstrun", false).commit();
+
         }
     }
 
@@ -160,65 +162,107 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         int currentNightMode = getResources().getConfiguration().uiMode
                 & Configuration.UI_MODE_NIGHT_MASK;
-        mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
 
-        if(mSettings.contains(APP_PREFERENCES_THEME)) {
+        Saved.init(getApplicationContext());
+        new Saved().load_main();
 
-            String mCounter = mSettings.getString(APP_PREFERENCES_THEME, "auto");
+//        mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
 
-
-            if(!mCounter.equals("auto") && !mCounter.equals("white") && !mCounter.equals("black")){
-                mCounter = "auto";
-            }
-
-
-            switch(mCounter){
-                case "white":
-                    Log.i("Theme", mCounter );
-                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                        setTheme(R.style.Light_statusbar);
-                    } else {
-                        setTheme(R.style.Light);
-                        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-                    }
-                    break;
-                case "black":
-                    Log.i("Theme", mCounter );
-                    setTheme(R.style.Dark);
-                    break;
-                case "pink":
-                    break;
-                case "auto":
-                    Log.i("Theme", mCounter );
-                    switch (currentNightMode) {
-                        case Configuration.UI_MODE_NIGHT_NO:
-                            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                                setTheme(R.style.Light_statusbar);
-                            } else {
-                                setTheme(R.style.Light);
-                                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-                            }
-                            break;
-                        case Configuration.UI_MODE_NIGHT_YES:
-                            setTheme(R.style.Dark);
-                            break;
-                        default:
-                            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                                setTheme(R.style.Light_statusbar);
-                            } else {
-                                setTheme(R.style.Light);
-                                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-                            }
-                            break;
-                        // We don't know what mode we're in, assume notnight
-                    }
-                    break;
-                default:
-                    Log.i("Theme", mCounter );
-                    break;
-            }
+//        if(mSettings.contains(APP_PREFERENCES_THEME)) {
+//
+//            String mCounter = mSettings.getString(APP_PREFERENCES_THEME, "auto");
+//
+//
+//            if(!mCounter.equals("auto") && !mCounter.equals("white") && !mCounter.equals("black")){
+//                mCounter = "auto";
+//            }
+//
+//
+//            switch(mCounter){
+//                case "white":
+//                    Log.i("Theme", mCounter );
+//                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+//                        setTheme(R.style.Light_statusbar);
+//                    } else {
+//                        setTheme(R.style.Light);
+//                        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+//                    }
+//                    break;
+//                case "black":
+//                    Log.i("Theme", mCounter );
+//                    setTheme(R.style.Dark);
+//                    break;
+//                case "pink":
+//                    break;
+//                case "auto":
+//                    Log.i("Theme", mCounter );
+//                    switch (currentNightMode) {
+//                        case Configuration.UI_MODE_NIGHT_NO:
+//                            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+//                                setTheme(R.style.Light_statusbar);
+//                            } else {
+//                                setTheme(R.style.Light);
+//                                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+//                            }
+//                            break;
+//                        case Configuration.UI_MODE_NIGHT_YES:
+//                            setTheme(R.style.Dark);
+//                            break;
+//                        default:
+//                            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+//                                setTheme(R.style.Light_statusbar);
+//                            } else {
+//                                setTheme(R.style.Light);
+//                                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+//                            }
+//                            break;
+//                        // We don't know what mode we're in, assume notnight
+//                    }
+//                    break;
+//                default:
+//                    Log.i("Theme", mCounter );
+//                    break;
+//            }
+//        }
+        switch(APP_PREFERENCES_THEME){
+            case "white":
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                    setTheme(R.style.Light_statusbar);
+                } else {
+                    setTheme(R.style.Light);
+                    getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+                }
+                break;
+            case "black":
+                setTheme(R.style.Dark);
+                break;
+            case "pink":
+                break;
+            case "auto":
+                switch (currentNightMode) {
+                    case Configuration.UI_MODE_NIGHT_NO:
+                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                            setTheme(R.style.Light_statusbar);
+                        } else {
+                            setTheme(R.style.Light);
+                            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+                        }
+                        break;
+                    case Configuration.UI_MODE_NIGHT_YES:
+                        setTheme(R.style.Dark);
+                        break;
+                    default:
+                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                            setTheme(R.style.Light_statusbar);
+                        } else {
+                            setTheme(R.style.Light);
+                            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+                        }
+                        break;
+                    // We don't know what mode we're in, assume notnight
+                }
+                break;
         }
-
 
         setContentView(R.layout.activity_main);
 
@@ -270,67 +314,109 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         @Override
         protected void onCreate(Bundle savedInstanceState) {
 
+            Saved.init(getApplicationContext());
+            new Saved().load_main();
 
-            mSettings = getSharedPreferences("dev.prokrostinatorbl.raspisanie", MODE_PRIVATE);
+//            mSettings = getSharedPreferences("dev.prokrostinatorbl.raspisanie", MODE_PRIVATE);
 
             int currentNightMode = getResources().getConfiguration().uiMode
                     & Configuration.UI_MODE_NIGHT_MASK;
-            mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
+//            mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
 
-            if(mSettings.contains(APP_PREFERENCES_THEME)) {
+//            if(mSettings.contains(APP_PREFERENCES_THEME)) {
+//
+//                String mCounter = mSettings.getString(APP_PREFERENCES_THEME, "auto");
+//
+//                if(!mCounter.equals("auto") && !mCounter.equals("white") && !mCounter.equals("black")){
+//                    mCounter = "auto";
+//                }
+//
+//                switch(mCounter){
+//                    case "white":
+//                        Log.i("Theme", mCounter );
+//
+//                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+//                            setTheme(R.style.Light_statusbar);
+//                        } else {
+//                            setTheme(R.style.Light);
+//                            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+//                        }
+//                        break;
+//                    case "black":
+//                        Log.i("Theme", mCounter );
+//                        setTheme(R.style.Dark);
+//                        break;
+//                    case "pink":
+//                        break;
+//                    case "auto":
+//                        Log.i("Theme", mCounter );
+//                        switch (currentNightMode) {
+//                            case Configuration.UI_MODE_NIGHT_NO:
+//                                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+//                                    setTheme(R.style.Light_statusbar);
+//                                } else {
+//                                    setTheme(R.style.Light);
+//                                    getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+//                                }
+//                                break;
+//                            case Configuration.UI_MODE_NIGHT_YES:
+//                                setTheme(R.style.Dark);
+//                                break;
+//                            default:
+//                                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+//                                    setTheme(R.style.Light_statusbar);
+//                                } else {
+//                                    setTheme(R.style.Light);
+//                                    getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+//                                }
+//                                break;
+//                            // We don't know what mode we're in, assume notnight
+//                        }
+//                        break;
+//                        default:
+//                            Log.i("Theme", mCounter);
+//                            break;
+//                }
+//            }
 
-                String mCounter = mSettings.getString(APP_PREFERENCES_THEME, "auto");
-
-                if(!mCounter.equals("auto") && !mCounter.equals("white") && !mCounter.equals("black")){
-                    mCounter = "auto";
-                }
-
-                switch(mCounter){
-                    case "white":
-                        Log.i("Theme", mCounter );
-
-                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                            setTheme(R.style.Light_statusbar);
-                        } else {
-                            setTheme(R.style.Light);
-                            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-                        }
-                        break;
-                    case "black":
-                        Log.i("Theme", mCounter );
-                        setTheme(R.style.Dark);
-                        break;
-                    case "pink":
-                        break;
-                    case "auto":
-                        Log.i("Theme", mCounter );
-                        switch (currentNightMode) {
-                            case Configuration.UI_MODE_NIGHT_NO:
-                                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                                    setTheme(R.style.Light_statusbar);
-                                } else {
-                                    setTheme(R.style.Light);
-                                    getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-                                }
-                                break;
-                            case Configuration.UI_MODE_NIGHT_YES:
-                                setTheme(R.style.Dark);
-                                break;
-                            default:
-                                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                                    setTheme(R.style.Light_statusbar);
-                                } else {
-                                    setTheme(R.style.Light);
-                                    getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-                                }
-                                break;
-                            // We don't know what mode we're in, assume notnight
-                        }
-                        break;
-                        default:
-                            Log.i("Theme", mCounter);
+            switch(APP_PREFERENCES_THEME){
+                case "white":
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                        setTheme(R.style.Light_statusbar);
+                    } else {
+                        setTheme(R.style.Light);
+                        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+                    }
+                    break;
+                case "black":
+                    setTheme(R.style.Dark);
+                    break;
+                case "pink":
+                    break;
+                case "auto":
+                    switch (currentNightMode) {
+                        case Configuration.UI_MODE_NIGHT_NO:
+                            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                                setTheme(R.style.Light_statusbar);
+                            } else {
+                                setTheme(R.style.Light);
+                                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+                            }
                             break;
-                }
+                        case Configuration.UI_MODE_NIGHT_YES:
+                            setTheme(R.style.Dark);
+                            break;
+                        default:
+                            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                                setTheme(R.style.Light_statusbar);
+                            } else {
+                                setTheme(R.style.Light);
+                                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+                            }
+                            break;
+                        // We don't know what mode we're in, assume notnight
+                    }
+                    break;
             }
 
             super.onCreate(savedInstanceState);
@@ -425,48 +511,81 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 int currentNightMode = getResources().getConfiguration().uiMode
                                         & Configuration.UI_MODE_NIGHT_MASK;
 
-                                mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
+//                                mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
+//
+//                                if(mSettings.contains(APP_PREFERENCES_THEME)) {
+//
+//                                    String mCounter = mSettings.getString(APP_PREFERENCES_THEME, "auto");
+//
+//                                    if(!mCounter.equals("auto") && !mCounter.equals("white") && !mCounter.equals("black")){
+//                                        mCounter = "auto";
+//                                    }
+//
+//                                    switch(mCounter){
+//                                        case "white":
+//                                            b.setTextColor(getResources().getColor(R.color.primaryText_light));
+//                                            break;
+//                                        case "black":
+//                                            b.setTextColor(getResources().getColor(R.color.primaryText));
+//                                            break;
+//                                        case "pink":
+//                                            break;
+//                                        case "auto":
+//                                            switch (currentNightMode) {
+//                                                case Configuration.UI_MODE_NIGHT_NO:
+//                                                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+//                                                        b.setTextColor(getResources().getColor(R.color.primaryText_light));
+//                                                    } else {
+//                                                        b.setTextColor(getResources().getColor(R.color.primaryText_light));
+//                                                    }
+//                                                    break;
+//                                                case Configuration.UI_MODE_NIGHT_YES:
+//                                                    b.setTextColor(getResources().getColor(R.color.primaryText));
+//                                                    break;
+//                                                default:
+//                                                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+//                                                        b.setTextColor(getResources().getColor(R.color.primaryText_light));
+//                                                    } else {
+//                                                        b.setTextColor(getResources().getColor(R.color.primaryText_light));
+//                                                    }
+//                                                    break;
+//                                                // We don't know what mode we're in, assume notnight
+//                                            }
+//                                            break;
+//                                    }
+//                                }
 
-                                if(mSettings.contains(APP_PREFERENCES_THEME)) {
-
-                                    String mCounter = mSettings.getString(APP_PREFERENCES_THEME, "auto");
-
-                                    if(!mCounter.equals("auto") && !mCounter.equals("white") && !mCounter.equals("black")){
-                                        mCounter = "auto";
-                                    }
-
-                                    switch(mCounter){
-                                        case "white":
-                                            b.setTextColor(getResources().getColor(R.color.primaryText_light));
-                                            break;
-                                        case "black":
-                                            b.setTextColor(getResources().getColor(R.color.primaryText));
-                                            break;
-                                        case "pink":
-                                            break;
-                                        case "auto":
-                                            switch (currentNightMode) {
-                                                case Configuration.UI_MODE_NIGHT_NO:
-                                                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                                                        b.setTextColor(getResources().getColor(R.color.primaryText_light));
-                                                    } else {
-                                                        b.setTextColor(getResources().getColor(R.color.primaryText_light));
-                                                    }
-                                                    break;
-                                                case Configuration.UI_MODE_NIGHT_YES:
-                                                    b.setTextColor(getResources().getColor(R.color.primaryText));
-                                                    break;
-                                                default:
-                                                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                                                        b.setTextColor(getResources().getColor(R.color.primaryText_light));
-                                                    } else {
-                                                        b.setTextColor(getResources().getColor(R.color.primaryText_light));
-                                                    }
-                                                    break;
-                                                // We don't know what mode we're in, assume notnight
-                                            }
-                                            break;
-                                    }
+                                switch(APP_PREFERENCES_THEME){
+                                    case "white":
+                                        b.setTextColor(getResources().getColor(R.color.primaryText_light));
+                                        break;
+                                    case "black":
+                                        b.setTextColor(getResources().getColor(R.color.primaryText));
+                                        break;
+                                    case "pink":
+                                        break;
+                                    case "auto":
+                                        switch (currentNightMode) {
+                                            case Configuration.UI_MODE_NIGHT_NO:
+                                                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                                                    b.setTextColor(getResources().getColor(R.color.primaryText_light));
+                                                } else {
+                                                    b.setTextColor(getResources().getColor(R.color.primaryText_light));
+                                                }
+                                                break;
+                                            case Configuration.UI_MODE_NIGHT_YES:
+                                                b.setTextColor(getResources().getColor(R.color.primaryText));
+                                                break;
+                                            default:
+                                                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                                                    b.setTextColor(getResources().getColor(R.color.primaryText_light));
+                                                } else {
+                                                    b.setTextColor(getResources().getColor(R.color.primaryText_light));
+                                                }
+                                                break;
+                                            // We don't know what mode we're in, assume notnight
+                                        }
+                                        break;
                                 }
 
                                 b.setOnClickListener(new View.OnClickListener() {

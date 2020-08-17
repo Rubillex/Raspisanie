@@ -34,20 +34,11 @@ import java.util.List;
 
 public class app_info extends AppCompatActivity {
 
-    public static String APP_PREFERENCES;
-    public static String APP_PREFERENCES_THEME; // выбранная тема
-
-    SharedPreferences mSettings;
+    public static String APP_PREFERENCES_THEME = "auto";
 
     private Toolbar toolbar;
 
-    Button logout;
-    TextView donate;
 
-    Dialog donate_dialog;
-
-    ClipboardManager clipboardManager;
-    ClipData clipData;
 
 
     @Override
@@ -59,62 +50,101 @@ public class app_info extends AppCompatActivity {
                 & Configuration.UI_MODE_NIGHT_MASK;
 
 
-        mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
+//        mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
 
-        if(mSettings.contains(APP_PREFERENCES_THEME)) {
+        Saved.init(getApplicationContext());
+        new Saved().load_app_info();
 
-            String mCounter = mSettings.getString(APP_PREFERENCES_THEME, "auto");
-
-            if(!mCounter.equals("auto") && !mCounter.equals("white") && !mCounter.equals("black")){
-                mCounter = "auto";
-            }
-
-            switch(mCounter){
-                case "white":
-                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                        setTheme(R.style.Light_statusbar);
-                    } else {
-                        setTheme(R.style.Light);
-                        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-                    }
-                    break;
-                case "black":
-                    setTheme(R.style.Dark);
-                    break;
-                case "pink":
-                    break;
-                case "auto":
-                    switch (currentNightMode) {
-                        case Configuration.UI_MODE_NIGHT_NO:
-                            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                                setTheme(R.style.Light_statusbar);
-                            } else {
-                                setTheme(R.style.Light);
-                                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-                            }
-                            break;
-                        case Configuration.UI_MODE_NIGHT_YES:
-                            setTheme(R.style.Dark);
-                            break;
-                        default:
-                            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                                setTheme(R.style.Light_statusbar);
-                            } else {
-                                setTheme(R.style.Light);
-                                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-                            }
-                            break;
-                        // We don't know what mode we're in, assume notnight
-                    }
-                    break;
-            }
+        switch(APP_PREFERENCES_THEME){
+            case "white":
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                    setTheme(R.style.Light_statusbar);
+                } else {
+                    setTheme(R.style.Light);
+                    getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+                }
+                break;
+            case "black":
+                setTheme(R.style.Dark);
+                break;
+            case "pink":
+                break;
+            case "auto":
+                switch (currentNightMode) {
+                    case Configuration.UI_MODE_NIGHT_NO:
+                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                            setTheme(R.style.Light_statusbar);
+                        } else {
+                            setTheme(R.style.Light);
+                            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+                        }
+                        break;
+                    case Configuration.UI_MODE_NIGHT_YES:
+                        setTheme(R.style.Dark);
+                        break;
+                    default:
+                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                            setTheme(R.style.Light_statusbar);
+                        } else {
+                            setTheme(R.style.Light);
+                            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+                        }
+                        break;
+                    // We don't know what mode we're in, assume notnight
+                }
+                break;
         }
-        setContentView(R.layout.app_info);
 
-        donate_dialog = new Dialog(this);
-        donate_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        donate_dialog.setContentView(R.layout.donate);
-        donate_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+//        if(mSettings.contains(APP_PREFERENCES_THEME)) {
+//
+//            String mCounter = mSettings.getString(APP_PREFERENCES_THEME, "auto");
+//
+//            if(!mCounter.equals("auto") && !mCounter.equals("white") && !mCounter.equals("black")){
+//                mCounter = "auto";
+//            }
+//
+//            switch(APP_PREFERENCES_THEME){
+//                case "white":
+//                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+//                        setTheme(R.style.Light_statusbar);
+//                    } else {
+//                        setTheme(R.style.Light);
+//                        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+//                    }
+//                    break;
+//                case "black":
+//                    setTheme(R.style.Dark);
+//                    break;
+//                case "pink":
+//                    break;
+//                case "auto":
+//                    switch (currentNightMode) {
+//                        case Configuration.UI_MODE_NIGHT_NO:
+//                            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+//                                setTheme(R.style.Light_statusbar);
+//                            } else {
+//                                setTheme(R.style.Light);
+//                                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+//                            }
+//                            break;
+//                        case Configuration.UI_MODE_NIGHT_YES:
+//                            setTheme(R.style.Dark);
+//                            break;
+//                        default:
+//                            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+//                                setTheme(R.style.Light_statusbar);
+//                            } else {
+//                                setTheme(R.style.Light);
+//                                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+//                            }
+//                            break;
+//                        // We don't know what mode we're in, assume notnight
+//                    }
+//                    break;
+//            }
+//        }
+        setContentView(R.layout.app_info);
 
         toolbar  = (Toolbar) findViewById(R.id.my_toolbar);
         TextView toolbar_text = (TextView) findViewById(R.id.toolbar_text);
@@ -135,12 +165,6 @@ public class app_info extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        GoogleSignInAccount signInAccount = GoogleSignIn.getLastSignedInAccount(this);
-        if(signInAccount != null){
-//            name.setText(signInAccount.getDisplayName());
-//            mail.setText(signInAccount.getEmail());
-        }
 
 
     }
