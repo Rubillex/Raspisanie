@@ -3,7 +3,6 @@
 
     <style name="Light" parent="Theme.MaterialComponents.Light.NoActionBar">
 
-
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowContentOverlay">@null</item>
 
@@ -21,7 +20,6 @@
     </style>
 
     <style name="Light_statusbar" parent="Theme.MaterialComponents.Light.NoActionBar">
-
 
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowContentOverlay">@null</item>
@@ -56,6 +54,5 @@
 
         <item name="android:listDivider">@color/line_dark</item>
     </style>
-
 
 </resources>

@@ -321,63 +321,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             int currentNightMode = getResources().getConfiguration().uiMode
                     & Configuration.UI_MODE_NIGHT_MASK;
-//            mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
-
-//            if(mSettings.contains(APP_PREFERENCES_THEME)) {
-//
-//                String mCounter = mSettings.getString(APP_PREFERENCES_THEME, "auto");
-//
-//                if(!mCounter.equals("auto") && !mCounter.equals("white") && !mCounter.equals("black")){
-//                    mCounter = "auto";
-//                }
-//
-//                switch(mCounter){
-//                    case "white":
-//                        Log.i("Theme", mCounter );
-//
-//                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-//                            setTheme(R.style.Light_statusbar);
-//                        } else {
-//                            setTheme(R.style.Light);
-//                            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-//                        }
-//                        break;
-//                    case "black":
-//                        Log.i("Theme", mCounter );
-//                        setTheme(R.style.Dark);
-//                        break;
-//                    case "pink":
-//                        break;
-//                    case "auto":
-//                        Log.i("Theme", mCounter );
-//                        switch (currentNightMode) {
-//                            case Configuration.UI_MODE_NIGHT_NO:
-//                                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-//                                    setTheme(R.style.Light_statusbar);
-//                                } else {
-//                                    setTheme(R.style.Light);
-//                                    getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-//                                }
-//                                break;
-//                            case Configuration.UI_MODE_NIGHT_YES:
-//                                setTheme(R.style.Dark);
-//                                break;
-//                            default:
-//                                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-//                                    setTheme(R.style.Light_statusbar);
-//                                } else {
-//                                    setTheme(R.style.Light);
-//                                    getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-//                                }
-//                                break;
-//                            // We don't know what mode we're in, assume notnight
-//                        }
-//                        break;
-//                        default:
-//                            Log.i("Theme", mCounter);
-//                            break;
-//                }
-//            }
 
             switch(APP_PREFERENCES_THEME){
                 case "white":

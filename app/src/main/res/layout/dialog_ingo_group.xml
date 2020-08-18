@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@drawable/info_dialog"
+        android:padding="14dp"
+        android:layout_margin="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/info_card"
+            android:text="Здравствуйте!"
+            android:textSize="@dimen/icon_note"
+            android:textStyle="bold"
+            android:textColor="@color/primaryText"
+            android:layout_marginBottom="10dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/info_card"
+            android:id="@+id/text1"
+            android:gravity="center"
+            android:textColor="@color/primaryText"
+            android:textSize="@dimen/text_bigest"
+            android:text="1. Чтобы после запуска приложения открывалось расписание группы нажмите и удерживайте ее номер"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text1"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:textColor="@color/primaryText"
+            android:textSize="@dimen/text_bigest"
+            android:text="2. Для отмены данной функции повторно удерживайте тот же номер группы или пройдите в настройки и нажмите на \n ''Раздел по умолчанию''"/>
+
+
+    </RelativeLayout>
+
+
+
+
+</RelativeLayout>

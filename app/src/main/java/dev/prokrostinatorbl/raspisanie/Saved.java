@@ -38,9 +38,11 @@ public class Saved extends AppCompatActivity {
         editor.putString("start_frame", group_list.APP_PREFERENCES_STARTFRAME);
         editor.putString("start_uni", group_list.APP_PREFERENCES_START_UNI);
         editor.putString("link", group_list.APP_PREFERENCES_LINK);
+        editor.putBoolean("first", false);
         editor.apply();
     }
     void load_grouplist(){
+        group_list.APP_PREFERENCES_FIRST = preferences.getBoolean("first", true);
         group_list.APP_PREFERENCES_THEME = preferences.getString("theme", "auto");
         group_list.APP_PREFERENCES_START_GROUP = preferences.getString("group", "standart");
         group_list.APP_PREFERENCES_STARTFRAME = preferences.getString("start_frame", "main");
