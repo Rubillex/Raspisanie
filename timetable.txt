@@ -14,7 +14,7 @@
 ИББ;704;https://www.asu.ru/timetable/students/10/2129440124/?file=2129440124.ics
 ИББ;704м;https://www.asu.ru/timetable/students/10/2129440201/?file=2129440201.ics
 ИББ;771;https://www.asu.ru/timetable/students/10/2129436688/?file=2129436688.ics
-ИББ;771в;
+ИББ;771в;link
 ИББ;772;https://www.asu.ru/timetable/students/10/2129436689/?file=2129436689.ics
 ИББ;773;https://www.asu.ru/timetable/students/10/2129436690/?file=2129436690.ics
 ИББ;774;https://www.asu.ru/timetable/students/10/2129439298/?file=2129439298.ics
@@ -22,9 +22,9 @@
 ИББ;782;https://www.asu.ru/timetable/students/10/2129436960/?file=2129436960.ics
 ИББ;783;https://www.asu.ru/timetable/students/10/2129436961/?file=2129436961.ics
 ИББ;791;https://www.asu.ru/timetable/students/10/2129437244/?file=2129437244.ics
-ИББ;791м;
+ИББ;791м;link
 ИББ;792;https://www.asu.ru/timetable/students/10/2129437245/?file=2129437245.ics
-ИББ;792м;
+ИББ;792м;link
 ИББ;793;https://www.asu.ru/timetable/students/10/2129437246/?file=2129437246.ics
 ИББ;793м;https://www.asu.ru/timetable/students/10/2129439029/?file=2129439029.ics
 ИББ;794;https://www.asu.ru/timetable/students/10/2129439924/?file=2129439924.ics
@@ -44,7 +44,7 @@
 ИНГЕО;906;https://www.asu.ru/timetable/students/11/2129440127/?file=2129440127.ics
 ИНГЕО;907;https://www.asu.ru/timetable/students/11/2129440128/?file=2129440128.ics
 ИНГЕО;907м;https://www.asu.ru/timetable/students/11/2129440308/?file=2129440308.ics
-ИНГЕО;962а;
+ИНГЕО;962а;link
 ИНГЕО;971рг;https://www.asu.ru/timetable/students/11/2129439678/?file=2129439678.ics
 ИНГЕО;971фг;https://www.asu.ru/timetable/students/11/2129439677/?file=2129439677.ics
 ИНГЕО;971эг;https://www.asu.ru/timetable/students/11/2129439676/?file=2129439676.ics
@@ -72,7 +72,7 @@
 ИНГЕО;991рг;https://www.asu.ru/timetable/students/11/2129440133/?file=2129440133.ics
 ИНГЕО;992а;https://www.asu.ru/timetable/students/11/2129439912/?file=2129439912.ics
 ИНГЕО;992б;https://www.asu.ru/timetable/students/11/2129439913/?file=2129439913.ics
-ИНГЕО;992м;
+ИНГЕО;992м;link
 ИНГЕО;993;https://www.asu.ru/timetable/students/11/2129437249/?file=2129437249.ics
 ИНГЕО;993м;https://www.asu.ru/timetable/students/11/2129439921/?file=2129439921.ics
 ИНГЕО;994;https://www.asu.ru/timetable/students/11/2129437250/?file=2129437250.ics
@@ -84,13 +84,13 @@
 ИПО;1701;https://www.asu.ru/timetable/students/13/2129440187/?file=2129440187.ics
 ИПО;1701м;https://www.asu.ru/timetable/students/13/2129440189/?file=2129440189.ics
 ИПО;1702;https://www.asu.ru/timetable/students/13/2129440188/?file=2129440188.ics
-ИПО;1702мз;
-ИПО;1703з;
-ИПО;1781мз;
-ИПО;1782мз;
+ИПО;1702мз;link
+ИПО;1703з;link
+ИПО;1781мз;link
+ИПО;1782мз;link
 ИПО;1791;https://www.asu.ru/timetable/students/13/2129439959/?file=2129439959.ics
 ИПО;1791м;https://www.asu.ru/timetable/students/13/2129439960/?file=2129439960.ics
-ИПО;1792мз;
+ИПО;1792мз;link
 ИП;123;link
 ИП-З;123;link
 ИСН;123;link
