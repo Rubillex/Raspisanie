@@ -5,210 +5,215 @@
 ФК;123;link
 МК;123;link
 АЛТГУ;123;link
-Биологии и биотехнологии (ИББ);701;https://www.asu.ru/timetable/students/10/2129437493/?file=2129437493.ics
-Биологии и биотехнологии (ИББ);701м;https://www.asu.ru/timetable/students/10/2129440202/?file=2129440202.ics
-Биологии и биотехнологии (ИББ);702;https://www.asu.ru/timetable/students/10/2129437495/?file=2129437495.ics
-Биологии и биотехнологии (ИББ);702м;https://www.asu.ru/timetable/students/10/2129440199/?file=2129440199.ics
-Биологии и биотехнологии (ИББ);703;https://www.asu.ru/timetable/students/10/2129437496/?file=2129437496.ics
-Биологии и биотехнологии (ИББ);703м;https://www.asu.ru/timetable/students/10/2129440200/?file=2129440200.ics
-Биологии и биотехнологии (ИББ);704;https://www.asu.ru/timetable/students/10/2129440124/?file=2129440124.ics
-Биологии и биотехнологии (ИББ);704м;https://www.asu.ru/timetable/students/10/2129440201/?file=2129440201.ics
-Биологии и биотехнологии (ИББ);771;https://www.asu.ru/timetable/students/10/2129436688/?file=2129436688.ics
-Биологии и биотехнологии (ИББ);771в;link
-Биологии и биотехнологии (ИББ);772;https://www.asu.ru/timetable/students/10/2129436689/?file=2129436689.ics
-Биологии и биотехнологии (ИББ);773;https://www.asu.ru/timetable/students/10/2129436690/?file=2129436690.ics
-Биологии и биотехнологии (ИББ);774;https://www.asu.ru/timetable/students/10/2129439298/?file=2129439298.ics
-Биологии и биотехнологии (ИББ);781;https://www.asu.ru/timetable/students/10/2129436959/?file=2129436959.ics
-Биологии и биотехнологии (ИББ);782;https://www.asu.ru/timetable/students/10/2129436960/?file=2129436960.ics
-Биологии и биотехнологии (ИББ);783;https://www.asu.ru/timetable/students/10/2129436961/?file=2129436961.ics
-Биологии и биотехнологии (ИББ);791;https://www.asu.ru/timetable/students/10/2129437244/?file=2129437244.ics
-Биологии и биотехнологии (ИББ);791м;link
-Биологии и биотехнологии (ИББ);792;https://www.asu.ru/timetable/students/10/2129437245/?file=2129437245.ics
-Биологии и биотехнологии (ИББ);792м;link
-Биологии и биотехнологии (ИББ);793;https://www.asu.ru/timetable/students/10/2129437246/?file=2129437246.ics
-Биологии и биотехнологии (ИББ);793м;https://www.asu.ru/timetable/students/10/2129439029/?file=2129439029.ics
-Биологии и биотехнологии (ИББ);794;https://www.asu.ru/timetable/students/10/2129439924/?file=2129439924.ics
-Биологии и биотехнологии (ИББ);794м;https://www.asu.ru/timetable/students/10/2129439975/?file=2129439975.ics
-Институт географии (ИНГЕО);000;https://www.asu.ru/timetable/students/11/2129437728/?file=2129437728.ics
-Институт географии (ИНГЕО);901а;https://www.asu.ru/timetable/students/11/2129437497/?file=2129437497.ics
-Институт географии (ИНГЕО);901б;https://www.asu.ru/timetable/students/11/2129440129/?file=2129440129.ics
-Институт географии (ИНГЕО);901м;https://www.asu.ru/timetable/students/11/2129437503/?file=2129437503.ics
-Институт географии (ИНГЕО);902а;https://www.asu.ru/timetable/students/11/2129437498/?file=2129437498.ics
-Институт географии (ИНГЕО);902б;https://www.asu.ru/timetable/students/11/2129440130/?file=2129440130.ics
-Институт географии (ИНГЕО);902м;https://www.asu.ru/timetable/students/11/2129437504/?file=2129437504.ics
-Институт географии (ИНГЕО);903;https://www.asu.ru/timetable/students/11/2129437499/?file=2129437499.ics
-Институт географии (ИНГЕО);903м;https://www.asu.ru/timetable/students/11/2129437505/?file=2129437505.ics
-Институт географии (ИНГЕО);904;https://www.asu.ru/timetable/students/11/2129440125/?file=2129440125.ics
-Институт географии (ИНГЕО);904м;https://www.asu.ru/timetable/students/11/2129440214/?file=2129440214.ics
-Институт географии (ИНГЕО);905;https://www.asu.ru/timetable/students/11/2129440126/?file=2129440126.ics
-Институт географии (ИНГЕО);906;https://www.asu.ru/timetable/students/11/2129440127/?file=2129440127.ics
-Институт географии (ИНГЕО);907;https://www.asu.ru/timetable/students/11/2129440128/?file=2129440128.ics
-Институт географии (ИНГЕО);907м;https://www.asu.ru/timetable/students/11/2129440308/?file=2129440308.ics
-Институт географии (ИНГЕО);962а;link
-Институт географии (ИНГЕО);971рг;https://www.asu.ru/timetable/students/11/2129439678/?file=2129439678.ics
-Институт географии (ИНГЕО);971фг;https://www.asu.ru/timetable/students/11/2129439677/?file=2129439677.ics
-Институт географии (ИНГЕО);971эг;https://www.asu.ru/timetable/students/11/2129439676/?file=2129439676.ics
-Институт географии (ИНГЕО);972а;https://www.asu.ru/timetable/students/11/2129439384/?file=2129439384.ics
-Институт географии (ИНГЕО);972б;https://www.asu.ru/timetable/students/11/2129439385/?file=2129439385.ics
-Институт географии (ИНГЕО);973а;https://www.asu.ru/timetable/students/11/2129436696/?file=2129436696.ics
-Институт географии (ИНГЕО);973б;https://www.asu.ru/timetable/students/11/2129439522/?file=2129439522.ics
-Институт географии (ИНГЕО);974а,б;https://www.asu.ru/timetable/students/11/2129436731/?file=2129436731.ics
-Институт географии (ИНГЕО);975;https://www.asu.ru/timetable/students/11/2129439387/?file=2129439387.ics
-Институт географии (ИНГЕО);976;https://www.asu.ru/timetable/students/11/2129439388/?file=2129439388.ics
-Институт географии (ИНГЕО);981рг;https://www.asu.ru/timetable/students/11/2129439976/?file=2129439976.ics
-Институт географии (ИНГЕО);981фг;https://www.asu.ru/timetable/students/11/2129439660/?file=2129439660.ics
-Институт географии (ИНГЕО);981эг;https://www.asu.ru/timetable/students/11/2129439659/?file=2129439659.ics
-Институт географии (ИНГЕО);982а;https://www.asu.ru/timetable/students/11/2129439661/?file=2129439661.ics
-Институт географии (ИНГЕО);982б;https://www.asu.ru/timetable/students/11/2129439662/?file=2129439662.ics
-Институт географии (ИНГЕО);983а;https://www.asu.ru/timetable/students/11/2129439663/?file=2129439663.ics
-Институт географии (ИНГЕО);983б;https://www.asu.ru/timetable/students/11/2129439664/?file=2129439664.ics
-Институт географии (ИНГЕО);984;https://www.asu.ru/timetable/students/11/2129436956/?file=2129436956.ics
-Институт географии (ИНГЕО);985;https://www.asu.ru/timetable/students/11/2129436999/?file=2129436999.ics
-Институт географии (ИНГЕО);986;https://www.asu.ru/timetable/students/11/2129439666/?file=2129439666.ics
-Институт географии (ИНГЕО);987;https://www.asu.ru/timetable/students/11/2129439667/?file=2129439667.ics
-Институт географии (ИНГЕО);991асп;https://www.asu.ru/timetable/students/11/2129440208/?file=2129440208.ics
-Институт географии (ИНГЕО);991фг;https://www.asu.ru/timetable/students/11/2129440134/?file=2129440134.ics
-Институт географии (ИНГЕО);991эг;https://www.asu.ru/timetable/students/11/2129440132/?file=2129440132.ics
-Институт географии (ИНГЕО);991рг;https://www.asu.ru/timetable/students/11/2129440133/?file=2129440133.ics
-Институт географии (ИНГЕО);992а;https://www.asu.ru/timetable/students/11/2129439912/?file=2129439912.ics
-Институт географии (ИНГЕО);992б;https://www.asu.ru/timetable/students/11/2129439913/?file=2129439913.ics
-Институт географии (ИНГЕО);992м;link
-Институт географии (ИНГЕО);993;https://www.asu.ru/timetable/students/11/2129437249/?file=2129437249.ics
-Институт географии (ИНГЕО);993м;https://www.asu.ru/timetable/students/11/2129439921/?file=2129439921.ics
-Институт географии (ИНГЕО);994;https://www.asu.ru/timetable/students/11/2129437250/?file=2129437250.ics
-Институт географии (ИНГЕО);994м;https://www.asu.ru/timetable/students/11/2129439922/?file=2129439922.ics
-Институт географии (ИНГЕО);995;https://www.asu.ru/timetable/students/11/2129439918/?file=2129439918.ics
-Институт географии (ИНГЕО);996;https://www.asu.ru/timetable/students/11/2129439916/?file=2129439916.ics
-Институт географии (ИНГЕО);997;https://www.asu.ru/timetable/students/11/2129439917/?file=2129439917.ics
+ИББ;701;https://www.asu.ru/timetable/students/10/2129437493/?file=2129437493.ics
+ИББ;701м;https://www.asu.ru/timetable/students/10/2129440202/?file=2129440202.ics
+ИББ;702;https://www.asu.ru/timetable/students/10/2129437495/?file=2129437495.ics
+ИББ;702м;https://www.asu.ru/timetable/students/10/2129440199/?file=2129440199.ics
+ИББ;703;https://www.asu.ru/timetable/students/10/2129437496/?file=2129437496.ics
+ИББ;703м;https://www.asu.ru/timetable/students/10/2129440200/?file=2129440200.ics
+ИББ;704;https://www.asu.ru/timetable/students/10/2129440124/?file=2129440124.ics
+ИББ;704м;https://www.asu.ru/timetable/students/10/2129440201/?file=2129440201.ics
+ИББ;771;https://www.asu.ru/timetable/students/10/2129436688/?file=2129436688.ics
+ИББ;771в;link
+ИББ;772;https://www.asu.ru/timetable/students/10/2129436689/?file=2129436689.ics
+ИББ;773;https://www.asu.ru/timetable/students/10/2129436690/?file=2129436690.ics
+ИББ;774;https://www.asu.ru/timetable/students/10/2129439298/?file=2129439298.ics
+ИББ;781;https://www.asu.ru/timetable/students/10/2129436959/?file=2129436959.ics
+ИББ;782;https://www.asu.ru/timetable/students/10/2129436960/?file=2129436960.ics
+ИББ;783;https://www.asu.ru/timetable/students/10/2129436961/?file=2129436961.ics
+ИББ;791;https://www.asu.ru/timetable/students/10/2129437244/?file=2129437244.ics
+ИББ;791м;link
+ИББ;792;https://www.asu.ru/timetable/students/10/2129437245/?file=2129437245.ics
+ИББ;792м;link
+ИББ;793;https://www.asu.ru/timetable/students/10/2129437246/?file=2129437246.ics
+ИББ;793м;https://www.asu.ru/timetable/students/10/2129439029/?file=2129439029.ics
+ИББ;794;https://www.asu.ru/timetable/students/10/2129439924/?file=2129439924.ics
+ИББ;794м;https://www.asu.ru/timetable/students/10/2129439975/?file=2129439975.ics
+ИНГЕО;000;https://www.asu.ru/timetable/students/11/2129437728/?file=2129437728.ics
+ИНГЕО;901а;https://www.asu.ru/timetable/students/11/2129437497/?file=2129437497.ics
+ИНГЕО;901б;https://www.asu.ru/timetable/students/11/2129440129/?file=2129440129.ics
+ИНГЕО;901м;https://www.asu.ru/timetable/students/11/2129437503/?file=2129437503.ics
+ИНГЕО;902а;https://www.asu.ru/timetable/students/11/2129437498/?file=2129437498.ics
+ИНГЕО;902б;https://www.asu.ru/timetable/students/11/2129440130/?file=2129440130.ics
+ИНГЕО;902м;https://www.asu.ru/timetable/students/11/2129437504/?file=2129437504.ics
+ИНГЕО;903;https://www.asu.ru/timetable/students/11/2129437499/?file=2129437499.ics
+ИНГЕО;903м;https://www.asu.ru/timetable/students/11/2129437505/?file=2129437505.ics
+ИНГЕО;904;https://www.asu.ru/timetable/students/11/2129440125/?file=2129440125.ics
+ИНГЕО;904м;https://www.asu.ru/timetable/students/11/2129440214/?file=2129440214.ics
+ИНГЕО;905;https://www.asu.ru/timetable/students/11/2129440126/?file=2129440126.ics
+ИНГЕО;906;https://www.asu.ru/timetable/students/11/2129440127/?file=2129440127.ics
+ИНГЕО;907;https://www.asu.ru/timetable/students/11/2129440128/?file=2129440128.ics
+ИНГЕО;907м;https://www.asu.ru/timetable/students/11/2129440308/?file=2129440308.ics
+ИНГЕО;962а;link
+ИНГЕО;971рг;https://www.asu.ru/timetable/students/11/2129439678/?file=2129439678.ics
+ИНГЕО;971фг;https://www.asu.ru/timetable/students/11/2129439677/?file=2129439677.ics
+ИНГЕО;971эг;https://www.asu.ru/timetable/students/11/2129439676/?file=2129439676.ics
+ИНГЕО;972а;https://www.asu.ru/timetable/students/11/2129439384/?file=2129439384.ics
+ИНГЕО;972б;https://www.asu.ru/timetable/students/11/2129439385/?file=2129439385.ics
+ИНГЕО;973а;https://www.asu.ru/timetable/students/11/2129436696/?file=2129436696.ics
+ИНГЕО;973б;https://www.asu.ru/timetable/students/11/2129439522/?file=2129439522.ics
+ИНГЕО;974а,б;https://www.asu.ru/timetable/students/11/2129436731/?file=2129436731.ics
+ИНГЕО;975;https://www.asu.ru/timetable/students/11/2129439387/?file=2129439387.ics
+ИНГЕО;976;https://www.asu.ru/timetable/students/11/2129439388/?file=2129439388.ics
+ИНГЕО;981рг;https://www.asu.ru/timetable/students/11/2129439976/?file=2129439976.ics
+ИНГЕО;981фг;https://www.asu.ru/timetable/students/11/2129439660/?file=2129439660.ics
+ИНГЕО;981эг;https://www.asu.ru/timetable/students/11/2129439659/?file=2129439659.ics
+ИНГЕО;982а;https://www.asu.ru/timetable/students/11/2129439661/?file=2129439661.ics
+ИНГЕО;982б;https://www.asu.ru/timetable/students/11/2129439662/?file=2129439662.ics
+ИНГЕО;983а;https://www.asu.ru/timetable/students/11/2129439663/?file=2129439663.ics
+ИНГЕО;983б;https://www.asu.ru/timetable/students/11/2129439664/?file=2129439664.ics
+ИНГЕО;984;https://www.asu.ru/timetable/students/11/2129436956/?file=2129436956.ics
+ИНГЕО;985;https://www.asu.ru/timetable/students/11/2129436999/?file=2129436999.ics
+ИНГЕО;986;https://www.asu.ru/timetable/students/11/2129439666/?file=2129439666.ics
+ИНГЕО;987;https://www.asu.ru/timetable/students/11/2129439667/?file=2129439667.ics
+ИНГЕО;991асп;https://www.asu.ru/timetable/students/11/2129440208/?file=2129440208.ics
+ИНГЕО;991фг;https://www.asu.ru/timetable/students/11/2129440134/?file=2129440134.ics
+ИНГЕО;991эг;https://www.asu.ru/timetable/students/11/2129440132/?file=2129440132.ics
+ИНГЕО;991рг;https://www.asu.ru/timetable/students/11/2129440133/?file=2129440133.ics
+ИНГЕО;992а;https://www.asu.ru/timetable/students/11/2129439912/?file=2129439912.ics
+ИНГЕО;992б;https://www.asu.ru/timetable/students/11/2129439913/?file=2129439913.ics
+ИНГЕО;992м;link
+ИНГЕО;993;https://www.asu.ru/timetable/students/11/2129437249/?file=2129437249.ics
+ИНГЕО;993м;https://www.asu.ru/timetable/students/11/2129439921/?file=2129439921.ics
+ИНГЕО;994;https://www.asu.ru/timetable/students/11/2129437250/?file=2129437250.ics
+ИНГЕО;994м;https://www.asu.ru/timetable/students/11/2129439922/?file=2129439922.ics
+ИНГЕО;995;https://www.asu.ru/timetable/students/11/2129439918/?file=2129439918.ics
+ИНГЕО;996;https://www.asu.ru/timetable/students/11/2129439916/?file=2129439916.ics
+ИНГЕО;997;https://www.asu.ru/timetable/students/11/2129439917/?file=2129439917.ics
 ИНГ-З;123;link
-Институт пед. образования (ИПО);1701;https://www.asu.ru/timetable/students/13/2129440187/?file=2129440187.ics
-Институт пед. образования (ИПО);1701м;https://www.asu.ru/timetable/students/13/2129440189/?file=2129440189.ics
-Институт пед. образования (ИПО);1702;https://www.asu.ru/timetable/students/13/2129440188/?file=2129440188.ics
-Институт пед. образования (ИПО);1702мз;link
-Институт пед. образования (ИПО);1703з;link
-Институт пед. образования (ИПО);1781мз;link
-Институт пед. образования (ИПО);1782мз;link
-Институт пед. образования (ИПО);1791;https://www.asu.ru/timetable/students/13/2129439959/?file=2129439959.ics
-Институт пед. образования (ИПО);1791м;https://www.asu.ru/timetable/students/13/2129439960/?file=2129439960.ics
-Институт пед. образования (ИПО);1792мз;link
-Институт психологии (ИП);1802;https://www.asu.ru/timetable/students/14/2129437506/?file=2129437506.ics
-Институт психологии (ИП);1802м;https://www.asu.ru/timetable/students/14/2129440268/?file=2129440268.ics
-Институт психологии (ИП);1803;https://www.asu.ru/timetable/students/14/2129440197/?file=2129440197.ics
-Институт психологии (ИП);1804;https://www.asu.ru/timetable/students/14/2129440198/?file=2129440198.ics
-Институт психологии (ИП);1832;link
-Институт психологии (ИП);1842;link
-Институт психологии (ИП);1843;link
-Институт психологии (ИП);1844;link
-Институт психологии (ИП);1851;link
-Институт психологии (ИП);1851МБЧ;link
-Институт психологии (ИП);1851МПЗ;link
-Институт психологии (ИП);1851МПЛ;link
-Институт психологии (ИП);1852;link
-Институт психологии (ИП);1853;link
-Институт психологии (ИП);1854;link
-Институт психологии (ИП);1861;link
-Институт психологии (ИП);1862;https://www.asu.ru/timetable/students/14/2129436513/?file=2129436513.ics
-Институт психологии (ИП);1863;https://www.asu.ru/timetable/students/14/2129439047/?file=2129439047.ics
-Институт психологии (ИП);1864;https://www.asu.ru/timetable/students/14/2129439048/?file=2129439048.ics
-Институт психологии (ИП);1871М;link
-Институт психологии (ИП);1872;https://www.asu.ru/timetable/students/14/2129436729/?file=2129436729.ics
-Институт психологии (ИП);1873;https://www.asu.ru/timetable/students/14/2129439350/?file=2129439350.ics
-Институт психологии (ИП);1874;https://www.asu.ru/timetable/students/14/2129439352/?file=2129439352.ics
-Институт психологии (ИП);1881;https://www.asu.ru/timetable/students/14/2129437024/?file=2129437024.ics
-Институт психологии (ИП);1881М;link
-Институт психологии (ИП);1882;https://www.asu.ru/timetable/students/14/2129437034/?file=2129437034.ics
-Институт психологии (ИП);1883;https://www.asu.ru/timetable/students/14/2129439763/?file=2129439763.ics
-Институт психологии (ИП);1884;link
-Институт психологии (ИП);1891;https://www.asu.ru/timetable/students/14/2129437274/?file=2129437274.ics
-Институт психологии (ИП);1891М;https://www.asu.ru/timetable/students/14/2129439971/?file=2129439971.ics
-Институт психологии (ИП);1892;https://www.asu.ru/timetable/students/14/2129437276/?file=2129437276.ics
-Институт психологии (ИП);1893;https://www.asu.ru/timetable/students/14/2129439970/?file=2129439970.ics
-Институт психологии (ИП-З);1841з;link
-Институт психологии (ИП-З);1842з;link
-Институт психологии (ИП-З);1851з;link
-Институт психологии (ИП-З);1852з;link
-Институт психологии (ИП-З);1861з;link
-Институт психологии (ИП-З);1862Мз;link
-Институт психологии (ИП-З);1863Мз;link
-Институт психологии (ИП-З);1864Мз;link
-Институт психологии (ИП-З);1865Мз;link
-Институт психологии (ИП-З);1871з;link
-Институт психологии (ИП-З);1871Мз;link
-Институт психологии (ИП-З);1872Мз;link
-Институт психологии (ИП-З);1874з;link
-Институт психологии (ИП-З);1875Мз;link
-Институт психологии (ИП-З);1881з;link
-Институт психологии (ИП-З);1881Мз;link
-Институт психологии (ИП-З);1884з;link
-Институт психологии (ИП-З);1885Мз;link
-Институт психологии (ИП-З);1891з;link
-Институт психологии (ИП-З);1894з;link
-Институт психологии (ИП-З);1895Мз;link
-Институт социальных наук (ИСН);1001А;https://www.asu.ru/timetable/students/16/2129437407/?file=2129437407.ics
-Институт социальных наук (ИСН);1001Б;https://www.asu.ru/timetable/students/16/2129437409/?file=2129437409.ics
-Институт социальных наук (ИСН);1002;https://www.asu.ru/timetable/students/16/2129437408/?file=2129437408.ics
-Институт социальных наук (ИСН);1002м;https://www.asu.ru/timetable/students/16/5/?file=5.ics
-Институт социальных наук (ИСН);1004;https://www.asu.ru/timetable/students/16/2129437410/?file=2129437410.ics
-Институт социальных наук (ИСН);1004м;https://www.asu.ru/timetable/students/16/2129437548/?file=2129437548.ics
-Институт социальных наук (ИСН);1005;https://www.asu.ru/timetable/students/16/2129437411/?file=2129437411.ics
-Институт социальных наук (ИСН);1071;https://www.asu.ru/timetable/students/16/2129436768/?file=2129436768.ics
-Институт социальных наук (ИСН);1072;https://www.asu.ru/timetable/students/16/2129436769/?file=2129436769.ics
-Институт социальных наук (ИСН);1074;https://www.asu.ru/timetable/students/16/2129436771/?file=2129436771.ics
-Институт социальных наук (ИСН);1075;https://www.asu.ru/timetable/students/16/2129436772/?file=2129436772.ics
-Институт социальных наук (ИСН);1081;https://www.asu.ru/timetable/students/16/2129436994/?file=2129436994.ics
-Институт социальных наук (ИСН);1082;https://www.asu.ru/timetable/students/16/2129436995/?file=2129436995.ics
-Институт социальных наук (ИСН);1084;https://www.asu.ru/timetable/students/16/2129437006/?file=2129437006.ics
-Институт социальных наук (ИСН);1085;https://www.asu.ru/timetable/students/16/2129436997/?file=2129436997.ics
-Институт социальных наук (ИСН);1091А;https://www.asu.ru/timetable/students/16/2129437226/?file=2129437226.ics
-Институт социальных наук (ИСН);1091Б;https://www.asu.ru/timetable/students/16/2129439962/?file=2129439962.ics
-Институт социальных наук (ИСН);1091М;link
-Институт социальных наук (ИСН);1092;https://www.asu.ru/timetable/students/16/2129437228/?file=2129437228.ics
-Институт социальных наук (ИСН);1092М;link
-Институт социальных наук (ИСН);1095;https://www.asu.ru/timetable/students/16/2129437231/?file=2129437231.ics
-Институт социальных наук ОЗО (ИСН-З);123;link
-Искусств и дизайна (ИИД);
-Искусств и дизайна (ИИД);
-Искусств и дизайна (ИИД);
-Искусств и дизайна (ИИД);
-Искусств и дизайна (ИИД);
-Искусств и дизайна (ИИД);
-Искусств и дизайна (ИИД);
-Искусств и дизайна (ИИД);
-Искусств и дизайна (ИИД);
-Искусств и дизайна (ИИД);
-Искусств и дизайна (ИИД);
-Искусств и дизайна (ИИД);
-Искусств и дизайна (ИИД);
-Искусств и дизайна (ИИД);
-Искусств и дизайна (ИИД);
-Искусств и дизайна (ИИД);
-Искусств и дизайна (ИИД);
-Искусств и дизайна (ИИД);
-Искусств и дизайна (ИИД);
-Искусств и дизайна (ИИД);
-Искусств и дизайна (ИИД);
-Искусств и дизайна (ИИД);
-Искусств и дизайна (ИИД);
-Искусств и дизайна (ИИД);
-Искусств и дизайна (ИИД);
-Искусств и дизайна (ИИД);
-Искусств и дизайна (ИИД);
-Искусств и дизайна (ИИД);
-Искусств и дизайна (ИИД);
-Искусств и дизайна (ИИД);
-Искусств и дизайна (ИИД);
-Искусств и дизайна (ИИД);
+ИПО;1701;https://www.asu.ru/timetable/students/13/2129440187/?file=2129440187.ics
+ИПО;1701м;https://www.asu.ru/timetable/students/13/2129440189/?file=2129440189.ics
+ИПО;1702;https://www.asu.ru/timetable/students/13/2129440188/?file=2129440188.ics
+ИПО;1702мз;link
+ИПО;1703з;link
+ИПО;1781мз;link
+ИПО;1782мз;link
+ИПО;1791;https://www.asu.ru/timetable/students/13/2129439959/?file=2129439959.ics
+ИПО;1791м;https://www.asu.ru/timetable/students/13/2129439960/?file=2129439960.ics
+ИПО;1792мз;link
+ИП;1802;https://www.asu.ru/timetable/students/14/2129437506/?file=2129437506.ics
+ИП;1802м;https://www.asu.ru/timetable/students/14/2129440268/?file=2129440268.ics
+ИП;1803;https://www.asu.ru/timetable/students/14/2129440197/?file=2129440197.ics
+ИП;1804;https://www.asu.ru/timetable/students/14/2129440198/?file=2129440198.ics
+ИП;1832;link
+ИП;1842;link
+ИП;1843;link
+ИП;1844;link
+ИП;1851;link
+ИП;1851МБЧ;link
+ИП;1851МПЗ;link
+ИП;1851МПЛ;link
+ИП;1852;link
+ИП;1853;link
+ИП;1854;link
+ИП;1861;link
+ИП;1862;https://www.asu.ru/timetable/students/14/2129436513/?file=2129436513.ics
+ИП;1863;https://www.asu.ru/timetable/students/14/2129439047/?file=2129439047.ics
+ИП;1864;https://www.asu.ru/timetable/students/14/2129439048/?file=2129439048.ics
+ИП;1871М;link
+ИП;1872;https://www.asu.ru/timetable/students/14/2129436729/?file=2129436729.ics
+ИП;1873;https://www.asu.ru/timetable/students/14/2129439350/?file=2129439350.ics
+ИП;1874;https://www.asu.ru/timetable/students/14/2129439352/?file=2129439352.ics
+ИП;1881;https://www.asu.ru/timetable/students/14/2129437024/?file=2129437024.ics
+ИП;1881М;link
+ИП;1882;https://www.asu.ru/timetable/students/14/2129437034/?file=2129437034.ics
+ИП;1883;https://www.asu.ru/timetable/students/14/2129439763/?file=2129439763.ics
+ИП;1884;link
+ИП;1891;https://www.asu.ru/timetable/students/14/2129437274/?file=2129437274.ics
+ИП;1891М;https://www.asu.ru/timetable/students/14/2129439971/?file=2129439971.ics
+ИП;1892;https://www.asu.ru/timetable/students/14/2129437276/?file=2129437276.ics
+ИП;1893;https://www.asu.ru/timetable/students/14/2129439970/?file=2129439970.ics
+ИП-З;1841з;link
+ИП-З;1842з;link
+ИП-З;1851з;link
+ИП-З;1852з;link
+ИП-З;1861з;link
+ИП-З;1862Мз;link
+ИП-З;1863Мз;link
+ИП-З;1864Мз;link
+ИП-З;1865Мз;link
+ИП-З;1871з;link
+ИП-З;1871Мз;link
+ИП-З;1872Мз;link
+ИП-З;1874з;link
+ИП-З;1875Мз;link
+ИП-З;1881з;link
+ИП-З;1881Мз;link
+ИП-З;1884з;link
+ИП-З;1885Мз;link
+ИП-З;1891з;link
+ИП-З;1894з;link
+ИП-З;1895Мз;link
+ИСН;1001А;https://www.asu.ru/timetable/students/16/2129437407/?file=2129437407.ics
+ИСН;1001Б;https://www.asu.ru/timetable/students/16/2129437409/?file=2129437409.ics
+ИСН;1002;https://www.asu.ru/timetable/students/16/2129437408/?file=2129437408.ics
+ИСН;1002м;https://www.asu.ru/timetable/students/16/5/?file=5.ics
+ИСН;1004;https://www.asu.ru/timetable/students/16/2129437410/?file=2129437410.ics
+ИСН;1004м;https://www.asu.ru/timetable/students/16/2129437548/?file=2129437548.ics
+ИСН;1005;https://www.asu.ru/timetable/students/16/2129437411/?file=2129437411.ics
+ИСН;1071;https://www.asu.ru/timetable/students/16/2129436768/?file=2129436768.ics
+ИСН;1072;https://www.asu.ru/timetable/students/16/2129436769/?file=2129436769.ics
+ИСН;1074;https://www.asu.ru/timetable/students/16/2129436771/?file=2129436771.ics
+ИСН;1075;https://www.asu.ru/timetable/students/16/2129436772/?file=2129436772.ics
+ИСН;1081;https://www.asu.ru/timetable/students/16/2129436994/?file=2129436994.ics
+ИСН;1082;https://www.asu.ru/timetable/students/16/2129436995/?file=2129436995.ics
+ИСН;1084;https://www.asu.ru/timetable/students/16/2129437006/?file=2129437006.ics
+ИСН;1085;https://www.asu.ru/timetable/students/16/2129436997/?file=2129436997.ics
+ИСН;1091А;https://www.asu.ru/timetable/students/16/2129437226/?file=2129437226.ics
+ИСН;1091Б;https://www.asu.ru/timetable/students/16/2129439962/?file=2129439962.ics
+ИСН;1091М;link
+ИСН;1092;https://www.asu.ru/timetable/students/16/2129437228/?file=2129437228.ics
+ИСН;1092М;link
+ИСН;1095;https://www.asu.ru/timetable/students/16/2129437231/?file=2129437231.ics
+ИСН-З;123;link
+ИИД;
+ИИД;
+ИИД;
+ИИД;
+ИИД;
+ИИД;
+ИИД;
+ИИД;
+ИИД;
+ИИД;
+ИИД;
+ИИД;
+ИИД;
+ИИД;
+ИИД;
+ИИД;
+ИИД;
+ИИД;
+ИИД;
+ИИД;
+ИИД;
+ИИД;
+ИИД;
+ИИД;
+ИИД;
+ИИД;
+ИИД;
+ИИД;
+ИИД;
+ИИД;
+ИИД;
+ИИД;
 ИИД-З;123;link
 ИИМО;123;link
 ИИМ-З;123;link
 ИХХФТ;123;link
 ХХФТЗ;123;link
-ИЦТЭФ;561;link
-ИЦТЭФ;563;link
-ИЦТЭФ;565;link
-ИЦТЭФ;566;link
-ИЦТЭФ;567;link
-ИЦТЭФ;568;link
+ИЦТЭФ;501;https://www.asu.ru/timetable/students/24/2129437400/?file=2129437400.ics
+ИЦТЭФ;502аМ;https://www.asu.ru/timetable/students/24/2129440318/?file=2129440318.ics
+ИЦТЭФ;502бМ;https://www.asu.ru/timetable/students/24/2129440319/?file=2129440319.ics
+ИЦТЭФ;503;https://www.asu.ru/timetable/students/24/2129437401/?file=2129437401.ics
+ИЦТЭФ;505;https://www.asu.ru/timetable/students/24/2129437402/?file=2129437402.ics
+ИЦТЭФ;505М;https://www.asu.ru/timetable/students/24/2129440320/?file=2129440320.ics
+ИЦТЭФ;506;https://www.asu.ru/timetable/students/24/2129437403/?file=2129437403.ics
+ИЦТЭФ;507;https://www.asu.ru/timetable/students/24/2129437404/?file=2129437404.ics
+ИЦТЭФ;507М;https://www.asu.ru/timetable/students/24/2129440321/?file=2129440321.ics
+ИЦТЭФ;508;https://www.asu.ru/timetable/students/24/2129440315/?file=2129440315.ics
+ИЦТЭФ;508М;https://www.asu.ru/timetable/students/24/2129440322/?file=2129440322.ics
 ИЦТЭФ;571;https://www.asu.ru/timetable/students/24/2129436721/?file=2129436721.ics
 ИЦТЭФ;571М;link
 ИЦТЭФ;572аМ;link
