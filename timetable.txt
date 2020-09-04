@@ -217,10 +217,155 @@
 ИМКФП;123;link
 ИМК-З;123;link
 ИМИИТ;123;link
-ЭФ;123;link
-ЭФ-В;123;link
-ЭФ-З;123;link
-ОБЩ;123;link
-ФПК;123;link
-ЮИ;123;link
-ЮИ-З;123;link
+МИЭМИС;2001А;https://www.asu.ru/timetable/students/29/2129440146/?file=2129440146.ics
+МИЭМИС;2009А;https://www.asu.ru/timetable/students/29/2129440147/?file=2129440147.ics
+МИЭМИС;2009;https://www.asu.ru/timetable/students/29/2129440148/?file=2129440148.ics
+МИЭМИС;2009-М;https://www.asu.ru/timetable/students/29/2129440138/?file=2129440138.ics
+МИЭМИС;201А;https://www.asu.ru/timetable/students/29/2129440142/?file=2129440142.ics
+МИЭМИС;201Б;https://www.asu.ru/timetable/students/29/2129440143/?file=2129440143.ics
+МИЭМИС;201-М;https://www.asu.ru/timetable/students/29/2129440136/?file=2129440136.ics
+МИЭМИС;202;https://www.asu.ru/timetable/students/29/2129437436/?file=2129437436.ics
+МИЭМИС;202-Мв;https://www.asu.ru/timetable/students/29/2129440137/?file=2129440137.ics
+МИЭМИС;204А;https://www.asu.ru/timetable/students/29/2129437438/?file=2129437438.ics
+МИЭМИС;204Б;https://www.asu.ru/timetable/students/29/2129440145/?file=2129440145.ics
+МИЭМИС;2072;https://www.asu.ru/timetable/students/29/2129440149/?file=2129440149.ics
+МИЭМИС;2073;https://www.asu.ru/timetable/students/29/2129440150/?file=2129440150.ics
+МИЭМИС;2601а;https://www.asu.ru/timetable/students/29/2129439007/?file=2129439007.ics
+МИЭМИС;2601б;https://www.asu.ru/timetable/students/29/2129439008/?file=2129439008.ics
+МИЭМИС;2601в;https://www.asu.ru/timetable/students/29/2129439009/?file=2129439009.ics
+МИЭМИС;2701а;https://www.asu.ru/timetable/students/29/2129439343/?file=2129439343.ics
+МИЭМИС;2701б;https://www.asu.ru/timetable/students/29/2129439344/?file=2129439344.ics
+МИЭМИС;2711;https://www.asu.ru/timetable/students/29/2129436751/?file=2129436751.ics
+МИЭМИС;271а;https://www.asu.ru/timetable/students/29/2129436740/?file=2129436740.ics
+МИЭМИС;271а(МЭ);https://www.asu.ru/timetable/students/29/2129439335/?file=2129439335.ics
+МИЭМИС;271б;https://www.asu.ru/timetable/students/29/2129436741/?file=2129436741.ics
+МИЭМИС;271в;https://www.asu.ru/timetable/students/29/2129439340/?file=2129439340.ics
+МИЭМИС;271г;link
+МИЭМИС;272;link
+МИЭМИС;272.;https://www.asu.ru/timetable/students/29/2129439338/?file=2129439338.ics
+МИЭМИС;2727а;https://www.asu.ru/timetable/students/29/2129439341/?file=2129439341.ics
+МИЭМИС;2727б;https://www.asu.ru/timetable/students/29/2129439342/?file=2129439342.ics
+МИЭМИС;273;https://www.asu.ru/timetable/students/29/2129436743/?file=2129436743.ics
+МИЭМИС;275.;https://www.asu.ru/timetable/students/29/2129439339/?file=2129439339.ics
+МИЭМИС;2801а;https://www.asu.ru/timetable/students/29/2129439655/?file=2129439655.ics
+МИЭМИС;2811;https://www.asu.ru/timetable/students/29/2129436989/?file=2129436989.ics
+МИЭМИС;281а;https://www.asu.ru/timetable/students/29/2129436978/?file=2129436978.ics
+МИЭМИС;281б;https://www.asu.ru/timetable/students/29/2129436979/?file=2129436979.ics
+МИЭМИС;281в;https://www.asu.ru/timetable/students/29/2129436980/?file=2129436980.ics
+МИЭМИС;281г;https://www.asu.ru/timetable/students/29/2129437146/?file=2129437146.ics
+МИЭМИС;282.;https://www.asu.ru/timetable/students/29/2129439650/?file=2129439650.ics
+МИЭМИС;2823в-м;https://www.asu.ru/timetable/students/29/2129439671/?file=2129439671.ics
+МИЭМИС;2827а;https://www.asu.ru/timetable/students/29/2129439653/?file=2129439653.ics
+МИЭМИС;2827б;https://www.asu.ru/timetable/students/29/2129439654/?file=2129439654.ics
+МИЭМИС;2827у;link
+МИЭМИС;283;link
+МИЭМИС;285.;https://www.asu.ru/timetable/students/29/2129439657/?file=2129439657.ics
+МИЭМИС;2901А;https://www.asu.ru/timetable/students/29/2129439901/?file=2129439901.ics
+МИЭМИС;2901Б;https://www.asu.ru/timetable/students/29/2129439902/?file=2129439902.ics
+МИЭМИС;2909а;https://www.asu.ru/timetable/students/29/2129439903/?file=2129439903.ics
+МИЭМИС;2909б;https://www.asu.ru/timetable/students/29/2129440048/?file=2129440048.ics
+МИЭМИС;2909М;https://www.asu.ru/timetable/students/29/2129439889/?file=2129439889.ics
+МИЭМИС;291А.;https://www.asu.ru/timetable/students/29/2129439892/?file=2129439892.ics
+МИЭМИС;291Б.;https://www.asu.ru/timetable/students/29/2129439893/?file=2129439893.ics
+МИЭМИС;291вм;https://www.asu.ru/timetable/students/29/2129439883/?file=2129439883.ics
+МИЭМИС;292а;https://www.asu.ru/timetable/students/29/2129439896/?file=2129439896.ics
+МИЭМИС;292б;https://www.asu.ru/timetable/students/29/2129440046/?file=2129440046.ics
+МИЭМИС;292М;https://www.asu.ru/timetable/students/29/2129439886/?file=2129439886.ics
+МИЭМИС;294а;https://www.asu.ru/timetable/students/29/2129439897/?file=2129439897.ics
+МИЭМИС;294б;https://www.asu.ru/timetable/students/29/2129440047/?file=2129440047.ics
+МИЭМИС;294М;https://www.asu.ru/timetable/students/29/2129439887/?file=2129439887.ics
+МИЭМИС;295.;https://www.asu.ru/timetable/students/29/2129439899/?file=2129439899.ics
+МИЭМИС;298М;https://www.asu.ru/timetable/students/29/2129439888/?file=2129439888.ics
+МИЭМИС веч. отд.;2627-в;https://www.asu.ru/timetable/students/30/2129439079/?file=2129439079.ics
+ЮИ;301;https://www.asu.ru/timetable/students/34/2129437475/?file=2129437475.ics
+ЮИ;3010;https://www.asu.ru/timetable/students/34/2129440222/?file=2129440222.ics
+ЮИ;3011;https://www.asu.ru/timetable/students/34/2129440223/?file=2129440223.ics
+ЮИ;3012;https://www.asu.ru/timetable/students/34/2129440224/?file=2129440224.ics
+ЮИ;3016;https://www.asu.ru/timetable/students/34/2129440225/?file=2129440225.ics
+ЮИ;301-В;https://www.asu.ru/timetable/students/34/2129440226/?file=2129440226.ics
+ЮИ;301м;https://www.asu.ru/timetable/students/34/2129437481/?file=2129437481.ics
+ЮИ;302;https://www.asu.ru/timetable/students/34/2129437476/?file=2129437476.ics
+ЮИ;302м-ГМУ;https://www.asu.ru/timetable/students/34/2129437482/?file=2129437482.ics
+ЮИ;303;https://www.asu.ru/timetable/students/34/2129437477/?file=2129437477.ics
+ЮИ;303м;https://www.asu.ru/timetable/students/34/2129440219/?file=2129440219.ics
+ЮИ;304;https://www.asu.ru/timetable/students/34/2129437478/?file=2129437478.ics
+ЮИ;305м;https://www.asu.ru/timetable/students/34/2129440220/?file=2129440220.ics
+ЮИ;306м;https://www.asu.ru/timetable/students/34/2129440221/?file=2129440221.ics
+ЮИ;371;https://www.asu.ru/timetable/students/34/2129436799/?file=2129436799.ics
+ЮИ;372;https://www.asu.ru/timetable/students/34/2129436800/?file=2129436800.ics
+ЮИ;373;https://www.asu.ru/timetable/students/34/2129436808/?file=2129436808.ics
+ЮИ;374;https://www.asu.ru/timetable/students/34/2129436801/?file=2129436801.ics
+ЮИ;375;https://www.asu.ru/timetable/students/34/2129436802/?file=2129436802.ics
+ЮИ;376;https://www.asu.ru/timetable/students/34/2129439453/?file=2129439453.ics
+ЮИ;377;https://www.asu.ru/timetable/students/34/2129439454/?file=2129439454.ics
+ЮИ;378;https://www.asu.ru/timetable/students/34/2129439455/?file=2129439455.ics
+ЮИ;379;https://www.asu.ru/timetable/students/34/2129439456/?file=2129439456.ics
+ЮИ;381;https://www.asu.ru/timetable/students/34/2129436925/?file=2129436925.ics
+ЮИ;3810;https://www.asu.ru/timetable/students/34/2129439772/?file=2129439772.ics
+ЮИ;3811;https://www.asu.ru/timetable/students/34/2129439773/?file=2129439773.ics
+ЮИ;3812;https://www.asu.ru/timetable/students/34/2129439774/?file=2129439774.ics
+ЮИ;382;https://www.asu.ru/timetable/students/34/2129436926/?file=2129436926.ics
+ЮИ;383;https://www.asu.ru/timetable/students/34/2129436927/?file=2129436927.ics
+ЮИ;384;https://www.asu.ru/timetable/students/34/2129436928/?file=2129436928.ics
+ЮИ;385;https://www.asu.ru/timetable/students/34/2129436929/?file=2129436929.ics
+ЮИ;386;https://www.asu.ru/timetable/students/34/2129436930/?file=2129436930.ics
+ЮИ;387;https://www.asu.ru/timetable/students/34/2129439770/?file=2129439770.ics
+ЮИ;388;https://www.asu.ru/timetable/students/34/2129439771/?file=2129439771.ics
+ЮИ;391;https://www.asu.ru/timetable/students/34/2129437170/?file=2129437170.ics
+ЮИ;3910;https://www.asu.ru/timetable/students/34/2129439988/?file=2129439988.ics
+ЮИ;3911;https://www.asu.ru/timetable/students/34/2129439989/?file=2129439989.ics
+ЮИ;3912;https://www.asu.ru/timetable/students/34/2129439990/?file=2129439990.ics
+ЮИ;3913;https://www.asu.ru/timetable/students/34/2129440043/?file=2129440043.ics
+ЮИ;3914;https://www.asu.ru/timetable/students/34/2129440044/?file=2129440044.ics
+ЮИ;391-В;https://www.asu.ru/timetable/students/34/2129440021/?file=2129440021.ics
+ЮИ;391м-ТПА;https://www.asu.ru/timetable/students/34/2129439991/?file=2129439991.ics
+ЮИ;392;https://www.asu.ru/timetable/students/34/2129437171/?file=2129437171.ics
+ЮИ;392м-ГМУ;https://www.asu.ru/timetable/students/34/2129439992/?file=2129439992.ics
+ЮИ;393;https://www.asu.ru/timetable/students/34/2129437172/?file=2129437172.ics
+ЮИ;393м-ЧП;https://www.asu.ru/timetable/students/34/2129439993/?file=2129439993.ics
+ЮИ;394;https://www.asu.ru/timetable/students/34/2129437173/?file=2129437173.ics
+ЮИ;394м;https://www.asu.ru/timetable/students/34/2129439994/?file=2129439994.ics
+ЮИ;395;https://www.asu.ru/timetable/students/34/2129437174/?file=2129437174.ics
+ЮИ;395м;https://www.asu.ru/timetable/students/34/2129439995/?file=2129439995.ics
+ЮИ;396;https://www.asu.ru/timetable/students/34/2129437175/?file=2129437175.ics
+ЮИ;396м-УСП;https://www.asu.ru/timetable/students/34/2129439996/?file=2129439996.ics
+МИЭМИС заочн. отд.;1161-з;link
+МИЭМИС заочн. отд.;2511-з;link
+МИЭМИС заочн. отд.;251-з;link
+МИЭМИС заочн. отд.;2527-з;link
+МИЭМИС заочн. отд.;252з;link
+МИЭМИС заочн. отд.;2611з;https://www.asu.ru/timetable/students/31/2129439148/?file=2129439148.ics
+МИЭМИС заочн. отд.;261БС-з;link
+МИЭМИС заочн. отд.;261-з;https://www.asu.ru/timetable/students/31/2129439146/?file=2129439146.ics
+МИЭМИС заочн. отд.;261с-з;link
+МИЭМИС заочн. отд.;2627-з;https://www.asu.ru/timetable/students/31/2129439149/?file=2129439149.ics
+МИЭМИС заочн. отд.;262-з;https://www.asu.ru/timetable/students/31/2129439147/?file=2129439147.ics
+МИЭМИС заочн. отд.;2711з;https://www.asu.ru/timetable/students/31/2129439539/?file=2129439539.ics
+МИЭМИС заочн. отд.;2711мз;link
+МИЭМИС заочн. отд.;2715мз;link
+МИЭМИС заочн. отд.;271БСз;https://www.asu.ru/timetable/students/31/2129439540/?file=2129439540.ics
+МИЭМИС заочн. отд.;271з;https://www.asu.ru/timetable/students/31/2129439537/?file=2129439537.ics
+МИЭМИС заочн. отд.;271фсз1;https://www.asu.ru/timetable/students/31/2129439538/?file=2129439538.ics
+МИЭМИС заочн. отд.;271фсз2;https://www.asu.ru/timetable/students/31/2129439595/?file=2129439595.ics
+МИЭМИС заочн. отд.;2727з;https://www.asu.ru/timetable/students/31/2129439541/?file=2129439541.ics
+МИЭМИС заочн. отд.;2731мз;link
+МИЭМИС заочн. отд.;2811з;https://www.asu.ru/timetable/students/31/2129439787/?file=2129439787.ics
+МИЭМИС заочн. отд.;2811зу;https://www.asu.ru/timetable/students/31/2129439791/?file=2129439791.ics
+МИЭМИС заочн. отд.;2811мз;link
+МИЭМИС заочн. отд.;2815мз;link
+МИЭМИС заочн. отд.;281з;https://www.asu.ru/timetable/students/31/2129439784/?file=2129439784.ics
+МИЭМИС заочн. отд.;281зу;https://www.asu.ru/timetable/students/31/2129439785/?file=2129439785.ics
+МИЭМИС заочн. отд.;2827зу;https://www.asu.ru/timetable/students/31/2129439792/?file=2129439792.ics
+МИЭМИС заочн. отд.;2827мз;link
+МИЭМИС заочн. отд.;2827эз;https://www.asu.ru/timetable/students/31/2129439788/?file=2129439788.ics
+МИЭМИС заочн. отд.;282з;https://www.asu.ru/timetable/students/31/2129439786/?file=2129439786.ics
+МИЭМИС заочн. отд.;282зу;link
+МИЭМИС заочн. отд.;2831зу;link
+МИЭМИС заочн. отд.;291-з;https://www.asu.ru/timetable/students/31/2129437886/?file=2129437886.ics
+МИЭМИС заочн. отд.;291-зу;https://www.asu.ru/timetable/students/31/2129440108/?file=2129440108.ics
+МИЭМИС заочн. отд.;292-з;link
+МИЭМИС заочн. отд.;292-зу;https://www.asu.ru/timetable/students/31/2129440109/?file=2129440109.ics
+МИЭМИС заочн. отд.;293м-з;https://www.asu.ru/timetable/students/31/2129440060/?file=2129440060.ics
+МИЭМИС заочн. отд.;294-з;link
+МИЭМИС заочн. отд.;294-зу;https://www.asu.ru/timetable/students/31/2129440110/?file=2129440110.ics
+МИЭМИС заочн. отд.;294м-з;https://www.asu.ru/timetable/students/31/2129440061/?file=2129440061.ics
