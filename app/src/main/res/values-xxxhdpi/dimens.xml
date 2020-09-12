@@ -6,6 +6,8 @@
     <dimen name="text_big">18sp</dimen>
     <dimen name="text_bigest">20sp</dimen>
 
+    <dimen name="delete">22sp</dimen>
+
     <dimen name="icon_note">24dp</dimen>
     <dimen name="icon_setting">36dp</dimen>
 

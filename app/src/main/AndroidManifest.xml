@@ -11,14 +11,15 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_book"
+        android:icon="@mipmap/ic_icon_app_new"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/card"
+        android:roundIcon="@mipmap/ic_icon_app_new_round"
         android:supportsRtl="true"
         android:theme="@style/Light">
-        <activity android:name=".profile"></activity>
+        <activity android:name=".Test_kt"></activity>
+        <activity android:name=".Favorite" />
+        <activity android:name=".profile" />
         <activity android:name=".license" />
-        <activity android:name=".donate" />
         <activity android:name=".splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,7 +31,6 @@
         <activity android:name=".app_info" />
         <activity android:name=".FUCKTABLE" />
         <activity android:name=".Setting" />
-        <activity android:name=".institut" />
         <activity android:name=".group_list" />
         <activity android:name=".MainActivity" />
 

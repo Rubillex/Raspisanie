@@ -28,19 +28,11 @@
             android:layout_below="@id/info_card"
             android:id="@+id/text1"
             android:gravity="center"
+            android:layout_marginBottom="10dp"
             android:textColor="@color/primaryText"
             android:textSize="@dimen/text_bigest"
-            android:text="1. Чтобы после запуска приложения открывалось расписание группы нажмите и удерживайте ее номер"/>
+            android:text="Удерживайте номер группы, чтобы вызвать функциональное меню"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/text1"
-            android:layout_marginTop="5dp"
-            android:gravity="center"
-            android:textColor="@color/primaryText"
-            android:textSize="@dimen/text_bigest"
-            android:text="2. Для отмены данной функции повторно удерживайте тот же номер группы или пройдите в настройки и нажмите на \n ''Раздел по умолчанию''"/>
 
 
     </RelativeLayout>

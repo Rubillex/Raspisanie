@@ -89,6 +89,7 @@ public class auth extends AppCompatActivity {
         FirebaseUser user  = mAuth.getCurrentUser();
         if(user != null) {
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            intent.putExtra("back", "false");
             startActivity(intent);
         }
 
@@ -108,14 +109,6 @@ public class auth extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         createRequest();
-
-        findViewById(R.id.go).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
-            }
-        });
 
         findViewById(R.id.sign_in_button).setOnClickListener(new View.OnClickListener() {
             @Override

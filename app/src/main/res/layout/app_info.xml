@@ -28,8 +28,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/card_white"
-                    android:padding="9dp"
-                    android:src="@drawable/ic_book"
+                    android:src="@drawable/ic_icon_app_foreground"
                     android:layout_centerInParent="true"
                     android:id="@+id/logo"/>
             </RelativeLayout>
@@ -64,17 +63,15 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginLeft="16dp"/>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/text_big"
-                android:textColor="?android:attr/textColorPrimary"
-                android:text="Профиль (тестовая версия)"
-                android:id="@+id/profile_test"
-                android:layout_marginTop="16dp"
-                android:layout_marginLeft="16dp"/>
-
-
+<!--            <TextView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:textSize="@dimen/text_big"-->
+<!--                android:textColor="?android:attr/textColorPrimary"-->
+<!--                android:text="Профиль (тестовая версия)"-->
+<!--                android:id="@+id/profile_test"-->
+<!--                android:layout_marginTop="16dp"-->
+<!--                android:layout_marginLeft="16dp"/>-->
 
         </LinearLayout>
 

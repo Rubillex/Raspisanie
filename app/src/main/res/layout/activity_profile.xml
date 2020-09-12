@@ -27,7 +27,6 @@
                     android:id="@+id/profile_image"
                     android:layout_width="150dp"
                     android:layout_height="150dp"
-                    android:src="@mipmap/aaa"
                     android:layout_marginTop="40dp"
                     android:layout_centerHorizontal="true"
                     app:civ_border_width="2dp"
@@ -124,7 +123,7 @@
                     <com.google.android.material.chip.Chip
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="дотер"/>
+                        android:text="водем"/>
 
                     <com.google.android.material.chip.Chip
                         android:layout_width="wrap_content"

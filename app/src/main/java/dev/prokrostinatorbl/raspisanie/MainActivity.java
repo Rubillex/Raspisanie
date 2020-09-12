@@ -10,6 +10,7 @@ import androidx.core.app.CoreComponentFactory;
 import android.Manifest;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -17,19 +18,23 @@ import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 
 import android.os.Message;
+import android.os.StrictMode;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 
@@ -51,8 +56,13 @@ import android.content.Intent;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
+import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -62,16 +72,22 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import java.io.*;
 import java.util.*;
 
+import static dev.prokrostinatorbl.raspisanie.group_list.Snack_text;
+
 
 // ХЛЕБНЫЕ КРОШКИ
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
+
     public static Handler h;
     private static String theme;
     private Toolbar toolbar;
 
+    Dialog search_dialog;
+
+    public static Boolean first = true;
 
     public static String APP_PREFERENCES;
     public static String APP_PREFERENCES_THEME; // выбранная тема
@@ -88,6 +104,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public Throwable ex;
     private List<View> allEds;
 
+    public static String search_text = "";
 
 
     private static final int INTERNET_PERMISSION_CODE = 100;
@@ -141,17 +158,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         new Saved().load_main();
 
         if (firstrun) {
-            // При первом запуске (или если юзер удалял все данные приложения)
-            // мы попадаем сюда. Делаем что-то
             firstrun = false;
             new Saved().save_main();
             Intent i = getBaseContext().getPackageManager()
                     .getLaunchIntentForPackage( getBaseContext().getPackageName() );
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(i);
-            //и после действия записывам false в переменную firstrun
-            //Итого при следующих запусках этот код не вызывается.
-//            mSettings.edit().putBoolean("firstrun", false).commit();
+
 
         }
     }
@@ -166,64 +179,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Saved.init(getApplicationContext());
         new Saved().load_main();
 
-//        mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
 
-//        if(mSettings.contains(APP_PREFERENCES_THEME)) {
-//
-//            String mCounter = mSettings.getString(APP_PREFERENCES_THEME, "auto");
-//
-//
-//            if(!mCounter.equals("auto") && !mCounter.equals("white") && !mCounter.equals("black")){
-//                mCounter = "auto";
-//            }
-//
-//
-//            switch(mCounter){
-//                case "white":
-//                    Log.i("Theme", mCounter );
-//                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-//                        setTheme(R.style.Light_statusbar);
-//                    } else {
-//                        setTheme(R.style.Light);
-//                        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-//                    }
-//                    break;
-//                case "black":
-//                    Log.i("Theme", mCounter );
-//                    setTheme(R.style.Dark);
-//                    break;
-//                case "pink":
-//                    break;
-//                case "auto":
-//                    Log.i("Theme", mCounter );
-//                    switch (currentNightMode) {
-//                        case Configuration.UI_MODE_NIGHT_NO:
-//                            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-//                                setTheme(R.style.Light_statusbar);
-//                            } else {
-//                                setTheme(R.style.Light);
-//                                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-//                            }
-//                            break;
-//                        case Configuration.UI_MODE_NIGHT_YES:
-//                            setTheme(R.style.Dark);
-//                            break;
-//                        default:
-//                            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-//                                setTheme(R.style.Light_statusbar);
-//                            } else {
-//                                setTheme(R.style.Light);
-//                                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-//                            }
-//                            break;
-//                        // We don't know what mode we're in, assume notnight
-//                    }
-//                    break;
-//                default:
-//                    Log.i("Theme", mCounter );
-//                    break;
-//            }
-//        }
         switch(APP_PREFERENCES_THEME){
             case "white":
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
@@ -266,22 +222,58 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         setContentView(R.layout.activity_main);
 
-
-            toolbar  = (Toolbar) findViewById(R.id.my_toolbar);
-            TextView toolbar_text = (TextView) findViewById(R.id.toolbar_text);
-            toolbar_text.setText("Выберите институт");
-
-            findViewById(R.id.back_arrow).setVisibility(View.GONE);
+        search_text = "";
+        first = true;
 
 
-            Button setButton = (Button) findViewById(R.id.setting_button);
-            setButton.setOnClickListener(this);
+        Thread thread = new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                try  {
+                    boolean online = isHostReachable.isHostReachable("https://www.asu.ru/");
+
+                    if(!online){
+                        snackbar();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        thread.start();
+
+
+
+
+        search_dialog = new Dialog(this);
+        search_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        search_dialog.setContentView(R.layout.dialog_search);
+        search_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+
+
+
+        FloatingActionButton fab = findViewById(R.id.search);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                search();
+            }
+        });
+
+
+        toolbar  = (Toolbar) findViewById(R.id.my_toolbar);
+        TextView toolbar_text = (TextView) findViewById(R.id.toolbar_text);
+        toolbar_text.setText("Выберите институт");
+
+        findViewById(R.id.back_arrow).setVisibility(View.GONE);
 
 
         countID = 0;
         USERID = 0;
 
-//        Cheker();
 
         try {
             Creator();
@@ -316,8 +308,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             Saved.init(getApplicationContext());
             new Saved().load_main();
-
-//            mSettings = getSharedPreferences("dev.prokrostinatorbl.raspisanie", MODE_PRIVATE);
 
             int currentNightMode = getResources().getConfiguration().uiMode
                     & Configuration.UI_MODE_NIGHT_MASK;
@@ -366,6 +356,44 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             setContentView(R.layout.activity_main);
 
 
+            search_text = "";
+            first = true;
+
+
+            FloatingActionButton fab = findViewById(R.id.search);
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                   search();
+                }
+            });
+
+
+
+            search_dialog = new Dialog(this);
+            search_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            search_dialog.setContentView(R.layout.dialog_search);
+            search_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+
+            Thread thread = new Thread(new Runnable() {
+
+                @Override
+                public void run() {
+                    try  {
+                        boolean online = isHostReachable.isHostReachable("https://www.asu.ru/");
+
+                        if(!online){
+                            snackbar();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+            thread.start();
+
             Cheker();
 
 
@@ -376,9 +404,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             findViewById(R.id.back_arrow).setVisibility(View.GONE);
 
-
-            Button setButton = (Button) findViewById(R.id.setting_button);
-            setButton.setOnClickListener(this);
+            BottomAppBar bottomAppBar = (BottomAppBar) findViewById(R.id.bottomAppBar);
+            setSupportActionBar(bottomAppBar);
 
             FirebaseApp.initializeApp(this);
             FirebaseInstanceId.getInstance().getToken();
@@ -454,50 +481,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 int currentNightMode = getResources().getConfiguration().uiMode
                                         & Configuration.UI_MODE_NIGHT_MASK;
 
-//                                mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
-//
-//                                if(mSettings.contains(APP_PREFERENCES_THEME)) {
-//
-//                                    String mCounter = mSettings.getString(APP_PREFERENCES_THEME, "auto");
-//
-//                                    if(!mCounter.equals("auto") && !mCounter.equals("white") && !mCounter.equals("black")){
-//                                        mCounter = "auto";
-//                                    }
-//
-//                                    switch(mCounter){
-//                                        case "white":
-//                                            b.setTextColor(getResources().getColor(R.color.primaryText_light));
-//                                            break;
-//                                        case "black":
-//                                            b.setTextColor(getResources().getColor(R.color.primaryText));
-//                                            break;
-//                                        case "pink":
-//                                            break;
-//                                        case "auto":
-//                                            switch (currentNightMode) {
-//                                                case Configuration.UI_MODE_NIGHT_NO:
-//                                                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-//                                                        b.setTextColor(getResources().getColor(R.color.primaryText_light));
-//                                                    } else {
-//                                                        b.setTextColor(getResources().getColor(R.color.primaryText_light));
-//                                                    }
-//                                                    break;
-//                                                case Configuration.UI_MODE_NIGHT_YES:
-//                                                    b.setTextColor(getResources().getColor(R.color.primaryText));
-//                                                    break;
-//                                                default:
-//                                                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-//                                                        b.setTextColor(getResources().getColor(R.color.primaryText_light));
-//                                                    } else {
-//                                                        b.setTextColor(getResources().getColor(R.color.primaryText_light));
-//                                                    }
-//                                                    break;
-//                                                // We don't know what mode we're in, assume notnight
-//                                            }
-//                                            break;
-//                                    }
-//                                }
-
                                 switch(APP_PREFERENCES_THEME){
                                     case "white":
                                         b.setTextColor(getResources().getColor(R.color.primaryText_light));
@@ -568,19 +551,100 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    private void snackbar() {
+
+        RelativeLayout activity_main = (RelativeLayout) findViewById(R.id.activity_main);
+
+        Snackbar snackbar = Snackbar
+                .make(activity_main, "Сайт АГУ не отвечает", Snackbar.LENGTH_LONG);
+        int currentNightMode = getResources().getConfiguration().uiMode
+                & Configuration.UI_MODE_NIGHT_MASK;
+
+        switch (APP_PREFERENCES_THEME) {
+            case "white":
+                snackbar.setActionTextColor(getResources().getColor(R.color.colorAccent));
+                break;
+            case "black":
+                snackbar.setActionTextColor(getResources().getColor(R.color.colorAccent_light));
+                break;
+            case "auto":
+                switch (currentNightMode) {
+                    case Configuration.UI_MODE_NIGHT_NO:
+                        snackbar.setActionTextColor(getResources().getColor(R.color.colorAccent));
+                        break;
+                    case Configuration.UI_MODE_NIGHT_YES:
+                        snackbar.setActionTextColor(getResources().getColor(R.color.colorAccent_light));
+                }
+                break;
+        }
+
+        snackbar.show();
+
+    }
+
+    private void search() {
+
+        search_dialog.show();
+
+        final EditText search_edit_text = (EditText) search_dialog.findViewById(R.id.search_edit_text);
+
+        search_dialog.findViewById(R.id.outlinedButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                search_text = search_edit_text.getText().toString().toUpperCase();
+                search_dialog.dismiss();
+
+                countID = 0;
+                USERID = 0;
+
+                LinearLayout linearlayout = (LinearLayout) findViewById(R.id.linearLayout);
+                linearlayout.removeAllViews();
+
+                try {
+                    Creator();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        });
+
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.bottom_navigation_bar, menu);
+        return true;
+    }
+
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // получим идентификатор выбранного пункта меню
+        int id = item.getItemId();
+        // Операции для выбранного пункта меню
+        switch (id) {
+            case R.id.setting_button:
+                Intent setting = new Intent(getApplicationContext(), Setting.class);
+                startActivity(setting);
+                return true;
+            case R.id.star:
+                Intent favorite = new Intent(getApplicationContext(), Favorite.class);
+                startActivity(favorite);
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
 
 
     @Override
     public void onClick(View view)
     {
-        switch (view.getId())
-        {
-            case R.id.setting_button:
-                Intent setting = new Intent(MainActivity.this, Setting.class);
-                startActivity(setting);
-                break;
-        }
+
 
     }
 
@@ -617,8 +681,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         number = new ArrayList<String>();
 
-//        relativeLayout = (RelativeLayout) findViewById(R.id.linearLayout);
-
         allEds = new ArrayList<View>();
 
         String buffer_name = "buffer";
@@ -633,7 +695,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             String words[] = s.split(";");
             String word = words[0];
 
-            if (!word.equals(buffer_name)){
+
+            if (!word.equals(buffer_name)
+            && word.startsWith(search_text)){
+
+
 
                     final View view = getLayoutInflater().inflate(R.layout.fragment_institut, null);
 
@@ -675,7 +741,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
-        progressBar.setVisibility(View.GONE);
+
+        if (first){
+            progressBar.setVisibility(View.GONE);
+            first = false;
+        }
 
     }
 }

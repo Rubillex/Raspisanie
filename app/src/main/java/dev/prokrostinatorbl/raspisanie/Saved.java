@@ -50,6 +50,24 @@ public class Saved extends AppCompatActivity {
         group_list.APP_PREFERENCES_LINK = preferences.getString("link", "1");
     }
 
+    void save_favorite(){
+        editor.putString("group", Favorite.APP_PREFERENCES_START_GROUP);
+        editor.putString("start_frame", Favorite.APP_PREFERENCES_STARTFRAME);
+        editor.putString("start_uni", Favorite.APP_PREFERENCES_START_UNI);
+        editor.putString("link", Favorite.APP_PREFERENCES_LINK);
+        editor.putBoolean("first", false);
+        editor.apply();
+    }
+
+    void load_favorite(){
+        Favorite.APP_PREFERENCES_FIRST = preferences.getBoolean("first", true);
+        Favorite.APP_PREFERENCES_THEME = preferences.getString("theme", "auto");
+        Favorite.APP_PREFERENCES_START_GROUP = preferences.getString("group", "standart");
+        Favorite.APP_PREFERENCES_STARTFRAME = preferences.getString("start_frame", "main");
+        Favorite.APP_PREFERENCES_START_UNI = preferences.getString("start_uni", "univer");
+        Favorite.APP_PREFERENCES_LINK = preferences.getString("link", "1");
+    }
+
 
     void load_main(){
         MainActivity.APP_PREFERENCES_THEME = preferences.getString("theme", "auto");

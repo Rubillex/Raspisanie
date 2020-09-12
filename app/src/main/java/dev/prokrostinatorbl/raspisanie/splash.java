@@ -38,20 +38,8 @@ public class splash extends AppCompatActivity {
         new Handler().postDelayed(new Runnable(){
             @Override
             public void run() {
-//                starter();
+                starter();
 
-                if(APP_PREFERENCES_STARTFRAME.equals("main")){
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                    intent.putExtra("back", "false");
-                    startActivity(intent);
-                } else {
-                    Intent intent = new Intent(getApplicationContext(), FUCKTABLE.class);
-                    intent.putExtra("link", APP_PREFERENCES_LINK);
-                    intent.putExtra("instit", APP_PREFERENCES_START_UNI);
-                    intent.putExtra("key", APP_PREFERENCES_START_GROUP);
-                    startActivity(intent);
-
-                }
 
             }
         }, SPLASH_DISPLAY_LENGTH);
@@ -62,10 +50,22 @@ public class splash extends AppCompatActivity {
     public void starter() {
 
         GoogleSignInAccount signInAccount = GoogleSignIn.getLastSignedInAccount(this);
-        if(signInAccount != null){
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.putExtra("back", "false");
-            startActivity(intent);
+
+        //ПИДОРАС ПОМЕНЯЙ ПРЕЖДЕ ЧЕМ ГРУЗИТЬ В Google Play "==" на "!="
+
+        if(signInAccount == null){
+            if(APP_PREFERENCES_STARTFRAME.equals("main")){
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.putExtra("back", "false");
+                startActivity(intent);
+            } else {
+                Intent intent = new Intent(getApplicationContext(), FUCKTABLE.class);
+                intent.putExtra("link", APP_PREFERENCES_LINK);
+                intent.putExtra("instit", APP_PREFERENCES_START_UNI);
+                intent.putExtra("key", APP_PREFERENCES_START_GROUP);
+                startActivity(intent);
+            }
+
         } else {
             Intent intent = new Intent(this, auth.class);
             startActivity(intent);

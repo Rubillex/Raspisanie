@@ -96,54 +96,6 @@ public class app_info extends AppCompatActivity {
         }
 
 
-//        if(mSettings.contains(APP_PREFERENCES_THEME)) {
-//
-//            String mCounter = mSettings.getString(APP_PREFERENCES_THEME, "auto");
-//
-//            if(!mCounter.equals("auto") && !mCounter.equals("white") && !mCounter.equals("black")){
-//                mCounter = "auto";
-//            }
-//
-//            switch(APP_PREFERENCES_THEME){
-//                case "white":
-//                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-//                        setTheme(R.style.Light_statusbar);
-//                    } else {
-//                        setTheme(R.style.Light);
-//                        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-//                    }
-//                    break;
-//                case "black":
-//                    setTheme(R.style.Dark);
-//                    break;
-//                case "pink":
-//                    break;
-//                case "auto":
-//                    switch (currentNightMode) {
-//                        case Configuration.UI_MODE_NIGHT_NO:
-//                            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-//                                setTheme(R.style.Light_statusbar);
-//                            } else {
-//                                setTheme(R.style.Light);
-//                                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-//                            }
-//                            break;
-//                        case Configuration.UI_MODE_NIGHT_YES:
-//                            setTheme(R.style.Dark);
-//                            break;
-//                        default:
-//                            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-//                                setTheme(R.style.Light_statusbar);
-//                            } else {
-//                                setTheme(R.style.Light);
-//                                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-//                            }
-//                            break;
-//                        // We don't know what mode we're in, assume notnight
-//                    }
-//                    break;
-//            }
-//        }
         setContentView(R.layout.app_info);
 
         toolbar  = (Toolbar) findViewById(R.id.my_toolbar);
@@ -158,14 +110,13 @@ public class app_info extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.profile_test).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), profile.class);
-                startActivity(intent);
-            }
-        });
-
+//        findViewById(R.id.profile_test).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(getApplicationContext(), profile.class);
+//                startActivity(intent);
+//            }
+//        });
 
     }
 }

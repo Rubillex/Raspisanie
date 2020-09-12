@@ -40,6 +40,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.*;
 
 import org.apache.commons.io.FileUtils;
@@ -82,12 +83,16 @@ public class FUCKTABLE extends Activity {
 
     MyDatabaseHelper dbHelper;
 
+    public int currentNightMode;
+
     public static Integer NOTE_FRAGMENT_NUMBER = 1;
 
+    public static String from = "";
 
     private final int USERID = 6000;
     private int countID = 1;
 
+    public boolean second = false;
 
     public static String APP_PREFERENCES;
     public static String APP_PREFERENCES_THEME; // выбранная тема
@@ -126,32 +131,9 @@ public class FUCKTABLE extends Activity {
     public String src_file;
     public String json_db_name;
 
-    public LinearLayout first_day;
-    public LinearLayout second_day;
-    public LinearLayout day3;
-    public LinearLayout day4;
-    public LinearLayout day5;
-    public LinearLayout day6;
-    public LinearLayout day7;
-    public LinearLayout day8;
-    public LinearLayout day9;
-    public LinearLayout day10;
-    public LinearLayout day11;
-    public LinearLayout day12;
-    public LinearLayout linear_group;
 
     public Integer day_number;
 
-
-
-
-    private Toolbar toolbar;
-
-    private TextView toolbar_text;
-
-    public ArrayList<String> days;
-    public ArrayList<String> months;
-    public ArrayList<String> years;
     public static Handler h;
 
     Dialog note_dialog;
@@ -165,8 +147,6 @@ public class FUCKTABLE extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
-//        boolean hasVisited = mSettings.getBoolean("hasVisited", false);
         int currentNightMode = getResources().getConfiguration().uiMode
                 & Configuration.UI_MODE_NIGHT_MASK;
 
@@ -213,54 +193,6 @@ public class FUCKTABLE extends Activity {
                 break;
         }
 
-//        if(mSettings.contains(APP_PREFERENCES_THEME)) {
-//
-//            String mCounter = mSettings.getString(APP_PREFERENCES_THEME, "auto");
-//
-//            if(!mCounter.equals("auto") && !mCounter.equals("white") && !mCounter.equals("black")){
-//                mCounter = "auto";
-//            }
-//
-//            switch(mCounter){
-//                case "white":
-//                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-//                        setTheme(R.style.Light_statusbar);
-//                    } else {
-//                        setTheme(R.style.Light);
-//                        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-//                    }
-//                    break;
-//                case "black":
-//                    setTheme(R.style.Dark);
-//                    break;
-//                case "pink":
-//                    break;
-//                case "auto":
-//                    switch (currentNightMode) {
-//                        case Configuration.UI_MODE_NIGHT_NO:
-//                            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-//                                setTheme(R.style.Light_statusbar);
-//                            } else {
-//                                setTheme(R.style.Light);
-//                                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-//                            }
-//                            break;
-//                        case Configuration.UI_MODE_NIGHT_YES:
-//                            setTheme(R.style.Dark);
-//                            break;
-//                        default:
-//                            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-//                                setTheme(R.style.Light_statusbar);
-//                            } else {
-//                                setTheme(R.style.Light);
-//                                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-//                            }
-//                            break;
-//                        // We don't know what mode we're in, assume notnight
-//                    }
-//                    break;
-//            }
-//        }
 
         setContentView(R.layout.activity_fucktable);
 
@@ -277,16 +209,13 @@ public class FUCKTABLE extends Activity {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
 
-
-
-
-
         final TextView toolbar_text = (TextView) findViewById(R.id.toolbar_text);
 
 
         Intent intent = getIntent();
         final String group_num = intent.getStringExtra("key");
         final String institut = intent.getStringExtra("instit");
+        from = intent.getStringExtra("from");
 
         instit_list = institut;
 
@@ -345,9 +274,18 @@ public class FUCKTABLE extends Activity {
         findViewById(R.id.back_arrow).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), group_list.class);
-                intent.putExtra("key", instit_list);
-                startActivity(intent);
+
+                switch (from){
+                    case "list":
+                        Intent intent = new Intent(getApplicationContext(), group_list.class);
+                        intent.putExtra("key", instit_list);
+                        startActivity(intent);
+                        break;
+                    case "favorite":
+                        Intent intent2 = new Intent(getApplicationContext(), Favorite.class);
+                        startActivity(intent2);
+                        break;
+                }
             }
         });
 
@@ -383,10 +321,31 @@ public class FUCKTABLE extends Activity {
 
 
             Context c = getApplicationContext();
-            File file = new File(c.getFilesDir(), "/files");
-            String from = "FUCKTABLE";
+            final File file = new File(c.getFilesDir(), "/files");
+            final String from = "FUCKTABLE";
 
-            Downloader.Download(src_file, file, destFileName, from);
+
+
+            Thread thread = new Thread(new Runnable() {
+
+                @Override
+                public void run() {
+                    try  {
+                        boolean online = isHostReachable.isHostReachable("https://www.asu.ru/");
+
+                        if(!online){
+                            snackbar();
+                            h.sendEmptyMessage(2);
+                        } else {
+                            Downloader.Download(src_file, file, destFileName, from);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+            thread.start();
 
 
             h = new Handler() {
@@ -424,6 +383,39 @@ public class FUCKTABLE extends Activity {
             };
 
         }
+
+    }
+
+    private void snackbar() {
+
+
+            LinearLayout activity_main = (LinearLayout) findViewById(R.id.linearLayout);
+
+            Snackbar snackbar = Snackbar
+                    .make(activity_main, "Сайт АГУ не отвечает", Snackbar.LENGTH_LONG);
+            int currentNightMode = getResources().getConfiguration().uiMode
+                    & Configuration.UI_MODE_NIGHT_MASK;
+
+            switch (APP_PREFERENCES_THEME) {
+                case "white":
+                    snackbar.setActionTextColor(getResources().getColor(R.color.colorAccent));
+                    break;
+                case "black":
+                    snackbar.setActionTextColor(getResources().getColor(R.color.colorAccent_light));
+                    break;
+                case "auto":
+                    switch (currentNightMode) {
+                        case Configuration.UI_MODE_NIGHT_NO:
+                            snackbar.setActionTextColor(getResources().getColor(R.color.colorAccent));
+                            break;
+                        case Configuration.UI_MODE_NIGHT_YES:
+                            snackbar.setActionTextColor(getResources().getColor(R.color.colorAccent_light));
+                    }
+                    break;
+            }
+
+            snackbar.show();
+
 
     }
 
@@ -503,9 +495,6 @@ public class FUCKTABLE extends Activity {
         Log.i("размер даты", String.valueOf(JJJ));
 
         if(JJJ == 0){
-            Toast toast = Toast.makeText(getApplicationContext(),
-                    "Расписания для этой группы нет в кэше/на сайте!", Toast.LENGTH_SHORT);
-            toast.show();
         }else {
 
             String date_temp = date.get(0);
@@ -753,46 +742,7 @@ public class FUCKTABLE extends Activity {
                             & Configuration.UI_MODE_NIGHT_MASK;
 
 
-//                    if (mSettings.contains(APP_PREFERENCES_THEME)) {
-//
-//                        String mCounter = mSettings.getString(APP_PREFERENCES_THEME, "auto");
-//
-//                        if (!mCounter.equals("auto") && !mCounter.equals("white") && !mCounter.equals("black")) {
-//                            mCounter = "auto";
-//                        }
-//
-//                        switch (APP_PREFERENCES_THEME) {
-//                            case "white":
-//                                name_of_par.setTextColor(getResources().getColor(R.color.colorPrimary_light));
-//                                docent.setTextColor(getResources().getColor(R.color.colorPrimary_light));
-//                                auditoria.setTextColor(getResources().getColor(R.color.colorPrimary_light));
-//                                break;
-//                            case "black":
-//                                name_of_par.setTextColor(getResources().getColor(R.color.colorPrimary));
-//                                docent.setTextColor(getResources().getColor(R.color.colorPrimary));
-//                                auditoria.setTextColor(getResources().getColor(R.color.colorPrimary));
-//                                break;
-//                            case "auto":
-//                                switch (currentNightMode) {
-//                                    case Configuration.UI_MODE_NIGHT_NO:
-//                                        name_of_par.setTextColor(getResources().getColor(R.color.colorPrimary_light));
-//                                        docent.setTextColor(getResources().getColor(R.color.colorPrimary_light));
-//                                        auditoria.setTextColor(getResources().getColor(R.color.colorPrimary_light));
-//                                        break;
-//                                    case Configuration.UI_MODE_NIGHT_YES:
-//                                        name_of_par.setTextColor(getResources().getColor(R.color.colorPrimary));
-//                                        docent.setTextColor(getResources().getColor(R.color.colorPrimary));
-//                                        auditoria.setTextColor(getResources().getColor(R.color.colorPrimary));
-//                                        break;
-//                                    default:
-//                                        name_of_par.setTextColor(getResources().getColor(R.color.colorPrimary_light));
-//                                        docent.setTextColor(getResources().getColor(R.color.colorPrimary_light));
-//                                        auditoria.setTextColor(getResources().getColor(R.color.colorPrimary_light));
-//                                        break;
-//                                }
-//                                break;
-//                        }
-//                    }
+
                     switch (APP_PREFERENCES_THEME) {
                         case "white":
                             name_of_par.setTextColor(getResources().getColor(R.color.colorPrimary_light));
@@ -825,10 +775,6 @@ public class FUCKTABLE extends Activity {
                             break;
                     }
                 }
-
-
-
-
 
 
                 allEds.add(view);
@@ -870,11 +816,32 @@ public class FUCKTABLE extends Activity {
                             current_day = 6;
                         }
 
-                        if (dateText.equals(DATE)) {
-//                            dot1.setVisibility(View.VISIBLE);
-                        }
+//                        if (dateText.equals(DATE)) {
+//                            switch (APP_PREFERENCES_THEME) {
+//                                case "white":
+//                                    card1.setBackground(getDrawable(R.drawable.card_day));
+//                                    break;
+//                                case "black":
+//                                    card1.setBackground(getDrawable(R.drawable.card_night));
+//                                    break;
+//                                case "auto":
+//                                    switch (currentNightMode) {
+//                                        case Configuration.UI_MODE_NIGHT_NO:
+//                                            card1.setBackground(getDrawable(R.drawable.card_day));
+//                                            break;
+//                                        case Configuration.UI_MODE_NIGHT_YES:
+//                                            card1.setBackground(getDrawable(R.drawable.card_night));
+//                                            break;
+//                                        default:
+//                                            card1.setBackground(getDrawable(R.drawable.card_day));
+//                                            break;
+//                                    }
+//                                    break;
+//                            }
+//                        }
 
                         if (current_day < buffer_day) {
+                            second = true;
                             nedel1_text2.setText(date.get(j-1));
                             switch (day_number) {
                                 case 2:
@@ -971,11 +938,32 @@ public class FUCKTABLE extends Activity {
                             current_day = 6;
                         }
 
-                        if (dateText.equals(DATE)) {
-//                            dot2.setVisibility(View.VISIBLE);
-                        }
+//                        if (dateText.equals(DATE)) {
+//                            switch (APP_PREFERENCES_THEME) {
+//                                case "white":
+//                                    card2.setBackground(getDrawable(R.drawable.card_day));
+//                                    break;
+//                                case "black":
+//                                    card2.setBackground(getDrawable(R.drawable.card_night));
+//                                    break;
+//                                case "auto":
+//                                    switch (currentNightMode) {
+//                                        case Configuration.UI_MODE_NIGHT_NO:
+//                                            card2.setBackground(getDrawable(R.drawable.card_day));
+//                                            break;
+//                                        case Configuration.UI_MODE_NIGHT_YES:
+//                                            card2.setBackground(getDrawable(R.drawable.card_night));
+//                                            break;
+//                                        default:
+//                                            card2.setBackground(getDrawable(R.drawable.card_day));
+//                                            break;
+//                                    }
+//                                    break;
+//                            }
+//                        }
 
                         if (current_day < buffer_day) {
+                            second = true;
                             nedel1_text2.setText(date.get(j-1));
                             switch (day_number) {
                                 case 2:
@@ -1073,11 +1061,32 @@ public class FUCKTABLE extends Activity {
                             current_day = 6;
                         }
 
-                        if (dateText.equals(DATE)) {
-//                            dot3.setVisibility(View.VISIBLE);
-                        }
+//                        if (dateText.equals(DATE)) {
+//                            switch (APP_PREFERENCES_THEME) {
+//                                case "white":
+//                                    card3.setBackground(getDrawable(R.drawable.card_day));
+//                                    break;
+//                                case "black":
+//                                    card3.setBackground(getDrawable(R.drawable.card_night));
+//                                    break;
+//                                case "auto":
+//                                    switch (currentNightMode) {
+//                                        case Configuration.UI_MODE_NIGHT_NO:
+//                                            card3.setBackground(getDrawable(R.drawable.card_day));
+//                                            break;
+//                                        case Configuration.UI_MODE_NIGHT_YES:
+//                                            card3.setBackground(getDrawable(R.drawable.card_night));
+//                                            break;
+//                                        default:
+//                                            card3.setBackground(getDrawable(R.drawable.card_day));
+//                                            break;
+//                                    }
+//                                    break;
+//                            }
+//                        }
 
                         if (current_day < buffer_day) {
+                            second = true;
                             nedel1_text2.setText(date.get(j-1));
                             switch (day_number) {
                                 case 2:
@@ -1175,11 +1184,32 @@ public class FUCKTABLE extends Activity {
                             current_day = 6;
                         }
 
-                        if (dateText.equals(DATE)) {
-//                            dot4.setVisibility(View.VISIBLE);
-                        }
+//                        if (dateText.equals(DATE)) {
+//                            switch (APP_PREFERENCES_THEME) {
+//                                case "white":
+//                                    card4.setBackground(getDrawable(R.drawable.card_day));
+//                                    break;
+//                                case "black":
+//                                    card4.setBackground(getDrawable(R.drawable.card_night));
+//                                    break;
+//                                case "auto":
+//                                    switch (currentNightMode) {
+//                                        case Configuration.UI_MODE_NIGHT_NO:
+//                                            card4.setBackground(getDrawable(R.drawable.card_day));
+//                                            break;
+//                                        case Configuration.UI_MODE_NIGHT_YES:
+//                                            card4.setBackground(getDrawable(R.drawable.card_night));
+//                                            break;
+//                                        default:
+//                                            card4.setBackground(getDrawable(R.drawable.card_day));
+//                                            break;
+//                                    }
+//                                    break;
+//                            }
+//                        }
 
                         if (current_day < buffer_day) {
+                            second = true;
                             nedel1_text2.setText(date.get(j-1));
                             switch (day_number) {
                                 case 2:
@@ -1275,11 +1305,32 @@ public class FUCKTABLE extends Activity {
                             current_day = 6;
                         }
 
-                        if (dateText.equals(DATE)) {
-//                            dot5.setVisibility(View.VISIBLE);
-                        }
+//                        if (dateText.equals(DATE)) {
+//                            switch (APP_PREFERENCES_THEME) {
+//                                case "white":
+//                                    card5.setBackground(getDrawable(R.drawable.card_day));
+//                                    break;
+//                                case "black":
+//                                    card5.setBackground(getDrawable(R.drawable.card_night));
+//                                    break;
+//                                case "auto":
+//                                    switch (currentNightMode) {
+//                                        case Configuration.UI_MODE_NIGHT_NO:
+//                                            card5.setBackground(getDrawable(R.drawable.card_day));
+//                                            break;
+//                                        case Configuration.UI_MODE_NIGHT_YES:
+//                                            card5.setBackground(getDrawable(R.drawable.card_night));
+//                                            break;
+//                                        default:
+//                                            card5.setBackground(getDrawable(R.drawable.card_day));
+//                                            break;
+//                                    }
+//                                    break;
+//                            }
+//                        }
 
                         if (current_day < buffer_day) {
+                            second = true;
                             nedel1_text2.setText(date.get(j-1));
                             switch (day_number) {
                                 case 2:
@@ -1374,11 +1425,32 @@ public class FUCKTABLE extends Activity {
                             current_day = 6;
                         }
 
-                        if (dateText.equals(DATE)) {
-//                            dot6.setVisibility(View.VISIBLE);
-                        }
+//                        if (dateText.equals(DATE)) {
+//                            switch (APP_PREFERENCES_THEME) {
+//                                case "white":
+//                                    card6.setBackground(getDrawable(R.drawable.card_day));
+//                                    break;
+//                                case "black":
+//                                    card6.setBackground(getDrawable(R.drawable.card_night));
+//                                    break;
+//                                case "auto":
+//                                    switch (currentNightMode) {
+//                                        case Configuration.UI_MODE_NIGHT_NO:
+//                                            card6.setBackground(getDrawable(R.drawable.card_day));
+//                                            break;
+//                                        case Configuration.UI_MODE_NIGHT_YES:
+//                                            card6.setBackground(getDrawable(R.drawable.card_night));
+//                                            break;
+//                                        default:
+//                                            card6.setBackground(getDrawable(R.drawable.card_day));
+//                                            break;
+//                                    }
+//                                    break;
+//                            }
+//                        }
 
                         if (current_day < buffer_day) {
+                            second = true;
                             nedel1_text2.setText(date.get(j-1));
                             switch (day_number) {
                                 case 2:
@@ -1472,11 +1544,32 @@ public class FUCKTABLE extends Activity {
                             current_day = 6;
                         }
 
-                        if (dateText.equals(DATE)) {
-//                            dot7.setVisibility(View.VISIBLE);
-                        }
+//                        if (dateText.equals(DATE)) {
+//                            switch (APP_PREFERENCES_THEME) {
+//                                case "white":
+//                                    card7.setBackground(getDrawable(R.drawable.card_day));
+//                                    break;
+//                                case "black":
+//                                    card7.setBackground(getDrawable(R.drawable.card_night));
+//                                    break;
+//                                case "auto":
+//                                    switch (currentNightMode) {
+//                                        case Configuration.UI_MODE_NIGHT_NO:
+//                                            card7.setBackground(getDrawable(R.drawable.card_day));
+//                                            break;
+//                                        case Configuration.UI_MODE_NIGHT_YES:
+//                                            card7.setBackground(getDrawable(R.drawable.card_night));
+//                                            break;
+//                                        default:
+//                                            card7.setBackground(getDrawable(R.drawable.card_day));
+//                                            break;
+//                                    }
+//                                    break;
+//                            }
+//                        }
 
                         if (current_day < buffer_day) {
+                            second = true;
                             nedel1_text2.setText(date.get(j-1));
                             switch (day_number) {
                                 case 2:
@@ -1570,11 +1663,32 @@ public class FUCKTABLE extends Activity {
                             current_day = 6;
                         }
 
-                        if (dateText.equals(DATE)) {
-//                            dot8.setVisibility(View.VISIBLE);
-                        }
+//                        if (dateText.equals(DATE)) {
+//                            switch (APP_PREFERENCES_THEME) {
+//                                case "white":
+//                                    card8.setBackground(getDrawable(R.drawable.card_day));
+//                                    break;
+//                                case "black":
+//                                    card8.setBackground(getDrawable(R.drawable.card_night));
+//                                    break;
+//                                case "auto":
+//                                    switch (currentNightMode) {
+//                                        case Configuration.UI_MODE_NIGHT_NO:
+//                                            card8.setBackground(getDrawable(R.drawable.card_day));
+//                                            break;
+//                                        case Configuration.UI_MODE_NIGHT_YES:
+//                                            card8.setBackground(getDrawable(R.drawable.card_night));
+//                                            break;
+//                                        default:
+//                                            card8.setBackground(getDrawable(R.drawable.card_day));
+//                                            break;
+//                                    }
+//                                    break;
+//                            }
+//                        }
 
                         if (current_day < buffer_day) {
+                            second = true;
                             nedel1_text2.setText(date.get(j-1));
                             switch (day_number) {
                                 case 2:
@@ -1669,11 +1783,32 @@ public class FUCKTABLE extends Activity {
                             current_day = 6;
                         }
 
-                        if (dateText.equals(DATE)) {
-//                            dot9.setVisibility(View.VISIBLE);
-                        }
+//                        if (dateText.equals(DATE)) {
+//                            switch (APP_PREFERENCES_THEME) {
+//                                case "white":
+//                                    card9.setBackground(getDrawable(R.drawable.card_day));
+//                                    break;
+//                                case "black":
+//                                    card9.setBackground(getDrawable(R.drawable.card_night));
+//                                    break;
+//                                case "auto":
+//                                    switch (currentNightMode) {
+//                                        case Configuration.UI_MODE_NIGHT_NO:
+//                                            card9.setBackground(getDrawable(R.drawable.card_day));
+//                                            break;
+//                                        case Configuration.UI_MODE_NIGHT_YES:
+//                                            card9.setBackground(getDrawable(R.drawable.card_night));
+//                                            break;
+//                                        default:
+//                                            card9.setBackground(getDrawable(R.drawable.card_day));
+//                                            break;
+//                                    }
+//                                    break;
+//                            }
+//                        }
 
                         if (current_day < buffer_day) {
+                            second = true;
                             nedel1_text2.setText(date.get(j-1));
                             switch (day_number) {
                                 case 2:
@@ -1767,11 +1902,32 @@ public class FUCKTABLE extends Activity {
                             current_day = 6;
                         }
 
-                        if (dateText.equals(DATE)) {
-//                            dot10.setVisibility(View.VISIBLE);
-                        }
+//                        if (dateText.equals(DATE)) {
+//                            switch (APP_PREFERENCES_THEME) {
+//                                case "white":
+//                                    card10.setBackground(getDrawable(R.drawable.card_day));
+//                                    break;
+//                                case "black":
+//                                    card10.setBackground(getDrawable(R.drawable.card_night));
+//                                    break;
+//                                case "auto":
+//                                    switch (currentNightMode) {
+//                                        case Configuration.UI_MODE_NIGHT_NO:
+//                                            card10.setBackground(getDrawable(R.drawable.card_day));
+//                                            break;
+//                                        case Configuration.UI_MODE_NIGHT_YES:
+//                                            card10.setBackground(getDrawable(R.drawable.card_night));
+//                                            break;
+//                                        default:
+//                                            card10.setBackground(getDrawable(R.drawable.card_day));
+//                                            break;
+//                                    }
+//                                    break;
+//                            }
+//                        }
 
                         if (current_day < buffer_day) {
+                            second = true;
                             nedel1_text2.setText(date.get(j-1));
                             switch (day_number) {
                                 case 2:
@@ -1866,11 +2022,32 @@ public class FUCKTABLE extends Activity {
                             current_day = 6;
                         }
 
-                        if (dateText.equals(DATE)) {
-//                            dot11.setVisibility(View.VISIBLE);
-                        }
+//                        if (dateText.equals(DATE)) {
+//                            switch (APP_PREFERENCES_THEME) {
+//                                case "white":
+//                                    card11.setBackground(getDrawable(R.drawable.card_day));
+//                                    break;
+//                                case "black":
+//                                    card11.setBackground(getDrawable(R.drawable.card_night));
+//                                    break;
+//                                case "auto":
+//                                    switch (currentNightMode) {
+//                                        case Configuration.UI_MODE_NIGHT_NO:
+//                                            card11.setBackground(getDrawable(R.drawable.card_day));
+//                                            break;
+//                                        case Configuration.UI_MODE_NIGHT_YES:
+//                                            card11.setBackground(getDrawable(R.drawable.card_night));
+//                                            break;
+//                                        default:
+//                                            card11.setBackground(getDrawable(R.drawable.card_day));
+//                                            break;
+//                                    }
+//                                    break;
+//                            }
+//                        }
 
                         if (current_day < buffer_day) {
+                            second = true;
                             nedel1_text2.setText(date.get(j-1));
                             switch (day_number) {
                                 case 2:
@@ -1965,11 +2142,32 @@ public class FUCKTABLE extends Activity {
                             current_day = 6;
                         }
 
-                        if (dateText.equals(DATE)) {
-//                            dot12.setVisibility(View.VISIBLE);
-                        }
+//                        if (dateText.equals(DATE)) {
+//                            switch (APP_PREFERENCES_THEME) {
+//                                case "white":
+//                                    card12.setBackground(getDrawable(R.drawable.card_day));
+//                                    break;
+//                                case "black":
+//                                    card12.setBackground(getDrawable(R.drawable.card_night));
+//                                    break;
+//                                case "auto":
+//                                    switch (currentNightMode) {
+//                                        case Configuration.UI_MODE_NIGHT_NO:
+//                                            card12.setBackground(getDrawable(R.drawable.card_day));
+//                                            break;
+//                                        case Configuration.UI_MODE_NIGHT_YES:
+//                                            card12.setBackground(getDrawable(R.drawable.card_night));
+//                                            break;
+//                                        default:
+//                                            card12.setBackground(getDrawable(R.drawable.card_day));
+//                                            break;
+//                                    }
+//                                    break;
+//                            }
+//                        }
 
                         if (current_day < buffer_day) {
+                            second = true;
                             nedel1_text2.setText(date.get(j-1));
                             switch (day_number) {
                                 case 2:
@@ -2040,6 +2238,9 @@ public class FUCKTABLE extends Activity {
 
             }
 
+            if(second){
+                nedel1_text2.setText(date.get(date.size()-1));
+            }
 
             if (paar_for_day < 3){
 
@@ -2683,7 +2884,6 @@ public class FUCKTABLE extends Activity {
 
         temp = 0;
 
-        Log.i("@@@@@", "Read завершёл");
 
 
 

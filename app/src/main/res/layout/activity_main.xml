@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,92 +10,78 @@
     android:id="@+id/activity_main"
     android:background="?attr/colorPrimary">
 
-    
-        <include layout="@layout/toolbar" />
 
 
-    <ScrollView
+
+    <include layout="@layout/toolbar"
+        android:id="@+id/tools"/>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1">
+        android:layout_height="match_parent"
+        android:layout_below="@id/tools">
 
-        <LinearLayout
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/linearLayout"
-            android:orientation="vertical">
+            android:layout_marginBottom="75dp"
+            app:layout_scrollFlags="snap"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <RelativeLayout
+            <LinearLayout
+                android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <ProgressBar
-                    android:id="@+id/progressBar"
-                    android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_centerInParent="true"
-                    android:layout_marginTop="150dp" />
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <ProgressBar
+                        android:id="@+id/progressBar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true"
+                        android:layout_marginTop="150dp" />
 
 
-            </RelativeLayout>
-
-        </LinearLayout>
+                </RelativeLayout>
 
 
+            </LinearLayout>
 
 
-    </ScrollView>
+        </androidx.core.widget.NestedScrollView>
 
 
-    <LinearLayout
+        <com.google.android.material.bottomappbar.BottomAppBar
+            android:id="@+id/bottomAppBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:elevation="@dimen/cardview_default_elevation">
+            android:layout_gravity="bottom"
+            style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
+            app:menu="@menu/bottom_navigation_bar"
+            tools:ignore="BottomAppBar"
+            app:hideOnScroll="true"
+            app:layout_scrollFlags="scroll|enterAlways"/>
 
-            <com.google.android.material.button.MaterialButton
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_centerHorizontal="true"
-                android:text="Расписание"
-                android:textColor="?android:attr/textColorPrimary"
-                android:textSize="@dimen/icon_note"
-                android:visibility="gone"
-                android:textAppearance="@style/Widget.MaterialComponents.Button"
-                android:id="@+id/timetable"
-                app:rippleColor="?android:attr/colorControlHighlight"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:layout_weight="1"/>
-
-            <com.google.android.material.button.MaterialButton
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_centerHorizontal="true"
-                android:text="Поиск"
-                android:textColor="?attr/colorAccent"
-                android:textSize="@dimen/icon_note"
-                android:textAppearance="@style/Widget.MaterialComponents.Button"
-                android:id="@+id/search"
-                android:visibility="gone"
-                app:rippleColor="?android:attr/colorControlHighlight"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:layout_weight="1"/>
-
-            <com.google.android.material.button.MaterialButton
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_centerHorizontal="true"
-                android:text="Настройки"
-                android:textColor="?attr/colorAccent"
-                android:textSize="@dimen/icon_note"
-                android:textAppearance="@style/Widget.MaterialComponents.Button"
-                android:id="@+id/setting_button"
-                app:rippleColor="?android:attr/colorControlHighlight"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:layout_weight="1"/>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:tint="?attr/colorPrimary"
+            android:src="@drawable/ic_baseline_search_24"
+            app:layout_anchor="@id/bottomAppBar"
+            android:id="@+id/search"
+            app:backgroundTint="?attr/colorAccent"/>
 
 
-        </LinearLayout>
 
-</LinearLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+
+
+</RelativeLayout>

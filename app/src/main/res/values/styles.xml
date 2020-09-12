@@ -6,6 +6,9 @@
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowContentOverlay">@null</item>
 
+        <item name="android:textColorHint">@color/colorAccent_light</item>
+        <item name="boxStrokeColor">@color/colorAccent_light</item>
+
         <item name="colorPrimary">@color/colorPrimary_light</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark_light</item>
         <item name="colorAccent">@color/colorAccent_light</item>
@@ -23,6 +26,9 @@
 
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowContentOverlay">@null</item>
+
+        <item name="android:textColorHint">@color/colorAccent_light</item>
+        <item name="boxStrokeColor">@color/colorAccent_light</item>
 
         <item name="colorPrimary">@color/colorPrimary_light</item>
         <item name="colorPrimaryDark">@color/statusbar</item>
@@ -42,6 +48,9 @@
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowContentOverlay">@null</item>
 
+        <item name="android:textColorHint">@color/colorAccent</item>
+        <item name="boxStrokeColor">@color/colorAccent</item>
+
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -53,6 +62,14 @@
         <item name="android:navigationBarColor">@color/colorPrimary</item>
 
         <item name="android:listDivider">@color/line_dark</item>
+    </style>
+
+    <style name="Theme.AppCompat.PopMe">
+        
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+
+
     </style>
 
 </resources>
