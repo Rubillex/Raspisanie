@@ -23,11 +23,18 @@ public class Saved extends AppCompatActivity {
         }
     }
 
+
+
     void load_app_info(){
         app_info.APP_PREFERENCES_THEME = preferences.getString("theme", "auto");
     }
 
+    void save_fucktable(){
+        editor.putString("link_from", FUCKTABLE.link_from);
+    }
+
     void load_fucktable(){
+        FUCKTABLE.link_from = preferences.getString("link_from", "");
         FUCKTABLE.APP_PREFERENCES_THEME = preferences.getString("theme", "auto");
         FUCKTABLE.APP_PREFERENCES_PREMIUM = preferences.getString("premium", "false");
     }
@@ -48,6 +55,7 @@ public class Saved extends AppCompatActivity {
         group_list.APP_PREFERENCES_STARTFRAME = preferences.getString("start_frame", "main");
         group_list.APP_PREFERENCES_START_UNI = preferences.getString("start_uni", "univer");
         group_list.APP_PREFERENCES_LINK = preferences.getString("link", "1");
+        group_list.APP_PREFERENCES_PREMIUM = preferences.getString("premium", "false");
     }
 
     void save_favorite(){
@@ -66,6 +74,7 @@ public class Saved extends AppCompatActivity {
         Favorite.APP_PREFERENCES_STARTFRAME = preferences.getString("start_frame", "main");
         Favorite.APP_PREFERENCES_START_UNI = preferences.getString("start_uni", "univer");
         Favorite.APP_PREFERENCES_LINK = preferences.getString("link", "1");
+        Favorite.APP_PREFERENCES_PREMIUM = preferences.getString("premium", "false");
     }
 
 
@@ -103,5 +112,6 @@ public class Saved extends AppCompatActivity {
         splash.APP_PREFERENCES_STARTFRAME = preferences.getString("start_frame", "main");
         splash.APP_PREFERENCES_START_UNI = preferences.getString("start_uni", "univer");
         splash.APP_PREFERENCES_LINK = preferences.getString("link", "1");
+        splash.APP_PREFERENCES_THEME = preferences.getString("theme", "auto");
     }
 }

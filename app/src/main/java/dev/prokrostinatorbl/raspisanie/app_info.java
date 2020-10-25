@@ -110,6 +110,14 @@ public class app_info extends AppCompatActivity {
             }
         });
 
+        findViewById(R.id.back_arrow).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), Setting.class);
+                startActivity(intent);
+            }
+        });
+
 //        findViewById(R.id.profile_test).setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {

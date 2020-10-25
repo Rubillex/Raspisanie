@@ -3,11 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item
-        android:id="@+id/star"
-        android:icon="@drawable/ic_star"
-        app:showAsAction="ifRoom"
-        android:title="" />
+<!--    <item-->
+<!--        android:id="@+id/star"-->
+<!--        android:icon="@drawable/ic_star"-->
+<!--        app:showAsAction="ifRoom"-->
+<!--        android:title="" />-->
 
     <item
         android:id="@+id/setting_button"

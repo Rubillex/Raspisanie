@@ -15,6 +15,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -44,6 +45,8 @@ import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.BillingClientStateListener;
 import com.android.billingclient.api.BillingFlowParams;
 import com.android.billingclient.api.BillingResult;
+import com.android.billingclient.api.ConsumeParams;
+import com.android.billingclient.api.ConsumeResponseListener;
 import com.android.billingclient.api.Purchase;
 import com.android.billingclient.api.PurchasesUpdatedListener;
 import com.android.billingclient.api.SkuDetails;
@@ -157,6 +160,16 @@ public class Setting extends AppCompatActivity {
 
         //---------------------------------------------------------------------------------------
 
+
+//        findViewById(R.id.test_parser).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent2 = new Intent(getApplicationContext(), parser_main.class);
+//                startActivity(intent2);
+//            }
+//        });
+
+
         openConnection();
         _this=this;
 
@@ -216,6 +229,17 @@ public class Setting extends AppCompatActivity {
             public void onClick(View v) {
                 Intent app_info = new Intent(Setting.this, app_info.class);
                 startActivity(app_info);
+            }
+        });
+
+
+        RelativeLayout telegram = (RelativeLayout) findViewById(R.id.Telegram);
+        telegram.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri address = Uri.parse("https://t.me/asu_helper");
+                Intent openLinkIntent = new Intent(Intent.ACTION_VIEW, address);
+                startActivity(openLinkIntent);
             }
         });
 
@@ -294,6 +318,7 @@ public class Setting extends AppCompatActivity {
 
     public void premium_cheker(){
 
+
         TextView premium_subtext = (TextView) findViewById(R.id.premium_subtext);
         premium_subtext.setText(APP_PREFERENCES_PREMIUM);
 
@@ -324,9 +349,6 @@ public class Setting extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             RadioButton rb = (RadioButton)v;
-//            mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
-//            SharedPreferences.Editor editor = mSettings.edit();
-
 
             switch (rb.getId()) {
                 case R.id.radio_white:
@@ -346,23 +368,7 @@ public class Setting extends AppCompatActivity {
                     break;
             }
             new Saved().save_setting();
-//            editor.apply();
-            new Saved().save_setting();
             recreate();
-
-
-
-
-
-
-
-
-//              УСПЕШНАЯ ПОКУПКА
-//            mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
-//            SharedPreferences.Editor editor = mSettings.edit();
-//            editor.putString(APP_PREFERENCES_PREMIUM, "true");
-//            editor.apply();
-
         }
     };
 
@@ -379,20 +385,16 @@ public class Setting extends AppCompatActivity {
         mBillingClient = BillingClient.newBuilder(this).setListener(new PurchasesUpdatedListener() {
             @Override
             public void onPurchasesUpdated(@NonNull BillingResult billingResult, @Nullable List<Purchase> purchases) {
-
-                Log.i("dfdsf","gggggg "+billingResult.getResponseCode());
                 if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK
                         && purchases != null) {
+                                for (Purchase purchase : purchases) {
+                                    handlePurchase(purchase);
+                                }
 
-                                Log.i("ОПЛАТА", "ПРОШЛА");
-
-//                                mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
-//                                SharedPreferences.Editor editor = mSettings.edit();
-//                                editor.putString(APP_PREFERENCES_PREMIUM, "true");
-//                                editor.apply();
-
-                                APP_PREFERENCES_PREMIUM = "true";
-                                new Saved().save_setting();
+                    Log.i("ОПЛАТА", "ПРОШЛА");
+//                    Toast.makeText(_this, "ПОКУПКУ ПОДТВЕРДИЛ, МОЖЕШЬ СТАВИТЬ ПРИЛОЖЕНИЕ ИЗ GOOGLE PLAY", Toast.LENGTH_SHORT).show();
+                    APP_PREFERENCES_PREMIUM = "true";
+                    new Saved().save_setting();
 
                 } else if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.USER_CANCELED) {
                     // Handle an error caused by a user cancelling the purchase flow.
@@ -410,24 +412,21 @@ public class Setting extends AppCompatActivity {
 
             @Override
             public void onBillingSetupFinished(@NonNull BillingResult billingResponseCode) {
-                Log.i("ResposneCode","ResposneCode "+billingResponseCode.getResponseCode());
                 if (billingResponseCode.getResponseCode() == BillingClient.BillingResponseCode.OK) {
-
                     showList();
 
                     List<Purchase> purchasesList = queryPurchases(); //запрос о покупках
+
+                    for (Purchase purchase : purchasesList) {
+                        handlePurchase(purchase);
+                    }
 
                     //если товар уже куплен, предоставить его полователю
                     for (int i = 0; i < purchasesList.size(); i++) {
                         String purchaseId = purchasesList.get(i).getSku();
                         if(TextUtils.equals(mSkuId, purchaseId)) {
-//                            mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
-//                            SharedPreferences.Editor editor = mSettings.edit();
-//                            editor.putString(APP_PREFERENCES_PREMIUM, "true");
-//                            editor.apply();
                             APP_PREFERENCES_PREMIUM = "true";
                             new Saved().save_setting();
-
                         }
                     }
 
@@ -441,6 +440,51 @@ public class Setting extends AppCompatActivity {
             }
         });
     }
+
+
+    void handlePurchase(Purchase purchase) {
+
+        AcknowledgePurchaseResponseListener acknowledgePurchaseResponseListener = new AcknowledgePurchaseResponseListener() {
+            @Override
+            public void onAcknowledgePurchaseResponse(@NonNull BillingResult billingResult) {
+
+            }
+        };
+
+        if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
+            if (!purchase.isAcknowledged()) {
+                AcknowledgePurchaseParams acknowledgePurchaseParams =
+                        AcknowledgePurchaseParams.newBuilder()
+                                .setPurchaseToken(purchase.getPurchaseToken())
+                                .build();
+                mBillingClient.acknowledgePurchase(acknowledgePurchaseParams, acknowledgePurchaseResponseListener);
+            }
+        }
+
+
+        ConsumeParams consumeParams =
+                ConsumeParams.newBuilder()
+                        .setPurchaseToken(purchase.getPurchaseToken())
+                        .build();
+
+        ConsumeResponseListener listener = new ConsumeResponseListener() {
+            @Override
+            public void onConsumeResponse(BillingResult billingResult, String purchaseToken) {
+                if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                    // Handle the success of the consume operation.
+                    Log.i("ОПЛАТА", "ПРОШЛА");
+//                    Toast.makeText(_this, "ПОКУПКУ ПОДТВЕРДИЛ, МОЖЕШЬ СТАВИТЬ ПРИЛОЖЕНИЕ ИЗ GOOGLE PLAY", Toast.LENGTH_SHORT).show();
+                    APP_PREFERENCES_PREMIUM = "true";
+                    new Saved().save_setting();
+                }
+            }
+        };
+
+        mBillingClient.consumeAsync(consumeParams, listener);
+    }
+
+
+
 
     private void showList()
     {

@@ -19,7 +19,8 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/tools">
+        android:layout_below="@id/tools"
+        android:id="@+id/Coordinator">
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -38,14 +39,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
-                    android:visibility="gone">
+                    android:id="@+id/progressBar">
 
                     <ProgressBar
-                        android:id="@+id/progressBar"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_centerInParent="true"
-                        android:layout_marginTop="150dp" />
+                        android:layout_marginTop="190dp" />
 
 
                 </RelativeLayout>

@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:id="@+id/my_toolbar"
+android:minHeight="?attr/actionBarSize"
+android:background="?attr/colorPrimary"
+android:elevation="2dp">
+
+<ImageView
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:id="@+id/my_toolbar"
-    android:minHeight="?attr/actionBarSize"
-    android:background="?attr/colorPrimary"
-    android:elevation="2dp">
+    android:src="@drawable/ic_arrow"
+    android:id="@+id/back_arrow"/>
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_arrow"
-        android:id="@+id/back_arrow"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_gravity="center"
-        android:text="SomeText"
-        android:textStyle="bold"
-        android:id="@+id/toolbar_text"
-        android:textSize="@dimen/icon_note"
-        android:textColor="?attr/colorAccent"/>
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:layout_gravity="center"
+    android:text="SomeText"
+    android:textStyle="bold"
+    android:id="@+id/toolbar_text"
+    android:textSize="@dimen/icon_note"
+    android:textColor="?attr/colorAccent"/>
 
 
 </Toolbar>

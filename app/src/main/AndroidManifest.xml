@@ -16,7 +16,8 @@
         android:roundIcon="@mipmap/ic_icon_app_new_round"
         android:supportsRtl="true"
         android:theme="@style/Light">
-        <activity android:name=".Test_kt"></activity>
+        <activity android:name=".activity_homework"></activity>
+        <activity android:name=".parser_main" />
         <activity android:name=".Favorite" />
         <activity android:name=".profile" />
         <activity android:name=".license" />
@@ -37,6 +38,9 @@
         <meta-data
             android:name="com.google.android.gms.wallet.api.enabled"
             android:value="true" />
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-7189546175747172~4377829796" />
     </application>
 
 </manifest>

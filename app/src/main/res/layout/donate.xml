@@ -73,7 +73,16 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="- Поддержка разработчика"
+                android:text="- Отключение рекламы"
+                android:textSize="@dimen/text_big"
+                android:background="?attr/selectableItemBackground"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/colorPrimary_light"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="- Разработчик покушает"
                 android:textSize="@dimen/text_big"
                 android:background="?attr/selectableItemBackground"
                 android:layout_marginTop="10dp"

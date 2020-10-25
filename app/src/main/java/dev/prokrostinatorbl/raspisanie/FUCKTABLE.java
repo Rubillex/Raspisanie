@@ -20,6 +20,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -39,19 +41,27 @@ import android.widget.TextView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.*;
 
 import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.net.URL;
 
 
 import org.json.JSONException;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.jsoup.Connection;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.w3c.dom.Text;
 
 
@@ -83,11 +93,49 @@ public class FUCKTABLE extends Activity {
 
     MyDatabaseHelper dbHelper;
 
+    public String DATE = "";
+    public String link_from_start = "";
+
+    public String link_asu_1 = "";
+    public String link_asu_2 = "";
+
+    public String group_number = "";
+
     public int currentNightMode;
 
     public static Integer NOTE_FRAGMENT_NUMBER = 1;
 
-    public static String from = "";
+    public static String from = " ";
+
+    public static String link_from = "";
+
+    public String url_update = "";
+
+    private Document doc;
+    private Elements elements;
+
+    private Thread Thread_work;
+    private Runnable runnable_work;
+
+    private  Thread Thread_work_2;
+    private  Runnable runnable_work_2;
+
+    private Elements elements_day;
+    private Elements elements_time;
+    private Element base_elements;
+    private Elements base_child;
+
+    public static class timetable {
+        public String Name;
+        public String Value;
+
+        public timetable(String Name, String Value){
+            this.Name = Name;
+            this.Value = Value;
+        }
+    }
+
+    public static ArrayList<timetable> timetable_list = new ArrayList<timetable>();
 
     private final int USERID = 6000;
     private int countID = 1;
@@ -102,6 +150,7 @@ public class FUCKTABLE extends Activity {
 
     public static String instit_list;
 
+    public static String link_from_list = "";
 
     public int temp = 1;
 
@@ -126,6 +175,8 @@ public class FUCKTABLE extends Activity {
     public ArrayList<String> end;
     public ArrayList<String> date;
 
+    public ArrayList<String> time;
+
 
     public String destFileName;
     public String src_file;
@@ -139,9 +190,6 @@ public class FUCKTABLE extends Activity {
     Dialog note_dialog;
 
     Dialog dialog;
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -215,6 +263,22 @@ public class FUCKTABLE extends Activity {
         Intent intent = getIntent();
         final String group_num = intent.getStringExtra("key");
         final String institut = intent.getStringExtra("instit");
+        link_from = intent.getStringExtra("link");
+
+        link_from_start = intent.getStringExtra("startUp");
+
+        if (link_from_start == null) link_from_start = "";
+
+        group_number = group_num;
+
+        if (link_from.length() < 1 || link_from == null){
+            new Saved().load_fucktable();
+        }
+
+        new Saved().save_fucktable();
+
+        link_from_list = intent.getStringExtra("link_from");
+
         from = intent.getStringExtra("from");
 
         instit_list = institut;
@@ -279,12 +343,18 @@ public class FUCKTABLE extends Activity {
                     case "list":
                         Intent intent = new Intent(getApplicationContext(), group_list.class);
                         intent.putExtra("key", instit_list);
+                        intent.putExtra("link", link_from_list);
+                        Log.d("MyLog", link_from_list);
                         startActivity(intent);
                         break;
                     case "favorite":
                         Intent intent2 = new Intent(getApplicationContext(), Favorite.class);
                         startActivity(intent2);
                         break;
+                    case "main":
+                        Intent intent3 = new Intent(getApplicationContext(), MainActivity.class);
+                        intent3.putExtra("back", "false");
+                        startActivity(intent3);
                 }
             }
         });
@@ -293,98 +363,754 @@ public class FUCKTABLE extends Activity {
 
         destFileName = group_num + ".txt";
         json_db_name = group_num + ".json";
-        toolbar_text.setText(institut + ": " + group_num);
-        src_file = intent.getStringExtra("link");
+
+//        src_file = intent.getStringExtra("link");
+
+        time = new ArrayList<String>();
+        number = new ArrayList<String>();
+        prepod = new ArrayList<String>();
+        location = new ArrayList<String>();
+        par_names = new ArrayList<String>();
+        start = new ArrayList<String>();
+        end = new ArrayList<String>();
+        date = new ArrayList<String>();
+
+        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+            @Override
+            public void uncaughtException(Thread thread, Throwable ex) {
+                handleUncaughtException(thread, ex);
+            }
+        });
 
 
-        if(src_file.equals("link")){
-            Toast toast = Toast.makeText(getApplicationContext(),
-                    "Расписания для этой группы нет на сайте!", Toast.LENGTH_SHORT);
-            toast.show();
+        Context c = getApplicationContext();
+        final File file = new File(c.getFilesDir(), "/files");
+        final String from = "FUCKTABLE";
+
+        String online_is = intent.getStringExtra("online");
+
+        if (online_is.equals("true")){
+
+            if (!hasConnection(this)){
+
+                Log.d("MyLog2", "offline");
+
+                init_ofline();
+                toolbar_text.setText(institut + ": " + group_num + " (офлайн)");
+            } else {
+                Log.d("MyLog2", "online");
+                init_3();
+                toolbar_text.setText(institut + ": " + group_num);
+            }
+        }
+
+
+
+        if (online_is.equals("false")){
+            Log.d("MyLog2", "offline");
+
+            init_ofline();
+
+
+            toolbar_text.setText(institut + ": " + group_num + " (офлайн)");
         } else {
-
-
-            number = new ArrayList<String>();
-            prepod = new ArrayList<String>();
-            location = new ArrayList<String>();
-            par_names = new ArrayList<String>();
-            start = new ArrayList<String>();
-            end = new ArrayList<String>();
-            date = new ArrayList<String>();
-
-            Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
-                @Override
-                public void uncaughtException(Thread thread, Throwable ex) {
-                    handleUncaughtException(thread, ex);
-                }
-            });
-
-
-            Context c = getApplicationContext();
-            final File file = new File(c.getFilesDir(), "/files");
-            final String from = "FUCKTABLE";
-
-
-
-            Thread thread = new Thread(new Runnable() {
-
-                @Override
-                public void run() {
-                    try  {
-                        boolean online = isHostReachable.isHostReachable("https://www.asu.ru/");
-
-                        if(!online){
-                            snackbar();
-                            h.sendEmptyMessage(2);
-                        } else {
-                            Downloader.Download(src_file, file, destFileName, from);
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-
-            thread.start();
-
-
-            h = new Handler() {
-                public void handleMessage(android.os.Message msg) {
-                    // ждём окончание выполнения Загрузчика
-
-                    if (msg.what == 1)
-                    {
-                        try {
-                            Parser();
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-                        Log.i("header","онлайн мод");
-                    }
-                    if (msg.what == 2)
-                    {
-                        try {
-                            Parser();
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-                        toolbar_text.setText(institut + ": " + group_num + " (офлайн)");
-                        Log.i("header","офлайн мод");
-                    }
-                    if (msg.what == 3)
-                    {
-                        try {
-                            Read();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            };
 
         }
 
+        h = new Handler() {
+            public void handleMessage(android.os.Message msg) {
+                // ждём окончание выполнения Загрузчика
+
+                if (msg.what == 1)
+                {
+                        Parser_2();
+                }
+                if (msg.what == 2)
+                {
+                    Parser_2();
+                }
+            }
+        };
+
+
     }
+
+
+    private void init_ofline(){
+        runnable_work_2 = new Runnable() {
+            @Override
+            public void run() {
+                getWirk_2();
+            }
+        };
+        Runnable target;
+        Thread_work_2 = new Thread(runnable_work_2);
+        Thread_work_2.start();
+    }
+
+    private void init_3(){
+        runnable_work = new Runnable() {
+            @Override
+            public void run() {
+                getWork();
+            }
+        };
+        Thread_work = new Thread(runnable_work);
+        Thread_work.start();
+    }
+
+    public boolean hasConnection(final Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNW = cm.getActiveNetworkInfo();
+        if (activeNW != null && activeNW.isConnected()) {
+            return true;
+        }
+        return false;
+    }
+
+    private void getWork(){
+        try {
+
+
+            Elements child;
+
+            link_asu_1 = "https://www.asu.ru/timetable/students/" + link_from + link_from_start;
+
+            doc = Jsoup.connect(link_asu_1).get();
+
+                Log.d("MyLog2", "https://www.asu.ru/timetable/students/" + link_from + link_from_start);
+
+                base_elements = doc.getElementsByClass("align_top schedule").first();
+
+                if(base_elements != null){
+
+                    child = base_elements.getAllElements();
+
+                    elements = doc.getElementsByClass("schedule-time" + "schedule-time schedule-current");
+
+                    elements_day = doc.getElementsByClass("schedule-date");
+
+                    elements_time = doc.getElementsByClass("date t_small_x t_gray_light");
+
+                    base_child = child.select("tr");
+
+                } else {
+                    Toast.makeText(this, "Пожалуйста, перезапустите приложение", Toast.LENGTH_SHORT).show();
+                }
+
+
+                Element chidren;
+                String class_child = "";
+
+                Log.d("MyLog", String.valueOf(base_child.size()));
+//            Log.d("MyLog", base_child.text());
+
+                String second_time = ""; //предыдущее время пары
+
+
+                timetable bufer_list;
+
+                ArrayList<String> bufer = new ArrayList<>();
+
+                String time_paaar;
+                String[] time_split;
+                String name_para;
+                String prepod_name;
+                String loc;
+
+                if (base_child.size() != 0) {
+
+                    for (int i = 0; i < base_child.size(); i++){
+
+
+                        chidren = base_child.get(i);
+
+                        class_child = chidren.attr("class");
+
+//                Log.d("MyLog", chidren.text());
+
+                        switch (class_child){
+                            case "schedule-date":
+
+
+                                timetable_list.add(new timetable("Day", chidren.text()));
+
+
+//
+//                        hashMap.put("Day" + i, chidren.text());
+                                break;
+                            case "schedule-time schedule-current":
+                                time_paaar = chidren.select("td").get(1).text();
+
+                                time_split = time_paaar.split(":");
+
+                                if (time_split.length > 1 && time_split[0] != null){
+                                    second_time = time_paaar;
+//                            hashMap.put("Time" + i, second_time);
+
+                                    timetable_list.add(new timetable("Time", second_time));
+                                } else{
+//                            hashMap.put("Time" + i, second_time);
+                                    timetable_list.add(new timetable("Time", second_time));
+                                }
+
+                                bufer.clear();
+
+                                name_para = chidren.select("td").get(2).text();
+
+                                bufer.add("Para");
+                                bufer.add(name_para);
+
+//                        hashMap.put("Para" + i, name_para);
+                                timetable_list.add(new timetable("Para", name_para));
+
+                                bufer.clear();
+                                prepod_name = chidren.select("td").get(3).text();
+
+                                if (!prepod_name.equals("")){
+                                } else {
+                                    prepod_name = " ";
+                                }
+
+                                bufer.add("Prepod");
+                                bufer.add(prepod_name);
+
+//                        hashMap.put("Prepod" + i,prepod_name);
+                                timetable_list.add(new timetable("Prepod", prepod_name));
+
+                                bufer.clear();
+
+                                loc = chidren.select("td").get(4).text();
+
+                                bufer.add("Location");
+                                bufer.add(loc);
+
+//                        hashMap.put("Location" + i, loc);
+                                timetable_list.add(new timetable("Location", loc));
+                                break;
+                            case "schedule-time":
+                                time_paaar = chidren.select("td").get(1).text();
+
+                                time_split = time_paaar.split(":");
+
+                                if (time_split.length > 1 && time_split[0] != null){
+                                    second_time = time_paaar;
+//                            hashMap.put("Time" + i, second_time);
+
+                                    timetable_list.add(new timetable("Time", second_time));
+                                } else{
+//                            hashMap.put("Time" + i, second_time);
+                                    timetable_list.add(new timetable("Time", second_time));
+                                }
+
+                                bufer.clear();
+
+                                name_para = chidren.select("td").get(2).text();
+
+                                bufer.add("Para");
+                                bufer.add(name_para);
+
+//                        hashMap.put("Para" + i, name_para);
+                                timetable_list.add(new timetable("Para", name_para));
+
+                                bufer.clear();
+                                prepod_name = chidren.select("td").get(3).text();
+
+                                if (!prepod_name.equals("")){
+                                } else {
+                                    prepod_name = " ";
+                                }
+
+                                bufer.add("Prepod");
+                                bufer.add(prepod_name);
+
+//                        hashMap.put("Prepod" + i,prepod_name);
+                                timetable_list.add(new timetable("Prepod", prepod_name));
+
+                                bufer.clear();
+
+                                loc = chidren.select("td").get(4).text();
+
+                                bufer.add("Location");
+                                bufer.add(loc);
+
+//                        hashMap.put("Location" + i, loc);
+                                timetable_list.add(new timetable("Location", loc));
+                                break;
+                        }
+
+//                Log.d("MyLog", class_child);
+                        Log.d("MyLog", "Class item: " + timetable_list.get(i).Name + " " + timetable_list.get(i).Value);
+                    }
+
+
+
+                    Elements link_second;
+
+                    link_second = doc.select("div.margin_bottom");
+
+                    String url_second = "";
+
+                    if (link_from_start != "") {
+                        Element second = link_second.select("a").get(2);
+                        url_second = second.attr("href");
+                    } else {
+                        Element second = link_second.select("a").get(1);
+                        url_second = second.attr("href");
+                    }
+
+
+                    url_update = url_second.replaceAll("\\./", "");
+
+                    link_asu_2 = "https://www.asu.ru/timetable/students/" + link_from + url_update;
+
+                    if(hasConnection(this)){
+
+                        doc = Jsoup.connect(link_asu_2).get();
+
+                    } else {
+
+                        try {
+                            final Context c = getApplicationContext();
+                            File in = new File(c.getFilesDir() + "Android/data/dev.prokrostinatorbl.raspisanie/files/" + group_number + "second" + ".html");
+                            doc = Jsoup.parse(in, null);
+                        } catch (IOException e){
+                            Toast.makeText(this, "Кэш пуст", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+
+
+
+                    Log.d("MyLog2", "https://www.asu.ru/timetable/students/" + link_from + url_update);
+
+                    base_elements = doc.getElementsByClass("align_top schedule").first();
+
+                    child = base_elements.getAllElements();
+
+                    elements = doc.getElementsByClass("schedule-time");
+
+                    elements_day = doc.getElementsByClass("schedule-date");
+
+                    elements_time = doc.getElementsByClass("date t_small_x t_gray_light");
+
+                    base_child = child.select("tr");
+
+
+                    for (int i = 0; i < base_child.size(); i++){
+
+                        chidren = base_child.get(i);
+
+                        class_child = chidren.attr("class");
+
+//                Log.d("MyLog", chidren.text());
+
+                        switch (class_child){
+                            case "schedule-date":
+
+                                bufer_list = new timetable("Day", chidren.text());
+
+
+                                timetable_list.add(bufer_list);
+
+
+//
+//                        hashMap.put("Day" + i, chidren.text());
+                                break;
+                            case "schedule-time":
+                                time_paaar = chidren.select("td").get(1).text();
+
+                                time_split = time_paaar.split(":");
+
+                                if (time_split.length > 1 && time_split[0] != null){
+                                    second_time = time_paaar;
+//                            hashMap.put("Time" + i, second_time);
+
+                                    timetable_list.add(new timetable("Time", second_time));
+                                } else{
+//                            hashMap.put("Time" + i, second_time);
+                                    timetable_list.add(new timetable("Time", second_time));
+                                }
+
+                                bufer.clear();
+
+                                name_para = chidren.select("td").get(2).text();
+
+                                bufer.add("Para");
+                                bufer.add(name_para);
+
+//                        hashMap.put("Para" + i, name_para);
+                                timetable_list.add(new timetable("Para", name_para));
+
+                                bufer.clear();
+                                prepod_name = chidren.select("td").get(3).text();
+
+                                if (!prepod_name.equals("")){
+                                } else {
+                                    prepod_name = " ";
+                                }
+
+                                bufer.add("Prepod");
+                                bufer.add(prepod_name);
+
+//                        hashMap.put("Prepod" + i,prepod_name);
+                                timetable_list.add(new timetable("Prepod", prepod_name));
+
+                                bufer.clear();
+
+                                loc = chidren.select("td").get(4).text();
+
+                                bufer.add("Location");
+                                bufer.add(loc);
+
+//                        hashMap.put("Location" + i, loc);
+                                timetable_list.add(new timetable("Location", loc));
+                                break;
+                        }
+
+//                Log.d("MyLog", class_child);
+                        Log.d("MyLog", "Class item: " + timetable_list.get(i).Name + " " + timetable_list.get(i).Value);
+                    }
+
+                    Log.d("MyLog", String.valueOf(url_update));
+
+                    if (hasConnection(this)){
+                        Save_page saver = new Save_page();
+                        saver.execute();
+                    }
+
+                    h.sendEmptyMessage(1);
+
+                } else {
+                    Toast.makeText(this, "Пожалуйста, перезапустите приложение", Toast.LENGTH_SHORT).show();
+                }
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+
+    }
+
+    private void getWirk_2(){
+
+
+
+            Elements child;
+
+            Element chidren;
+
+            String class_child = "";
+
+        String time_paaar;
+        String[] time_split;
+        String name_para;
+        String prepod_name;
+        String loc;
+
+        String second_time = ""; //предыдущее время пары
+
+
+        timetable bufer_list;
+
+        ArrayList<String> bufer = new ArrayList<>();
+
+            link_asu_1 = "https://www.asu.ru/timetable/students/" + link_from + link_from_start;
+
+
+            try {
+                final Context c = getApplicationContext();
+                File in = new File(c.getFilesDir() + "Android/data/dev.prokrostinatorbl.raspisanie/files/" + group_number + "first" + ".html");
+                doc = Jsoup.parse(in, null);
+
+                Log.d("MyLog2", "https://www.asu.ru/timetable/students/" + link_from + link_from_start);
+
+                base_elements = doc.getElementsByClass("align_top schedule").first();
+
+                child = base_elements.getAllElements();
+
+                elements = doc.getElementsByClass("schedule-time" + "schedule-time schedule-current");
+
+                elements_day = doc.getElementsByClass("schedule-date");
+
+                elements_time = doc.getElementsByClass("date t_small_x t_gray_light");
+
+                base_child = child.select("tr");
+
+
+
+
+                Log.d("MyLog", String.valueOf(base_child.size()));
+//            Log.d("MyLog", base_child.text());
+
+
+
+
+
+                for (int i = 0; i < base_child.size(); i++){
+
+
+                    chidren = base_child.get(i);
+
+                    class_child = chidren.attr("class");
+
+//                Log.d("MyLog", chidren.text());
+
+                    switch (class_child){
+                        case "schedule-date":
+
+
+                            timetable_list.add(new timetable("Day", chidren.text()));
+
+
+//
+//                        hashMap.put("Day" + i, chidren.text());
+                            break;
+                        case "schedule-time schedule-current":
+                            time_paaar = chidren.select("td").get(1).text();
+
+                            time_split = time_paaar.split(":");
+
+                            if (time_split.length > 1 && time_split[0] != null){
+                                second_time = time_paaar;
+//                            hashMap.put("Time" + i, second_time);
+
+                                timetable_list.add(new timetable("Time", second_time));
+                            } else{
+//                            hashMap.put("Time" + i, second_time);
+                                timetable_list.add(new timetable("Time", second_time));
+                            }
+
+                            bufer.clear();
+
+                            name_para = chidren.select("td").get(2).text();
+
+                            bufer.add("Para");
+                            bufer.add(name_para);
+
+//                        hashMap.put("Para" + i, name_para);
+                            timetable_list.add(new timetable("Para", name_para));
+
+                            bufer.clear();
+                            prepod_name = chidren.select("td").get(3).text();
+
+                            if (!prepod_name.equals("")){
+                            } else {
+                                prepod_name = " ";
+                            }
+
+                            bufer.add("Prepod");
+                            bufer.add(prepod_name);
+
+//                        hashMap.put("Prepod" + i,prepod_name);
+                            timetable_list.add(new timetable("Prepod", prepod_name));
+
+                            bufer.clear();
+
+                            loc = chidren.select("td").get(4).text();
+
+                            bufer.add("Location");
+                            bufer.add(loc);
+
+//                        hashMap.put("Location" + i, loc);
+                            timetable_list.add(new timetable("Location", loc));
+                            break;
+                        case "schedule-time":
+                            time_paaar = chidren.select("td").get(1).text();
+
+                            time_split = time_paaar.split(":");
+
+                            if (time_split.length > 1 && time_split[0] != null){
+                                second_time = time_paaar;
+//                            hashMap.put("Time" + i, second_time);
+
+                                timetable_list.add(new timetable("Time", second_time));
+                            } else{
+//                            hashMap.put("Time" + i, second_time);
+                                timetable_list.add(new timetable("Time", second_time));
+                            }
+
+                            bufer.clear();
+
+                            name_para = chidren.select("td").get(2).text();
+
+                            bufer.add("Para");
+                            bufer.add(name_para);
+
+//                        hashMap.put("Para" + i, name_para);
+                            timetable_list.add(new timetable("Para", name_para));
+
+                            bufer.clear();
+                            prepod_name = chidren.select("td").get(3).text();
+
+                            if (!prepod_name.equals("")){
+                            } else {
+                                prepod_name = " ";
+                            }
+
+                            bufer.add("Prepod");
+                            bufer.add(prepod_name);
+
+//                        hashMap.put("Prepod" + i,prepod_name);
+                            timetable_list.add(new timetable("Prepod", prepod_name));
+
+                            bufer.clear();
+
+                            loc = chidren.select("td").get(4).text();
+
+                            bufer.add("Location");
+                            bufer.add(loc);
+
+//                        hashMap.put("Location" + i, loc);
+                            timetable_list.add(new timetable("Location", loc));
+                            break;
+                    }
+
+//                Log.d("MyLog", class_child);
+                    Log.d("MyLog", "Class item: " + timetable_list.get(i).Name + " " + timetable_list.get(i).Value);
+                }
+
+
+
+                Elements link_second;
+
+                link_second = doc.select("div.margin_bottom");
+
+                Element second = link_second.select("a").get(1);
+
+                String url_second = second.attr("href");
+
+
+                url_update = url_second.replaceAll("\\./", "");
+
+                link_asu_2 = "https://www.asu.ru/timetable/students/" + link_from + url_update;
+
+
+
+
+            } catch (IOException e){
+//                Toast.makeText(this, "Кэш пуст", Toast.LENGTH_SHORT).show();
+            }
+
+
+                try {
+                    final Context c = getApplicationContext();
+                    File in = new File(c.getFilesDir() + "Android/data/dev.prokrostinatorbl.raspisanie/files/" + group_number + "second" + ".html");
+                    doc = Jsoup.parse(in, null);
+
+
+
+                    Log.d("MyLog2", "https://www.asu.ru/timetable/students/" + link_from + url_update);
+
+                    base_elements = doc.getElementsByClass("align_top schedule").first();
+
+                    child = base_elements.getAllElements();
+
+                    elements = doc.getElementsByClass("schedule-time");
+
+                    elements_day = doc.getElementsByClass("schedule-date");
+
+                    elements_time = doc.getElementsByClass("date t_small_x t_gray_light");
+
+                    base_child = child.select("tr");
+
+
+                    for (int i = 0; i < base_child.size(); i++){
+
+                        chidren = base_child.get(i);
+
+                        class_child = chidren.attr("class");
+
+//                Log.d("MyLog", chidren.text());
+
+                        switch (class_child){
+                            case "schedule-date":
+
+                                bufer_list = new timetable("Day", chidren.text());
+
+
+                                timetable_list.add(bufer_list);
+
+
+//
+//                        hashMap.put("Day" + i, chidren.text());
+                                break;
+                            case "schedule-time":
+                                time_paaar = chidren.select("td").get(1).text();
+
+                                time_split = time_paaar.split(":");
+
+                                if (time_split.length > 1 && time_split[0] != null){
+                                    second_time = time_paaar;
+//                            hashMap.put("Time" + i, second_time);
+
+                                    timetable_list.add(new timetable("Time", second_time));
+                                } else{
+//                            hashMap.put("Time" + i, second_time);
+                                    timetable_list.add(new timetable("Time", second_time));
+                                }
+
+                                bufer.clear();
+
+                                name_para = chidren.select("td").get(2).text();
+
+                                bufer.add("Para");
+                                bufer.add(name_para);
+
+//                        hashMap.put("Para" + i, name_para);
+                                timetable_list.add(new timetable("Para", name_para));
+
+                                bufer.clear();
+                                prepod_name = chidren.select("td").get(3).text();
+
+                                if (!prepod_name.equals("")){
+                                } else {
+                                    prepod_name = " ";
+                                }
+
+                                bufer.add("Prepod");
+                                bufer.add(prepod_name);
+
+//                        hashMap.put("Prepod" + i,prepod_name);
+                                timetable_list.add(new timetable("Prepod", prepod_name));
+
+                                bufer.clear();
+
+                                loc = chidren.select("td").get(4).text();
+
+                                bufer.add("Location");
+                                bufer.add(loc);
+
+//                        hashMap.put("Location" + i, loc);
+                                timetable_list.add(new timetable("Location", loc));
+                                break;
+                        }
+
+//                Log.d("MyLog", class_child);
+                        Log.d("MyLog", "Class item: " + timetable_list.get(i).Name + " " + timetable_list.get(i).Value);
+                    }
+
+                    Log.d("MyLog", String.valueOf(url_update));
+
+
+                    h.sendEmptyMessage(1);
+
+                    if (hasConnection(this)){
+                        Save_page saver = new Save_page();
+                        saver.execute();
+                    }
+                } catch (IOException e){
+//                    Toast.makeText(this, "Кэш пуст", Toast.LENGTH_SHORT).show();
+                }
+
+
+
+
+
+    }
+
 
     private void snackbar() {
 
@@ -420,47 +1146,42 @@ public class FUCKTABLE extends Activity {
     }
 
 
+    @Override
+    public void onBackPressed() {
+        switch (from){
+            case "list":
+                Intent intent = new Intent(getApplicationContext(), group_list.class);
+                intent.putExtra("key", instit_list);
+                intent.putExtra("link", link_from_list);
+                startActivity(intent);
+                break;
+            case "favorite":
+                Intent intent2 = new Intent(getApplicationContext(), Favorite.class);
+                startActivity(intent2);
+                break;
+            case "main":
+                Intent intent3 = new Intent(getApplicationContext(), MainActivity.class);
+                intent3.putExtra("back", "false");
+                startActivity(intent3);
+        }
+    }
+
+
     public void handleUncaughtException (Thread thread, Throwable e)
     {
+        String versionName = BuildConfig.VERSION_NAME;
         String stackTrace = Log.getStackTraceString(e);
         String message = e.getMessage();
         Intent intent = new Intent (Intent.ACTION_SEND);
         intent.setType("message/rfc822");
         intent.putExtra (Intent.EXTRA_EMAIL, new String[] {"gubchenko.vadim@gmail.com"});
-        intent.putExtra (Intent.EXTRA_SUBJECT, "MyApp Crash log file");
+        intent.putExtra (Intent.EXTRA_SUBJECT, "MyApp Crash. From -> " + from + " version:" + versionName);
         intent.putExtra (Intent.EXTRA_TEXT, stackTrace);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // required when starting from Application
         startActivity(intent);
     }
 
-    private void Parser() throws ParseException {
-
-        Log.i("@@@@@", "Parser запущен");
-        day_number = 1;
-
-        ArrayList<String> days = new ArrayList<>();
-        ArrayList<String> months = new ArrayList<>();
-        ArrayList<String> years = new ArrayList<>();
-
-        if(date_par != null){
-            int len = date_par.length();
-            for (int i = 0; i < len; i++){
-                try {
-                    date.add(date_par.get(i).toString());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-
-
-        ///////////////////////////////////////////////////////////////////////
-
-
-
-
-        Integer previous_d;
+    private void Parser_2() {
 
         allEds = new ArrayList<View>();
         final LinearLayout first_day = (LinearLayout) findViewById(R.id.first_day);
@@ -489,202 +1210,378 @@ public class FUCKTABLE extends Activity {
         final LinearLayout card11 = (LinearLayout) findViewById(R.id.card11);
         final LinearLayout card12 = (LinearLayout) findViewById(R.id.card12);
 
+        final TextView date_activ1 = (TextView) findViewById(R.id.date1);
+        final TextView date_activ2 = (TextView) findViewById(R.id.date2);
+        final TextView date_activ3 = (TextView) findViewById(R.id.date3);
+        final TextView date_activ4 = (TextView) findViewById(R.id.date4);
+        final TextView date_activ5 = (TextView) findViewById(R.id.date5);
+        final TextView date_activ6 = (TextView) findViewById(R.id.date6);
+        final TextView date_activ7 = (TextView) findViewById(R.id.date7);
+        final TextView date_activ8 = (TextView) findViewById(R.id.date8);
+        final TextView date_activ9 = (TextView) findViewById(R.id.date9);
+        final TextView date_activ10 = (TextView) findViewById(R.id.date10);
+        final TextView date_activ11 = (TextView) findViewById(R.id.date11);
+        final TextView date_activ12 = (TextView) findViewById(R.id.date12);
 
-        Integer JJJ = date.size();
-
-        Log.i("размер даты", String.valueOf(JJJ));
-
-        if(JJJ == 0){
-        }else {
-
-            String date_temp = date.get(0);
-
-            Integer current_day = 1;
-            Integer buffer_day = 1;
-            Integer paar_for_day = 0;
-
-            final TextView date_activ1 = (TextView) findViewById(R.id.date1);
-            final TextView date_activ2 = (TextView) findViewById(R.id.date2);
-            final TextView date_activ3 = (TextView) findViewById(R.id.date3);
-            final TextView date_activ4 = (TextView) findViewById(R.id.date4);
-            final TextView date_activ5 = (TextView) findViewById(R.id.date5);
-            final TextView date_activ6 = (TextView) findViewById(R.id.date6);
-            final TextView date_activ7 = (TextView) findViewById(R.id.date7);
-            final TextView date_activ8 = (TextView) findViewById(R.id.date8);
-            final TextView date_activ9 = (TextView) findViewById(R.id.date9);
-            final TextView date_activ10 = (TextView) findViewById(R.id.date10);
-            final TextView date_activ11 = (TextView) findViewById(R.id.date11);
-            final TextView date_activ12 = (TextView) findViewById(R.id.date12);
-
-
-            RelativeLayout nedel1 = (RelativeLayout) findViewById(R.id.second_nedel);
-            TextView nedel1_text1 = (TextView) findViewById(R.id.second_nedel_text1);
-            TextView nedel1_text2 = (TextView) findViewById(R.id.second_nedel_text2);
-
-            RelativeLayout nedel2 = (RelativeLayout) findViewById(R.id.second_nedel2);
-            TextView nedel2_text1 = (TextView) findViewById(R.id.second_nedel_text12);
-            TextView nedel2_text2 = (TextView) findViewById(R.id.second_nedel_text22);
-
-            RelativeLayout nedel3 = (RelativeLayout) findViewById(R.id.second_nedel3);
-            TextView nedel3_text1 = (TextView) findViewById(R.id.second_nedel_text13);
-            TextView nedel3_text2 = (TextView) findViewById(R.id.second_nedel_text23);
-
-            RelativeLayout nedel4 = (RelativeLayout) findViewById(R.id.second_nedel4);
-            TextView nedel4_text1 = (TextView) findViewById(R.id.second_nedel_text14);
-            TextView nedel4_text2 = (TextView) findViewById(R.id.second_nedel_text24);
-
-            RelativeLayout nedel5 = (RelativeLayout) findViewById(R.id.second_nedel5);
-            TextView nedel5_text1 = (TextView) findViewById(R.id.second_nedel_text15);
-            TextView nedel5_text2 = (TextView) findViewById(R.id.second_nedel_text25);
-
-            RelativeLayout nedel6 = (RelativeLayout) findViewById(R.id.second_nedel6);
-            TextView nedel6_text1 = (TextView) findViewById(R.id.second_nedel_text16);
-            TextView nedel6_text2 = (TextView) findViewById(R.id.second_nedel_text26);
-
-            RelativeLayout nedel7 = (RelativeLayout) findViewById(R.id.second_nedel7);
-            TextView nedel7_text1 = (TextView) findViewById(R.id.second_nedel_text17);
-            TextView nedel7_text2 = (TextView) findViewById(R.id.second_nedel_text27);
-
-            RelativeLayout nedel8 = (RelativeLayout) findViewById(R.id.second_nedel8);
-            TextView nedel8_text1 = (TextView) findViewById(R.id.second_nedel_text18);
-            TextView nedel8_text2 = (TextView) findViewById(R.id.second_nedel_text28);
-
-            RelativeLayout nedel9 = (RelativeLayout) findViewById(R.id.second_nedel9);
-            TextView nedel9_text1 = (TextView) findViewById(R.id.second_nedel_text19);
-            TextView nedel9_text2 = (TextView) findViewById(R.id.second_nedel_text29);
-
-            RelativeLayout nedel10 = (RelativeLayout) findViewById(R.id.second_nedel10);
-            TextView nedel10_text1 = (TextView) findViewById(R.id.second_nedel_text110);
-            TextView nedel10_text2 = (TextView) findViewById(R.id.second_nedel_text210);
-
-            RelativeLayout nedel11 = (RelativeLayout) findViewById(R.id.second_nedel11);
-            TextView nedel11_text1 = (TextView) findViewById(R.id.second_nedel_text111);
-            TextView nedel11_text2 = (TextView) findViewById(R.id.second_nedel_text211);
-
-            RelativeLayout nedel12 = (RelativeLayout) findViewById(R.id.second_nedel12);
-            TextView nedel12_text1 = (TextView) findViewById(R.id.second_nedel_text112);
-            TextView nedel12_text2 = (TextView) findViewById(R.id.second_nedel_text212);
+        final TextView day_activ1 = (TextView) findViewById(R.id.daaaay1);
+        final TextView day_activ2 = (TextView) findViewById(R.id.daaaay2);
+        final TextView day_activ3 = (TextView) findViewById(R.id.daaaay3);
+        final TextView day_activ4 = (TextView) findViewById(R.id.daaaay4);
+        final TextView day_activ5 = (TextView) findViewById(R.id.daaaay5);
+        final TextView day_activ6 = (TextView) findViewById(R.id.daaaay6);
+        final TextView day_activ7 = (TextView) findViewById(R.id.daaaay7);
+        final TextView day_activ8 = (TextView) findViewById(R.id.daaaay8);
+        final TextView day_activ9 = (TextView) findViewById(R.id.daaaay9);
+        final TextView day_activ10 = (TextView) findViewById(R.id.daaaay10);
+        final TextView day_activ11 = (TextView) findViewById(R.id.daaaay11);
+        final TextView day_activ12 = (TextView) findViewById(R.id.daaaay12);
 
 
-            nedel1.setVisibility(View.VISIBLE);
-            nedel1_text1.setText(date.get(0));
+        RelativeLayout nedel1 = (RelativeLayout) findViewById(R.id.second_nedel);
+        TextView nedel1_text1 = (TextView) findViewById(R.id.second_nedel_text1);
+        TextView nedel1_text2 = (TextView) findViewById(R.id.second_nedel_text2);
 
-            for (int j = 0; j < date.size(); j++) {
+        RelativeLayout nedel2 = (RelativeLayout) findViewById(R.id.second_nedel2);
+        TextView nedel2_text1 = (TextView) findViewById(R.id.second_nedel_text12);
+        TextView nedel2_text2 = (TextView) findViewById(R.id.second_nedel_text22);
+
+        RelativeLayout nedel3 = (RelativeLayout) findViewById(R.id.second_nedel3);
+        TextView nedel3_text1 = (TextView) findViewById(R.id.second_nedel_text13);
+        TextView nedel3_text2 = (TextView) findViewById(R.id.second_nedel_text23);
+
+        RelativeLayout nedel4 = (RelativeLayout) findViewById(R.id.second_nedel4);
+        TextView nedel4_text1 = (TextView) findViewById(R.id.second_nedel_text14);
+        TextView nedel4_text2 = (TextView) findViewById(R.id.second_nedel_text24);
+
+        RelativeLayout nedel5 = (RelativeLayout) findViewById(R.id.second_nedel5);
+        TextView nedel5_text1 = (TextView) findViewById(R.id.second_nedel_text15);
+        TextView nedel5_text2 = (TextView) findViewById(R.id.second_nedel_text25);
+
+        RelativeLayout nedel6 = (RelativeLayout) findViewById(R.id.second_nedel6);
+        TextView nedel6_text1 = (TextView) findViewById(R.id.second_nedel_text16);
+        TextView nedel6_text2 = (TextView) findViewById(R.id.second_nedel_text26);
+
+        RelativeLayout nedel7 = (RelativeLayout) findViewById(R.id.second_nedel7);
+        TextView nedel7_text1 = (TextView) findViewById(R.id.second_nedel_text17);
+        TextView nedel7_text2 = (TextView) findViewById(R.id.second_nedel_text27);
+
+        RelativeLayout nedel8 = (RelativeLayout) findViewById(R.id.second_nedel8);
+        TextView nedel8_text1 = (TextView) findViewById(R.id.second_nedel_text18);
+        TextView nedel8_text2 = (TextView) findViewById(R.id.second_nedel_text28);
+
+        RelativeLayout nedel9 = (RelativeLayout) findViewById(R.id.second_nedel9);
+        TextView nedel9_text1 = (TextView) findViewById(R.id.second_nedel_text19);
+        TextView nedel9_text2 = (TextView) findViewById(R.id.second_nedel_text29);
+
+        RelativeLayout nedel10 = (RelativeLayout) findViewById(R.id.second_nedel10);
+        TextView nedel10_text1 = (TextView) findViewById(R.id.second_nedel_text110);
+        TextView nedel10_text2 = (TextView) findViewById(R.id.second_nedel_text210);
+
+        RelativeLayout nedel11 = (RelativeLayout) findViewById(R.id.second_nedel11);
+        TextView nedel11_text1 = (TextView) findViewById(R.id.second_nedel_text111);
+        TextView nedel11_text2 = (TextView) findViewById(R.id.second_nedel_text211);
+
+        RelativeLayout nedel12 = (RelativeLayout) findViewById(R.id.second_nedel12);
+        TextView nedel12_text1 = (TextView) findViewById(R.id.second_nedel_text112);
+        TextView nedel12_text2 = (TextView) findViewById(R.id.second_nedel_text212);
+
+        String key_value = "";
+        Integer par_4_day = 0;
+        String day = "";
+        String[] day_split = new String[0];
+        String time = "";
+        String para = "";
+        String prepod_name = "";
+        String loc = "";
+
+        String DATE = "";
+
+        String date_prev = "";
+
+        Integer day_number = 0;
+        Integer pre_day_number = 7;
+        int i = 1;
+
+        boolean second = false;
+
+        TextView start_par = null;
+        TextView name_of_par = null;
+        TextView docent = null;
+        TextView auditoria = null;
+
+        View view = null;
+
+        Log.d("MyLog", "LIST SIZE: " + String.valueOf(timetable_list.size()));
+
+        nedel1.setVisibility(View.VISIBLE);
+
+        for (int point = 0; point < timetable_list.size(); point++){
+
+//            Log.d("MyLog2", timetable_list.get(point).Value);
+
+            key_value = timetable_list.get(point).Name;
 
 
-                String jj = String.valueOf(j);
-//                Log.i("J_from_looper", jj);
+            if (key_value.startsWith("Time")){
 
-                if (date_temp.equals(date.get(j))) {
-
-                } else {
+                view = getLayoutInflater().inflate(R.layout.fragment_timetable_custom, null);
 
 
-                    String dg = date.get(j);
+                start_par = (TextView) view.findViewById(R.id.time_para);
+                name_of_par = (TextView) view.findViewById(R.id.name_of_par);
+                docent = (TextView) view.findViewById(R.id.docent);
+                auditoria = (TextView) view.findViewById(R.id.auditoria);
+            }
 
-                    String day_temp;
-                    char[] dgg = dg.toCharArray();
-                    day_temp = new String(dgg, 0, 2);
+            if (key_value.startsWith("Day")){
 
+                pre_day_number = day_number;
 
-                    String pr_day_temp;
-                    char[] pdg = date_temp.toCharArray();
-                    pr_day_temp = new String(pdg, 0, 2);
+                if (par_4_day < 3 && par_4_day > 0){
 
-                    date_temp = date.get(j); //обновляем текущую дату
-
-                    Integer f_num = Integer.parseInt(day_temp);
-                    Integer s_num = Integer.parseInt(pr_day_temp);
-
-                    String axx = " " + f_num;
-                    //                    Log.i("f_num", axx);
-
-
-                    if (f_num != s_num) {
-
-                        if (paar_for_day < 3){
-
-                            switch (day_number){
-                                case 1:
-                                    date_activ1.setVisibility(View.GONE);
-                                    break;
-                                case 2:
-                                    date_activ2.setVisibility(View.GONE);
-                                    break;
-                                case 3:
-                                    date_activ3.setVisibility(View.GONE);
-                                    break;
-                                case 4:
-                                    date_activ4.setVisibility(View.GONE);
-                                    break;
-                                case 5:
-                                    date_activ5.setVisibility(View.GONE);
-                                    break;
-                                case 6:
-                                    date_activ6.setVisibility(View.GONE);
-                                    break;
-                                case 7:
-                                    date_activ7.setVisibility(View.GONE);
-                                    break;
-                                case 8:
-                                    date_activ8.setVisibility(View.GONE);
-                                    break;
-                                case 9:
-                                    date_activ9.setVisibility(View.GONE);
-                                    break;
-                                case 10:
-                                    date_activ10.setVisibility(View.GONE);
-                                    break;
-                                case 11:
-                                    date_activ11.setVisibility(View.GONE);
-                                    break;
-                                case 12:
-                                    date_activ12.setVisibility(View.GONE);
-                                    break;
-                            }
-
-                        }
-                        paar_for_day = 0;
-
-                        day_number++;
+                    switch (i){
+                        case 2:
+                            date_activ1.setVisibility(View.GONE);
+                        case 3:
+                            date_activ2.setVisibility(View.GONE);
+                        case 4:
+                            date_activ3.setVisibility(View.GONE);
+                        case 5:
+                            date_activ4.setVisibility(View.GONE);
+                        case 6:
+                            date_activ5.setVisibility(View.GONE);
+                        case 7:
+                            date_activ6.setVisibility(View.GONE);
+                        case 8:
+                            date_activ7.setVisibility(View.GONE);
+                        case 9:
+                            date_activ8.setVisibility(View.GONE);
+                        case 10:
+                            date_activ9.setVisibility(View.GONE);
+                        case 11:
+                            date_activ10.setVisibility(View.GONE);
+                        case 12:
+                            date_activ11.setVisibility(View.GONE);
                     }
                 }
 
-                paar_for_day++;
-
-                LayoutInflater layoutInflater = (LayoutInflater)this.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
-
-                View view = layoutInflater.inflate(R.layout.fragment_timetable_custom, null);
-                final LinearLayout gb_par_fragment = (LinearLayout) view.findViewById(R.id.bg_par_fragment);
-
-
-                TextView start_par = (TextView) view.findViewById(R.id.start);
-                start_par.setText(start.get(j));
-
-                TextView end_par = (TextView) view.findViewById(R.id.end);
-                end_par.setText(end.get(j));
-
-                TextView name_of_par = (TextView) view.findViewById(R.id.name_of_par);
-                name_of_par.setText(par_names.get(j));
-
-                TextView docent = (TextView) view.findViewById(R.id.docent);
-                //                Log.i("Prepod_Name",prepod.get(j));
-
-                Integer ps = prepod.size();
-
-                if (j == ps || j > ps) {
-                    docent.setText(" ");
-                } else {
-                    if (prepod.get(j) != null) {
-                        docent.setText(prepod.get(j));
-                    } else {
-                        docent.setText("");
+                if (par_4_day >= 3){
+                    switch (i){
+                        case 2:
+                            date_activ1.setVisibility(View.VISIBLE);
+                        case 3:
+                            date_activ2.setVisibility(View.VISIBLE);
+                        case 4:
+                            date_activ3.setVisibility(View.VISIBLE);
+                        case 5:
+                            date_activ4.setVisibility(View.VISIBLE);
+                        case 6:
+                            date_activ5.setVisibility(View.VISIBLE);
+                        case 7:
+                            date_activ6.setVisibility(View.VISIBLE);
+                        case 8:
+                            date_activ7.setVisibility(View.VISIBLE);
+                        case 9:
+                            date_activ8.setVisibility(View.VISIBLE);
+                        case 10:
+                            date_activ9.setVisibility(View.VISIBLE);
+                        case 11:
+                            date_activ10.setVisibility(View.VISIBLE);
+                        case 12:
+                            date_activ11.setVisibility(View.VISIBLE);
                     }
                 }
 
-                String DATE = date.get(j);
-                String START = start.get(j);
-                String END = end.get(j);
+                par_4_day = 0;
+
+
+
+                if (i>1){
+                    date_prev = day_split[1];
+                }
+                day = timetable_list.get(point).Value;
+                day_split = day.split(" ");
+
+                DATE = day_split[1];
+
+                if(point == 0){
+                    nedel1_text1.setText(day_split[1]);
+                }
+
+                switch (day_split[0]){
+                    case "Понедельник":
+                        day_number = 1;
+                        break;
+                    case "Вторник":
+                        day_number = 2;
+                        break;
+                    case "Среда":
+                        day_number = 3;
+                        break;
+                    case "Четверг":
+                        day_number = 4;
+                        break;
+                    case "Пятница":
+                        day_number = 5;
+                        break;
+                    case "Суббота":
+                        day_number = 6;
+                        break;
+                }
+
+                if (day_number < pre_day_number){
+                    second = true;
+                    switch (i){
+                        case 1:
+                            nedel1.setVisibility(View.VISIBLE);
+                            nedel1_text1.setText(day_split[1]);
+                            break;
+                        case 2:
+                            nedel2.setVisibility(View.VISIBLE);
+                            nedel2_text1.setText(day_split[1]);
+                            nedel1_text2.setText(date_prev);
+                            break;
+                        case 3:
+                            nedel3.setVisibility(View.VISIBLE);
+                            nedel3_text1.setText(day_split[1]);
+                            nedel1_text2.setText(date_prev);
+                            break;
+                        case 4:
+                            nedel4.setVisibility(View.VISIBLE);
+                            nedel4_text1.setText(day_split[1]);
+                            nedel1_text2.setText(date_prev);
+                            break;
+                        case 5:
+                            nedel5.setVisibility(View.VISIBLE);
+                            nedel5_text1.setText(day_split[1]);
+                            nedel1_text2.setText(date_prev);
+                            break;
+                        case 6:
+                            nedel6.setVisibility(View.VISIBLE);
+                            nedel6_text1.setText(day_split[1]);
+                            nedel1_text2.setText(date_prev);
+                            break;
+                        case 7:
+                            nedel7.setVisibility(View.VISIBLE);
+                            nedel7_text1.setText(day_split[1]);
+                            nedel1_text2.setText(date_prev);
+                            break;
+                        case 8:
+                            nedel8.setVisibility(View.VISIBLE);
+                            nedel8_text1.setText(day_split[1]);
+                            nedel1_text2.setText(date_prev);
+                            break;
+                        case 9:
+                            nedel9.setVisibility(View.VISIBLE);
+                            nedel9_text1.setText(day_split[1]);
+                            nedel1_text2.setText(date_prev);
+                            break;
+                        case 10:
+                            nedel10.setVisibility(View.VISIBLE);
+                            nedel10_text1.setText(day_split[1]);
+                            nedel1_text2.setText(date_prev);
+                            break;
+                        case 11:
+                            nedel11.setVisibility(View.VISIBLE);
+                            nedel11_text1.setText(day_split[1]);
+                            nedel1_text2.setText(date_prev);
+                            break;
+                        case 12:
+                            nedel12.setVisibility(View.VISIBLE);
+                            nedel12_text1.setText(day_split[1]);
+                            nedel1_text2.setText(date_prev);
+                            break;
+                    }
+                }
+
+                Log.d("MyLog2", day_split[1]);
+
+                switch (i){
+                    case 1:
+                        day_activ1.setText(day_split[0]);
+                        date_activ1.setText(day_split[1]);
+                        DATE = day_split[1];
+                        Log.d("MyLog2","Date_activ " + (String) date_activ1.getText());
+                        card1.setVisibility(View.VISIBLE);
+                        break;
+                    case 2:
+                        day_activ2.setText(day_split[0]);
+                        date_activ2.setText(day_split[1]);
+                        DATE = day_split[1];
+                        Log.d("MyLog2", "Date_activ " +(String) date_activ2.getText());
+                        card2.setVisibility(View.VISIBLE);
+                        break;
+                    case 3:
+                        day_activ3.setText(day_split[0]);
+                        date_activ3.setText(day_split[1]);
+                        DATE = day_split[1];
+                        Log.d("MyLog2", "Date_activ " +(String) date_activ3.getText());
+                        card3.setVisibility(View.VISIBLE);
+                        break;
+                    case 4:
+                        day_activ4.setText(day_split[0]);
+                        date_activ4.setText(day_split[1]);
+                        DATE = day_split[1];
+                        card4.setVisibility(View.VISIBLE);
+                        break;
+                    case 5:
+                        day_activ5.setText(day_split[0]);
+                        date_activ5.setText(day_split[1]);
+                        DATE = day_split[1];
+                        card5.setVisibility(View.VISIBLE);
+                        break;
+                    case 6:
+                        day_activ6.setText(day_split[0]);
+                        date_activ6.setText(day_split[1]);
+                        DATE = day_split[1];
+                        card6.setVisibility(View.VISIBLE);
+                        break;
+                    case 7:
+                        day_activ7.setText(day_split[0]);
+                        date_activ7.setText(day_split[1]);
+                        DATE = day_split[1];
+                        card7.setVisibility(View.VISIBLE);
+                        break;
+                    case 8:
+                        day_activ8.setText(day_split[0]);
+                        date_activ8.setText(day_split[1]);
+                        DATE = day_split[1];
+                        card8.setVisibility(View.VISIBLE);
+                        break;
+                    case 9:
+                        day_activ9.setText(day_split[0]);
+                        date_activ9.setText(day_split[1]);
+                        DATE = day_split[1];
+                        card9.setVisibility(View.VISIBLE);
+                        break;
+                    case 10:
+                        day_activ10.setText(day_split[0]);
+                        date_activ10.setText(day_split[1]);
+                        DATE = day_split[1];
+                        card10.setVisibility(View.VISIBLE);
+                        break;
+                    case 11:
+                        day_activ11.setText(day_split[0]);
+                        date_activ11.setText(day_split[1]);
+                        DATE = day_split[1];
+                        card11.setVisibility(View.VISIBLE);
+                        break;
+                    case 12:
+                        day_activ12.setText(day_split[0]);
+                        date_activ12.setText(day_split[1]);
+                        DATE = day_split[1];
+                        card12.setVisibility(View.VISIBLE);
+                        break;
+                }
+                    i++;
+            }
+
+            if (key_value.startsWith("Time")){
+                time = timetable_list.get(point).Value;
+
+                Log.d("MyLog", "Time");
+
+                start_par.setText(time);
 
                 Date currentDate = new Date();
 
@@ -696,22 +1593,26 @@ public class FUCKTABLE extends Activity {
 //                Log.i("ТЕКУЩАЯ ДАТА",dateText);
 
 
-                String START_TIME[] = START.split(":");
-                String END_TIME[] = END.split(":");
-
-
                 DateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
                 String curr_date = timeFormat.format(currentDate);
 
 //                Log.i("ТЕКУЩЕЕ ВРЕМЯ", curr_date);
 
+
+                char[] start_t = time.toCharArray(); //преобразования слова в массив символов
+
+                String hh_f = new String(start_t, 0, 2); // начиная с нулевого символа(до строки) забираем 4 символа в переменную
+                String mm_f = new String(start_t, 3, 2); // начиная с 4 символа забираем два символа в переменную
+                String hh_s = new String(start_t, 8, 2); // начиная с нулевого символа(до строки) забираем 4 символа в переменную
+                String mm_s = new String(start_t, 11, 2); // начиная с 4 символа забираем два символа в переменную
+
                 String CURRENT_DATE[] = curr_date.split(":");
 
-                int START_PAR_HH = Integer.parseInt(START_TIME[0]);
-                int START_PAR_mm = Integer.parseInt(START_TIME[1]);
+                int START_PAR_HH = Integer.parseInt(hh_f);
+                int START_PAR_mm = Integer.parseInt(mm_f);
 
-                int END_PAR_HH = Integer.parseInt(END_TIME[0]);
-                int END_PAR_mm = Integer.parseInt(END_TIME[1]);
+                int END_PAR_HH = Integer.parseInt(hh_s);
+                int END_PAR_mm = Integer.parseInt(mm_s);
 
                 int CURRENT_DATE_HH = Integer.parseInt(CURRENT_DATE[0]);
                 int CURRENT_DATE_mm = Integer.parseInt(CURRENT_DATE[1]);
@@ -725,19 +1626,21 @@ public class FUCKTABLE extends Activity {
 
                 DateFormat df1 = new SimpleDateFormat("dd.MM.yyyy");
 
-                String date1 = df1.parse(DATE).toString();
-
-
-                TextView auditoria = (TextView) view.findViewById(R.id.auditoria);
-                auditoria.setText(location.get(j));
+                try {
+                    String date1 = df1.parse(DATE).toString();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
 
 
                 if (curr_dbl >= start_dbl &&
                         curr_dbl <= end_dbl &&
                         dateText.equals(DATE)) {
 
+                    Log.d("MyLog2", "СЕЙЧАС ПАРА ПИДОРАС");
+
+                    final LinearLayout gb_par_fragment = (LinearLayout) view.findViewById(R.id.bg_par_fragment);
                     gb_par_fragment.setBackgroundResource(R.drawable.study_timetable_bg_on);
-//                    mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
                     int currentNightMode = getResources().getConfiguration().uiMode
                             & Configuration.UI_MODE_NIGHT_MASK;
 
@@ -776,2116 +1679,428 @@ public class FUCKTABLE extends Activity {
                     }
                 }
 
+            }
+
+            if (key_value.startsWith("Para")){
+                Log.d("MyLog", "Para");
+
+                para = timetable_list.get(point).Value;
+                Log.d("MyLog", "PARAAAA " + para);
+                name_of_par.setText(para);
+            }
+
+            if (key_value.startsWith("Prepod")){
+                Log.d("MyLog", "Prepod");
+                prepod_name = timetable_list.get(point).Value;
+                docent.setText(prepod_name);
+            }
+
+            if (key_value.startsWith("Location")){
+                Log.d("MyLog", "Location");
+                loc = timetable_list.get(point).Value;
+
+                if (loc.length() > 0 && loc != null){
+
+                }else{
+                    loc = "";
+                }
+                Log.d("MyLog", loc);
+                auditoria.setText(loc);
+                par_4_day++;
 
                 allEds.add(view);
 
-                Integer temp_day_number = day_number - 1;
-
-
-                switch (day_number) {
-                    case 1:
-
-
-
-                        date_activ1.setText(date.get(j));
-
-                        TextView daaaay1 = (TextView) findViewById(R.id.daaaay1);
-
-                        if (date1.startsWith("Mon")) {
-                            daaaay1.setText("Понедельник");
-                            current_day = 1;
-                        }
-                        if (date1.startsWith("Tue")) {
-                            daaaay1.setText("Вторник");
-                            current_day = 2;
-                        }
-                        if (date1.startsWith("Wed")) {
-                            daaaay1.setText("Среда");
-                            current_day = 3;
-                        }
-                        if (date1.startsWith("Thu")) {
-                            daaaay1.setText("Четверг");
-                            current_day = 4;
-                        }
-                        if (date1.startsWith("Fri")) {
-                            daaaay1.setText("Пятница");
-                            current_day = 5;
-                        }
-                        if (date1.startsWith("Sat")) {
-                            daaaay1.setText("Суббота");
-                            current_day = 6;
-                        }
-
-//                        if (dateText.equals(DATE)) {
-//                            switch (APP_PREFERENCES_THEME) {
-//                                case "white":
-//                                    card1.setBackground(getDrawable(R.drawable.card_day));
-//                                    break;
-//                                case "black":
-//                                    card1.setBackground(getDrawable(R.drawable.card_night));
-//                                    break;
-//                                case "auto":
-//                                    switch (currentNightMode) {
-//                                        case Configuration.UI_MODE_NIGHT_NO:
-//                                            card1.setBackground(getDrawable(R.drawable.card_day));
-//                                            break;
-//                                        case Configuration.UI_MODE_NIGHT_YES:
-//                                            card1.setBackground(getDrawable(R.drawable.card_night));
-//                                            break;
-//                                        default:
-//                                            card1.setBackground(getDrawable(R.drawable.card_day));
-//                                            break;
-//                                    }
-//                                    break;
-//                            }
-//                        }
-
-                        if (current_day < buffer_day) {
-                            second = true;
-                            nedel1_text2.setText(date.get(j-1));
-                            switch (day_number) {
-                                case 2:
-                                    nedel2.setVisibility(View.VISIBLE);
-                                    nedel2_text1.setText(date.get(j));
-                                    nedel2_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 3:
-                                    nedel3.setVisibility(View.VISIBLE);
-                                    nedel3_text1.setText(date.get(j));
-                                    nedel3_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 4:
-                                    nedel4.setVisibility(View.VISIBLE);
-                                    nedel4_text1.setText(date.get(j));
-                                    nedel4_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 5:
-                                    nedel5.setVisibility(View.VISIBLE);
-                                    nedel5_text1.setText(date.get(j));
-                                    nedel5_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 6:
-                                    nedel6.setVisibility(View.VISIBLE);
-                                    nedel6_text1.setText(date.get(j));
-                                    nedel6_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 7:
-                                    nedel7.setVisibility(View.VISIBLE);
-                                    nedel7_text1.setText(date.get(j));
-                                    nedel7_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 8:
-                                    nedel8.setVisibility(View.VISIBLE);
-                                    nedel8_text1.setText(date.get(j));
-                                    nedel8_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 9:
-                                    nedel9.setVisibility(View.VISIBLE);
-                                    nedel9_text1.setText(date.get(j));
-                                    nedel9_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 10:
-                                    nedel10.setVisibility(View.VISIBLE);
-                                    nedel10_text1.setText(date.get(j));
-                                    nedel10_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 11:
-                                    nedel11.setVisibility(View.VISIBLE);
-                                    nedel11_text1.setText(date.get(j));
-                                    nedel11_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 12:
-                                    nedel12.setVisibility(View.VISIBLE);
-                                    nedel12_text1.setText(date.get(j));
-                                    nedel12_text2.setText(date.get(date.size()-1));
-                                    break;
-                            }
-                        }
-
+                switch (i){
+                    case 2:
                         first_day.addView(view);
-
                         break;
-                    case 2:
-
-
-                        date_activ2.setText(date.get(j));
-
-                        TextView daaaay2 = (TextView) findViewById(R.id.daaaay2);
-
-
-                        if (date1.startsWith("Mon")) {
-                            daaaay2.setText("Понедельник");
-                            current_day = 1;
-                        }
-                        if (date1.startsWith("Tue")) {
-                            daaaay2.setText("Вторник");
-                            current_day = 2;
-                        }
-                        if (date1.startsWith("Wed")) {
-                            daaaay2.setText("Среда");
-                            current_day = 3;
-                        }
-                        if (date1.startsWith("Thu")) {
-                            daaaay2.setText("Четверг");
-                            current_day = 4;
-                        }
-                        if (date1.startsWith("Fri")) {
-                            daaaay2.setText("Пятница");
-                            current_day = 5;
-                        }
-                        if (date1.startsWith("Sat")) {
-                            daaaay2.setText("Суббота");
-                            current_day = 6;
-                        }
-
-//                        if (dateText.equals(DATE)) {
-//                            switch (APP_PREFERENCES_THEME) {
-//                                case "white":
-//                                    card2.setBackground(getDrawable(R.drawable.card_day));
-//                                    break;
-//                                case "black":
-//                                    card2.setBackground(getDrawable(R.drawable.card_night));
-//                                    break;
-//                                case "auto":
-//                                    switch (currentNightMode) {
-//                                        case Configuration.UI_MODE_NIGHT_NO:
-//                                            card2.setBackground(getDrawable(R.drawable.card_day));
-//                                            break;
-//                                        case Configuration.UI_MODE_NIGHT_YES:
-//                                            card2.setBackground(getDrawable(R.drawable.card_night));
-//                                            break;
-//                                        default:
-//                                            card2.setBackground(getDrawable(R.drawable.card_day));
-//                                            break;
-//                                    }
-//                                    break;
-//                            }
-//                        }
-
-                        if (current_day < buffer_day) {
-                            second = true;
-                            nedel1_text2.setText(date.get(j-1));
-                            switch (day_number) {
-                                case 2:
-                                    nedel2.setVisibility(View.VISIBLE);
-                                    nedel2_text1.setText(date.get(j));
-                                    nedel2_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 3:
-                                    nedel3.setVisibility(View.VISIBLE);
-                                    nedel3_text1.setText(date.get(j));
-                                    nedel3_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 4:
-                                    nedel4.setVisibility(View.VISIBLE);
-                                    nedel4_text1.setText(date.get(j));
-                                    nedel4_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 5:
-                                    nedel5.setVisibility(View.VISIBLE);
-                                    nedel5_text1.setText(date.get(j));
-                                    nedel5_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 6:
-                                    nedel6.setVisibility(View.VISIBLE);
-                                    nedel6_text1.setText(date.get(j));
-                                    nedel6_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 7:
-                                    nedel7.setVisibility(View.VISIBLE);
-                                    nedel7_text1.setText(date.get(j));
-                                    nedel7_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 8:
-                                    nedel8.setVisibility(View.VISIBLE);
-                                    nedel8_text1.setText(date.get(j));
-                                    nedel8_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 9:
-                                    nedel9.setVisibility(View.VISIBLE);
-                                    nedel9_text1.setText(date.get(j));
-                                    nedel9_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 10:
-                                    nedel10.setVisibility(View.VISIBLE);
-                                    nedel10_text1.setText(date.get(j));
-                                    nedel10_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 11:
-                                    nedel11.setVisibility(View.VISIBLE);
-                                    nedel11_text1.setText(date.get(j));
-                                    nedel11_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 12:
-                                    nedel12.setVisibility(View.VISIBLE);
-                                    nedel12_text1.setText(date.get(j));
-                                    nedel12_text2.setText(date.get(date.size()-1));
-                                    break;
-                            }
-                        }
-
-
+                    case 3:
                         second_day.addView(view);
-
                         break;
-                    case 3:
-
-
-                        date_activ3.setText(date.get(j));
-
-                        TextView daaaay3 = (TextView) findViewById(R.id.daaaay3);
-
-
-                        if (date1.startsWith("Mon")) {
-                            daaaay3.setText("Понедельник");
-                            current_day = 1;
-                        }
-                        if (date1.startsWith("Tue")) {
-                            daaaay3.setText("Вторник");
-                            current_day = 2;
-                        }
-                        if (date1.startsWith("Wed")) {
-                            daaaay3.setText("Среда");
-                            current_day = 3;
-                        }
-                        if (date1.startsWith("Thu")) {
-                            daaaay3.setText("Четверг");
-                            current_day = 4;
-                        }
-                        if (date1.startsWith("Fri")) {
-                            daaaay3.setText("Пятница");
-                            current_day = 5;
-                        }
-                        if (date1.startsWith("Sat")) {
-                            daaaay3.setText("Суббота");
-                            current_day = 6;
-                        }
-
-//                        if (dateText.equals(DATE)) {
-//                            switch (APP_PREFERENCES_THEME) {
-//                                case "white":
-//                                    card3.setBackground(getDrawable(R.drawable.card_day));
-//                                    break;
-//                                case "black":
-//                                    card3.setBackground(getDrawable(R.drawable.card_night));
-//                                    break;
-//                                case "auto":
-//                                    switch (currentNightMode) {
-//                                        case Configuration.UI_MODE_NIGHT_NO:
-//                                            card3.setBackground(getDrawable(R.drawable.card_day));
-//                                            break;
-//                                        case Configuration.UI_MODE_NIGHT_YES:
-//                                            card3.setBackground(getDrawable(R.drawable.card_night));
-//                                            break;
-//                                        default:
-//                                            card3.setBackground(getDrawable(R.drawable.card_day));
-//                                            break;
-//                                    }
-//                                    break;
-//                            }
-//                        }
-
-                        if (current_day < buffer_day) {
-                            second = true;
-                            nedel1_text2.setText(date.get(j-1));
-                            switch (day_number) {
-                                case 2:
-                                    nedel2.setVisibility(View.VISIBLE);
-                                    nedel2_text1.setText(date.get(j));
-                                    nedel2_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 3:
-                                    nedel3.setVisibility(View.VISIBLE);
-                                    nedel3_text1.setText(date.get(j));
-                                    nedel3_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 4:
-                                    nedel4.setVisibility(View.VISIBLE);
-                                    nedel4_text1.setText(date.get(j));
-                                    nedel4_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 5:
-                                    nedel5.setVisibility(View.VISIBLE);
-                                    nedel5_text1.setText(date.get(j));
-                                    nedel5_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 6:
-                                    nedel6.setVisibility(View.VISIBLE);
-                                    nedel6_text1.setText(date.get(j));
-                                    nedel6_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 7:
-                                    nedel7.setVisibility(View.VISIBLE);
-                                    nedel7_text1.setText(date.get(j));
-                                    nedel7_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 8:
-                                    nedel8.setVisibility(View.VISIBLE);
-                                    nedel8_text1.setText(date.get(j));
-                                    nedel8_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 9:
-                                    nedel9.setVisibility(View.VISIBLE);
-                                    nedel9_text1.setText(date.get(j));
-                                    nedel9_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 10:
-                                    nedel10.setVisibility(View.VISIBLE);
-                                    nedel10_text1.setText(date.get(j));
-                                    nedel10_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 11:
-                                    nedel11.setVisibility(View.VISIBLE);
-                                    nedel11_text1.setText(date.get(j));
-                                    nedel11_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 12:
-                                    nedel12.setVisibility(View.VISIBLE);
-                                    nedel12_text1.setText(date.get(j));
-                                    nedel12_text2.setText(date.get(date.size()-1));
-                                    break;
-                            }
-                        }
-
-
+                    case 4:
                         day3.addView(view);
-
                         break;
-                    case 4:
-
-
-                        date_activ4.setText(date.get(j));
-
-                        TextView daaaay4 = (TextView) findViewById(R.id.daaaay4);
-
-
-                        if (date1.startsWith("Mon")) {
-                            daaaay4.setText("Понедельник");
-                            current_day = 1;
-                        }
-                        if (date1.startsWith("Tue")) {
-                            daaaay4.setText("Вторник");
-                            current_day = 2;
-                        }
-                        if (date1.startsWith("Wed")) {
-                            daaaay4.setText("Среда");
-                            current_day = 3;
-                        }
-                        if (date1.startsWith("Thu")) {
-                            daaaay4.setText("Четверг");
-                            current_day = 4;
-                        }
-                        if (date1.startsWith("Fri")) {
-                            daaaay4.setText("Пятница");
-                            current_day = 5;
-                        }
-                        if (date1.startsWith("Sat")) {
-                            daaaay4.setText("Суббота");
-                            current_day = 6;
-                        }
-
-//                        if (dateText.equals(DATE)) {
-//                            switch (APP_PREFERENCES_THEME) {
-//                                case "white":
-//                                    card4.setBackground(getDrawable(R.drawable.card_day));
-//                                    break;
-//                                case "black":
-//                                    card4.setBackground(getDrawable(R.drawable.card_night));
-//                                    break;
-//                                case "auto":
-//                                    switch (currentNightMode) {
-//                                        case Configuration.UI_MODE_NIGHT_NO:
-//                                            card4.setBackground(getDrawable(R.drawable.card_day));
-//                                            break;
-//                                        case Configuration.UI_MODE_NIGHT_YES:
-//                                            card4.setBackground(getDrawable(R.drawable.card_night));
-//                                            break;
-//                                        default:
-//                                            card4.setBackground(getDrawable(R.drawable.card_day));
-//                                            break;
-//                                    }
-//                                    break;
-//                            }
-//                        }
-
-                        if (current_day < buffer_day) {
-                            second = true;
-                            nedel1_text2.setText(date.get(j-1));
-                            switch (day_number) {
-                                case 2:
-                                    nedel2.setVisibility(View.VISIBLE);
-                                    nedel2_text1.setText(date.get(j));
-                                    nedel2_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 3:
-                                    nedel3.setVisibility(View.VISIBLE);
-                                    nedel3_text1.setText(date.get(j));
-                                    nedel3_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 4:
-                                    nedel4.setVisibility(View.VISIBLE);
-                                    nedel4_text1.setText(date.get(j));
-                                    nedel4_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 5:
-                                    nedel5.setVisibility(View.VISIBLE);
-                                    nedel5_text1.setText(date.get(j));
-                                    nedel5_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 6:
-                                    nedel6.setVisibility(View.VISIBLE);
-                                    nedel6_text1.setText(date.get(j));
-                                    nedel6_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 7:
-                                    nedel7.setVisibility(View.VISIBLE);
-                                    nedel7_text1.setText(date.get(j));
-                                    nedel7_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 8:
-                                    nedel8.setVisibility(View.VISIBLE);
-                                    nedel8_text1.setText(date.get(j));
-                                    nedel8_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 9:
-                                    nedel9.setVisibility(View.VISIBLE);
-                                    nedel9_text1.setText(date.get(j));
-                                    nedel9_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 10:
-                                    nedel10.setVisibility(View.VISIBLE);
-                                    nedel10_text1.setText(date.get(j));
-                                    nedel10_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 11:
-                                    nedel11.setVisibility(View.VISIBLE);
-                                    nedel11_text1.setText(date.get(j));
-                                    nedel11_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 12:
-                                    nedel12.setVisibility(View.VISIBLE);
-                                    nedel12_text1.setText(date.get(j));
-                                    nedel12_text2.setText(date.get(date.size()-1));
-                                    break;
-                            }
-                        }
-
+                    case 5:
                         day4.addView(view);
-
                         break;
-                    case 5:
-
-                        date_activ5.setText(date.get(j));
-
-                        TextView daaaay5 = (TextView) findViewById(R.id.daaaay5);
-
-
-                        if (date1.startsWith("Mon")) {
-                            daaaay5.setText("Понедельник");
-                            current_day = 1;
-                        }
-                        if (date1.startsWith("Tue")) {
-                            daaaay5.setText("Вторник");
-                            current_day = 2;
-                        }
-                        if (date1.startsWith("Wed")) {
-                            daaaay5.setText("Среда");
-                            current_day = 3;
-                        }
-                        if (date1.startsWith("Thu")) {
-                            daaaay5.setText("Четверг");
-                            current_day = 4;
-                        }
-                        if (date1.startsWith("Fri")) {
-                            daaaay5.setText("Пятница");
-                            current_day = 5;
-                        }
-                        if (date1.startsWith("Sat")) {
-                            daaaay5.setText("Суббота");
-                            current_day = 6;
-                        }
-
-//                        if (dateText.equals(DATE)) {
-//                            switch (APP_PREFERENCES_THEME) {
-//                                case "white":
-//                                    card5.setBackground(getDrawable(R.drawable.card_day));
-//                                    break;
-//                                case "black":
-//                                    card5.setBackground(getDrawable(R.drawable.card_night));
-//                                    break;
-//                                case "auto":
-//                                    switch (currentNightMode) {
-//                                        case Configuration.UI_MODE_NIGHT_NO:
-//                                            card5.setBackground(getDrawable(R.drawable.card_day));
-//                                            break;
-//                                        case Configuration.UI_MODE_NIGHT_YES:
-//                                            card5.setBackground(getDrawable(R.drawable.card_night));
-//                                            break;
-//                                        default:
-//                                            card5.setBackground(getDrawable(R.drawable.card_day));
-//                                            break;
-//                                    }
-//                                    break;
-//                            }
-//                        }
-
-                        if (current_day < buffer_day) {
-                            second = true;
-                            nedel1_text2.setText(date.get(j-1));
-                            switch (day_number) {
-                                case 2:
-                                    nedel2.setVisibility(View.VISIBLE);
-                                    nedel2_text1.setText(date.get(j));
-                                    nedel2_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 3:
-                                    nedel3.setVisibility(View.VISIBLE);
-                                    nedel3_text1.setText(date.get(j));
-                                    nedel3_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 4:
-                                    nedel4.setVisibility(View.VISIBLE);
-                                    nedel4_text1.setText(date.get(j));
-                                    nedel4_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 5:
-                                    nedel5.setVisibility(View.VISIBLE);
-                                    nedel5_text1.setText(date.get(j));
-                                    nedel5_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 6:
-                                    nedel6.setVisibility(View.VISIBLE);
-                                    nedel6_text1.setText(date.get(j));
-                                    nedel6_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 7:
-                                    nedel7.setVisibility(View.VISIBLE);
-                                    nedel7_text1.setText(date.get(j));
-                                    nedel7_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 8:
-                                    nedel8.setVisibility(View.VISIBLE);
-                                    nedel8_text1.setText(date.get(j));
-                                    nedel8_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 9:
-                                    nedel9.setVisibility(View.VISIBLE);
-                                    nedel9_text1.setText(date.get(j));
-                                    nedel9_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 10:
-                                    nedel10.setVisibility(View.VISIBLE);
-                                    nedel10_text1.setText(date.get(j));
-                                    nedel10_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 11:
-                                    nedel11.setVisibility(View.VISIBLE);
-                                    nedel11_text1.setText(date.get(j));
-                                    nedel11_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 12:
-                                    nedel12.setVisibility(View.VISIBLE);
-                                    nedel12_text1.setText(date.get(j));
-                                    nedel12_text2.setText(date.get(date.size()-1));
-                                    break;
-                            }
-                        }
-
+                    case 6:
                         day5.addView(view);
-
                         break;
-                    case 6:
-                        date_activ6.setText(date.get(j));
-
-                        TextView daaaay6 = (TextView) findViewById(R.id.daaaay6);
-
-
-                        if (date1.startsWith("Mon")) {
-                            daaaay6.setText("Понедельник");
-                            current_day = 1;
-                        }
-                        if (date1.startsWith("Tue")) {
-                            daaaay6.setText("Вторник");
-                            current_day = 2;
-                        }
-                        if (date1.startsWith("Wed")) {
-                            daaaay6.setText("Среда");
-                            current_day = 3;
-                        }
-                        if (date1.startsWith("Thu")) {
-                            daaaay6.setText("Четверг");
-                            current_day = 4;
-                        }
-                        if (date1.startsWith("Fri")) {
-                            daaaay6.setText("Пятница");
-                            current_day = 5;
-                        }
-                        if (date1.startsWith("Sat")) {
-                            daaaay6.setText("Суббота");
-                            current_day = 6;
-                        }
-
-//                        if (dateText.equals(DATE)) {
-//                            switch (APP_PREFERENCES_THEME) {
-//                                case "white":
-//                                    card6.setBackground(getDrawable(R.drawable.card_day));
-//                                    break;
-//                                case "black":
-//                                    card6.setBackground(getDrawable(R.drawable.card_night));
-//                                    break;
-//                                case "auto":
-//                                    switch (currentNightMode) {
-//                                        case Configuration.UI_MODE_NIGHT_NO:
-//                                            card6.setBackground(getDrawable(R.drawable.card_day));
-//                                            break;
-//                                        case Configuration.UI_MODE_NIGHT_YES:
-//                                            card6.setBackground(getDrawable(R.drawable.card_night));
-//                                            break;
-//                                        default:
-//                                            card6.setBackground(getDrawable(R.drawable.card_day));
-//                                            break;
-//                                    }
-//                                    break;
-//                            }
-//                        }
-
-                        if (current_day < buffer_day) {
-                            second = true;
-                            nedel1_text2.setText(date.get(j-1));
-                            switch (day_number) {
-                                case 2:
-                                    nedel2.setVisibility(View.VISIBLE);
-                                    nedel2_text1.setText(date.get(j));
-                                    nedel2_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 3:
-                                    nedel3.setVisibility(View.VISIBLE);
-                                    nedel3_text1.setText(date.get(j));
-                                    nedel3_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 4:
-                                    nedel4.setVisibility(View.VISIBLE);
-                                    nedel4_text1.setText(date.get(j));
-                                    nedel4_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 5:
-                                    nedel5.setVisibility(View.VISIBLE);
-                                    nedel5_text1.setText(date.get(j));
-                                    nedel5_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 6:
-                                    nedel6.setVisibility(View.VISIBLE);
-                                    nedel6_text1.setText(date.get(j));
-                                    nedel6_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 7:
-                                    nedel7.setVisibility(View.VISIBLE);
-                                    nedel7_text1.setText(date.get(j));
-                                    nedel7_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 8:
-                                    nedel8.setVisibility(View.VISIBLE);
-                                    nedel8_text1.setText(date.get(j));
-                                    nedel8_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 9:
-                                    nedel9.setVisibility(View.VISIBLE);
-                                    nedel9_text1.setText(date.get(j));
-                                    nedel9_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 10:
-                                    nedel10.setVisibility(View.VISIBLE);
-                                    nedel10_text1.setText(date.get(j));
-                                    nedel10_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 11:
-                                    nedel11.setVisibility(View.VISIBLE);
-                                    nedel11_text1.setText(date.get(j));
-                                    nedel11_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 12:
-                                    nedel12.setVisibility(View.VISIBLE);
-                                    nedel12_text1.setText(date.get(j));
-                                    nedel12_text2.setText(date.get(date.size()-1));
-                                    break;
-                            }
-                        }
-
+                    case 7:
                         day6.addView(view);
-
                         break;
-                    case 7:
-                        date_activ7.setText(date.get(j));
-
-                        TextView daaaay7 = (TextView) findViewById(R.id.daaaay7);
-
-                        if (date1.startsWith("Mon")) {
-                            daaaay7.setText("Понедельник");
-                            current_day = 1;
-                        }
-                        if (date1.startsWith("Tue")) {
-                            daaaay7.setText("Вторник");
-                            current_day = 2;
-                        }
-                        if (date1.startsWith("Wed")) {
-                            daaaay7.setText("Среда");
-                            current_day = 3;
-                        }
-                        if (date1.startsWith("Thu")) {
-                            daaaay7.setText("Четверг");
-                            current_day = 4;
-                        }
-                        if (date1.startsWith("Fri")) {
-                            daaaay7.setText("Пятница");
-                            current_day = 5;
-                        }
-                        if (date1.startsWith("Sat")) {
-                            daaaay7.setText("Суббота");
-                            current_day = 6;
-                        }
-
-//                        if (dateText.equals(DATE)) {
-//                            switch (APP_PREFERENCES_THEME) {
-//                                case "white":
-//                                    card7.setBackground(getDrawable(R.drawable.card_day));
-//                                    break;
-//                                case "black":
-//                                    card7.setBackground(getDrawable(R.drawable.card_night));
-//                                    break;
-//                                case "auto":
-//                                    switch (currentNightMode) {
-//                                        case Configuration.UI_MODE_NIGHT_NO:
-//                                            card7.setBackground(getDrawable(R.drawable.card_day));
-//                                            break;
-//                                        case Configuration.UI_MODE_NIGHT_YES:
-//                                            card7.setBackground(getDrawable(R.drawable.card_night));
-//                                            break;
-//                                        default:
-//                                            card7.setBackground(getDrawable(R.drawable.card_day));
-//                                            break;
-//                                    }
-//                                    break;
-//                            }
-//                        }
-
-                        if (current_day < buffer_day) {
-                            second = true;
-                            nedel1_text2.setText(date.get(j-1));
-                            switch (day_number) {
-                                case 2:
-                                    nedel2.setVisibility(View.VISIBLE);
-                                    nedel2_text1.setText(date.get(j));
-                                    nedel2_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 3:
-                                    nedel3.setVisibility(View.VISIBLE);
-                                    nedel3_text1.setText(date.get(j));
-                                    nedel3_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 4:
-                                    nedel4.setVisibility(View.VISIBLE);
-                                    nedel4_text1.setText(date.get(j));
-                                    nedel4_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 5:
-                                    nedel5.setVisibility(View.VISIBLE);
-                                    nedel5_text1.setText(date.get(j));
-                                    nedel5_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 6:
-                                    nedel6.setVisibility(View.VISIBLE);
-                                    nedel6_text1.setText(date.get(j));
-                                    nedel6_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 7:
-                                    nedel7.setVisibility(View.VISIBLE);
-                                    nedel7_text1.setText(date.get(j));
-                                    nedel7_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 8:
-                                    nedel8.setVisibility(View.VISIBLE);
-                                    nedel8_text1.setText(date.get(j));
-                                    nedel8_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 9:
-                                    nedel9.setVisibility(View.VISIBLE);
-                                    nedel9_text1.setText(date.get(j));
-                                    nedel9_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 10:
-                                    nedel10.setVisibility(View.VISIBLE);
-                                    nedel10_text1.setText(date.get(j));
-                                    nedel10_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 11:
-                                    nedel11.setVisibility(View.VISIBLE);
-                                    nedel11_text1.setText(date.get(j));
-                                    nedel11_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 12:
-                                    nedel12.setVisibility(View.VISIBLE);
-                                    nedel12_text1.setText(date.get(j));
-                                    nedel12_text2.setText(date.get(date.size()-1));
-                                    break;
-                            }
-                        }
-
+                    case 8:
                         day7.addView(view);
-
                         break;
-                    case 8:
-                        date_activ8.setText(date.get(j));
-
-                        TextView daaaay8 = (TextView) findViewById(R.id.daaaay8);
-
-                        if (date1.startsWith("Mon")) {
-                            daaaay8.setText("Понедельник");
-                            current_day = 1;
-                        }
-                        if (date1.startsWith("Tue")) {
-                            daaaay8.setText("Вторник");
-                            current_day = 2;
-                        }
-                        if (date1.startsWith("Wed")) {
-                            daaaay8.setText("Среда");
-                            current_day = 3;
-                        }
-                        if (date1.startsWith("Thu")) {
-                            daaaay8.setText("Четверг");
-                            current_day = 4;
-                        }
-                        if (date1.startsWith("Fri")) {
-                            daaaay8.setText("Пятница");
-                            current_day = 5;
-                        }
-                        if (date1.startsWith("Sat")) {
-                            daaaay8.setText("Суббота");
-                            current_day = 6;
-                        }
-
-//                        if (dateText.equals(DATE)) {
-//                            switch (APP_PREFERENCES_THEME) {
-//                                case "white":
-//                                    card8.setBackground(getDrawable(R.drawable.card_day));
-//                                    break;
-//                                case "black":
-//                                    card8.setBackground(getDrawable(R.drawable.card_night));
-//                                    break;
-//                                case "auto":
-//                                    switch (currentNightMode) {
-//                                        case Configuration.UI_MODE_NIGHT_NO:
-//                                            card8.setBackground(getDrawable(R.drawable.card_day));
-//                                            break;
-//                                        case Configuration.UI_MODE_NIGHT_YES:
-//                                            card8.setBackground(getDrawable(R.drawable.card_night));
-//                                            break;
-//                                        default:
-//                                            card8.setBackground(getDrawable(R.drawable.card_day));
-//                                            break;
-//                                    }
-//                                    break;
-//                            }
-//                        }
-
-                        if (current_day < buffer_day) {
-                            second = true;
-                            nedel1_text2.setText(date.get(j-1));
-                            switch (day_number) {
-                                case 2:
-                                    nedel2.setVisibility(View.VISIBLE);
-                                    nedel2_text1.setText(date.get(j));
-                                    nedel2_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 3:
-                                    nedel3.setVisibility(View.VISIBLE);
-                                    nedel3_text1.setText(date.get(j));
-                                    nedel3_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 4:
-                                    nedel4.setVisibility(View.VISIBLE);
-                                    nedel4_text1.setText(date.get(j));
-                                    nedel4_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 5:
-                                    nedel5.setVisibility(View.VISIBLE);
-                                    nedel5_text1.setText(date.get(j));
-                                    nedel5_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 6:
-                                    nedel6.setVisibility(View.VISIBLE);
-                                    nedel6_text1.setText(date.get(j));
-                                    nedel6_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 7:
-                                    nedel7.setVisibility(View.VISIBLE);
-                                    nedel7_text1.setText(date.get(j));
-                                    nedel7_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 8:
-                                    nedel8.setVisibility(View.VISIBLE);
-                                    nedel8_text1.setText(date.get(j));
-                                    nedel8_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 9:
-                                    nedel9.setVisibility(View.VISIBLE);
-                                    nedel9_text1.setText(date.get(j));
-                                    nedel9_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 10:
-                                    nedel10.setVisibility(View.VISIBLE);
-                                    nedel10_text1.setText(date.get(j));
-                                    nedel10_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 11:
-                                    nedel11.setVisibility(View.VISIBLE);
-                                    nedel11_text1.setText(date.get(j));
-                                    nedel11_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 12:
-                                    nedel12.setVisibility(View.VISIBLE);
-                                    nedel12_text1.setText(date.get(j));
-                                    nedel12_text2.setText(date.get(date.size()-1));
-                                    break;
-                            }
-                        }
-
+                    case 9:
                         day8.addView(view);
-
                         break;
-                    case 9:
-                        date_activ9.setText(date.get(j));
-
-
-                        TextView daaaay9 = (TextView) findViewById(R.id.daaaay9);
-
-                        if (date1.startsWith("Mon")) {
-                            daaaay9.setText("Понедельник");
-                            current_day = 1;
-                        }
-                        if (date1.startsWith("Tue")) {
-                            daaaay9.setText("Вторник");
-                            current_day = 2;
-                        }
-                        if (date1.startsWith("Wed")) {
-                            daaaay9.setText("Среда");
-                            current_day = 3;
-                        }
-                        if (date1.startsWith("Thu")) {
-                            daaaay9.setText("Четверг");
-                            current_day = 4;
-                        }
-                        if (date1.startsWith("Fri")) {
-                            daaaay9.setText("Пятница");
-                            current_day = 5;
-                        }
-                        if (date1.startsWith("Sat")) {
-                            daaaay9.setText("Суббота");
-                            current_day = 6;
-                        }
-
-//                        if (dateText.equals(DATE)) {
-//                            switch (APP_PREFERENCES_THEME) {
-//                                case "white":
-//                                    card9.setBackground(getDrawable(R.drawable.card_day));
-//                                    break;
-//                                case "black":
-//                                    card9.setBackground(getDrawable(R.drawable.card_night));
-//                                    break;
-//                                case "auto":
-//                                    switch (currentNightMode) {
-//                                        case Configuration.UI_MODE_NIGHT_NO:
-//                                            card9.setBackground(getDrawable(R.drawable.card_day));
-//                                            break;
-//                                        case Configuration.UI_MODE_NIGHT_YES:
-//                                            card9.setBackground(getDrawable(R.drawable.card_night));
-//                                            break;
-//                                        default:
-//                                            card9.setBackground(getDrawable(R.drawable.card_day));
-//                                            break;
-//                                    }
-//                                    break;
-//                            }
-//                        }
-
-                        if (current_day < buffer_day) {
-                            second = true;
-                            nedel1_text2.setText(date.get(j-1));
-                            switch (day_number) {
-                                case 2:
-                                    nedel2.setVisibility(View.VISIBLE);
-                                    nedel2_text1.setText(date.get(j));
-                                    nedel2_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 3:
-                                    nedel3.setVisibility(View.VISIBLE);
-                                    nedel3_text1.setText(date.get(j));
-                                    nedel3_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 4:
-                                    nedel4.setVisibility(View.VISIBLE);
-                                    nedel4_text1.setText(date.get(j));
-                                    nedel4_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 5:
-                                    nedel5.setVisibility(View.VISIBLE);
-                                    nedel5_text1.setText(date.get(j));
-                                    nedel5_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 6:
-                                    nedel6.setVisibility(View.VISIBLE);
-                                    nedel6_text1.setText(date.get(j));
-                                    nedel6_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 7:
-                                    nedel7.setVisibility(View.VISIBLE);
-                                    nedel7_text1.setText(date.get(j));
-                                    nedel7_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 8:
-                                    nedel8.setVisibility(View.VISIBLE);
-                                    nedel8_text1.setText(date.get(j));
-                                    nedel8_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 9:
-                                    nedel9.setVisibility(View.VISIBLE);
-                                    nedel9_text1.setText(date.get(j));
-                                    nedel9_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 10:
-                                    nedel10.setVisibility(View.VISIBLE);
-                                    nedel10_text1.setText(date.get(j));
-                                    nedel10_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 11:
-                                    nedel11.setVisibility(View.VISIBLE);
-                                    nedel11_text1.setText(date.get(j));
-                                    nedel11_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 12:
-                                    nedel12.setVisibility(View.VISIBLE);
-                                    nedel12_text1.setText(date.get(j));
-                                    nedel12_text2.setText(date.get(date.size()-1));
-                                    break;
-                            }
-                        }
-
+                    case 10:
                         day9.addView(view);
-
                         break;
-                    case 10:
-                        date_activ10.setText(date.get(j));
-
-                        TextView daaaay10 = (TextView) findViewById(R.id.daaaay10);
-
-                        if (date1.startsWith("Mon")) {
-                            daaaay10.setText("Понедельник");
-                            current_day = 1;
-                        }
-                        if (date1.startsWith("Tue")) {
-                            daaaay10.setText("Вторник");
-                            current_day = 2;
-                        }
-                        if (date1.startsWith("Wed")) {
-                            daaaay10.setText("Среда");
-                            current_day = 3;
-                        }
-                        if (date1.startsWith("Thu")) {
-                            daaaay10.setText("Четверг");
-                            current_day = 4;
-                        }
-                        if (date1.startsWith("Fri")) {
-                            daaaay10.setText("Пятница");
-                            current_day = 5;
-                        }
-                        if (date1.startsWith("Sat")) {
-                            daaaay10.setText("Суббота");
-                            current_day = 6;
-                        }
-
-//                        if (dateText.equals(DATE)) {
-//                            switch (APP_PREFERENCES_THEME) {
-//                                case "white":
-//                                    card10.setBackground(getDrawable(R.drawable.card_day));
-//                                    break;
-//                                case "black":
-//                                    card10.setBackground(getDrawable(R.drawable.card_night));
-//                                    break;
-//                                case "auto":
-//                                    switch (currentNightMode) {
-//                                        case Configuration.UI_MODE_NIGHT_NO:
-//                                            card10.setBackground(getDrawable(R.drawable.card_day));
-//                                            break;
-//                                        case Configuration.UI_MODE_NIGHT_YES:
-//                                            card10.setBackground(getDrawable(R.drawable.card_night));
-//                                            break;
-//                                        default:
-//                                            card10.setBackground(getDrawable(R.drawable.card_day));
-//                                            break;
-//                                    }
-//                                    break;
-//                            }
-//                        }
-
-                        if (current_day < buffer_day) {
-                            second = true;
-                            nedel1_text2.setText(date.get(j-1));
-                            switch (day_number) {
-                                case 2:
-                                    nedel2.setVisibility(View.VISIBLE);
-                                    nedel2_text1.setText(date.get(j));
-                                    nedel2_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 3:
-                                    nedel3.setVisibility(View.VISIBLE);
-                                    nedel3_text1.setText(date.get(j));
-                                    nedel3_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 4:
-                                    nedel4.setVisibility(View.VISIBLE);
-                                    nedel4_text1.setText(date.get(j));
-                                    nedel4_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 5:
-                                    nedel5.setVisibility(View.VISIBLE);
-                                    nedel5_text1.setText(date.get(j));
-                                    nedel5_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 6:
-                                    nedel6.setVisibility(View.VISIBLE);
-                                    nedel6_text1.setText(date.get(j));
-                                    nedel6_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 7:
-                                    nedel7.setVisibility(View.VISIBLE);
-                                    nedel7_text1.setText(date.get(j));
-                                    nedel7_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 8:
-                                    nedel8.setVisibility(View.VISIBLE);
-                                    nedel8_text1.setText(date.get(j));
-                                    nedel8_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 9:
-                                    nedel9.setVisibility(View.VISIBLE);
-                                    nedel9_text1.setText(date.get(j));
-                                    nedel9_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 10:
-                                    nedel10.setVisibility(View.VISIBLE);
-                                    nedel10_text1.setText(date.get(j));
-                                    nedel10_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 11:
-                                    nedel11.setVisibility(View.VISIBLE);
-                                    nedel11_text1.setText(date.get(j));
-                                    nedel11_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 12:
-                                    nedel12.setVisibility(View.VISIBLE);
-                                    nedel12_text1.setText(date.get(j));
-                                    nedel12_text2.setText(date.get(date.size()-1));
-                                    break;
-                            }
-                        }
-
+                    case 11:
                         day10.addView(view);
-
                         break;
-                    case 11:
-
-                        date_activ11.setText(date.get(j));
-
-                        TextView daaaay11 = (TextView) findViewById(R.id.daaaay11);
-
-                        if (date1.startsWith("Mon")) {
-                            daaaay11.setText("Понедельник");
-                            current_day = 1;
-                        }
-                        if (date1.startsWith("Tue")) {
-                            daaaay11.setText("Вторник");
-                            current_day = 2;
-                        }
-                        if (date1.startsWith("Wed")) {
-                            daaaay11.setText("Среда");
-                            current_day = 3;
-                        }
-                        if (date1.startsWith("Thu")) {
-                            daaaay11.setText("Четверг");
-                            current_day = 4;
-                        }
-                        if (date1.startsWith("Fri")) {
-                            daaaay11.setText("Пятница");
-                            current_day = 5;
-                        }
-                        if (date1.startsWith("Sat")) {
-                            daaaay11.setText("Суббота");
-                            current_day = 6;
-                        }
-
-//                        if (dateText.equals(DATE)) {
-//                            switch (APP_PREFERENCES_THEME) {
-//                                case "white":
-//                                    card11.setBackground(getDrawable(R.drawable.card_day));
-//                                    break;
-//                                case "black":
-//                                    card11.setBackground(getDrawable(R.drawable.card_night));
-//                                    break;
-//                                case "auto":
-//                                    switch (currentNightMode) {
-//                                        case Configuration.UI_MODE_NIGHT_NO:
-//                                            card11.setBackground(getDrawable(R.drawable.card_day));
-//                                            break;
-//                                        case Configuration.UI_MODE_NIGHT_YES:
-//                                            card11.setBackground(getDrawable(R.drawable.card_night));
-//                                            break;
-//                                        default:
-//                                            card11.setBackground(getDrawable(R.drawable.card_day));
-//                                            break;
-//                                    }
-//                                    break;
-//                            }
-//                        }
-
-                        if (current_day < buffer_day) {
-                            second = true;
-                            nedel1_text2.setText(date.get(j-1));
-                            switch (day_number) {
-                                case 2:
-                                    nedel2.setVisibility(View.VISIBLE);
-                                    nedel2_text1.setText(date.get(j));
-                                    nedel2_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 3:
-                                    nedel3.setVisibility(View.VISIBLE);
-                                    nedel3_text1.setText(date.get(j));
-                                    nedel3_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 4:
-                                    nedel4.setVisibility(View.VISIBLE);
-                                    nedel4_text1.setText(date.get(j));
-                                    nedel4_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 5:
-                                    nedel5.setVisibility(View.VISIBLE);
-                                    nedel5_text1.setText(date.get(j));
-                                    nedel5_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 6:
-                                    nedel6.setVisibility(View.VISIBLE);
-                                    nedel6_text1.setText(date.get(j));
-                                    nedel6_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 7:
-                                    nedel7.setVisibility(View.VISIBLE);
-                                    nedel7_text1.setText(date.get(j));
-                                    nedel7_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 8:
-                                    nedel8.setVisibility(View.VISIBLE);
-                                    nedel8_text1.setText(date.get(j));
-                                    nedel8_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 9:
-                                    nedel9.setVisibility(View.VISIBLE);
-                                    nedel9_text1.setText(date.get(j));
-                                    nedel9_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 10:
-                                    nedel10.setVisibility(View.VISIBLE);
-                                    nedel10_text1.setText(date.get(j));
-                                    nedel10_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 11:
-                                    nedel11.setVisibility(View.VISIBLE);
-                                    nedel11_text1.setText(date.get(j));
-                                    nedel11_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 12:
-                                    nedel12.setVisibility(View.VISIBLE);
-                                    nedel12_text1.setText(date.get(j));
-                                    nedel12_text2.setText(date.get(date.size()-1));
-                                    break;
-                            }
-                        }
-
+                    case 12:
                         day11.addView(view);
-
                         break;
-                    case 12:
-
-                        date_activ12.setText(date.get(j));
-
-                        TextView daaaay12 = (TextView) findViewById(R.id.daaaay12);
-
-                        if (date1.startsWith("Mon")) {
-                            daaaay12.setText("Понедельник");
-                            current_day = 1;
-                        }
-                        if (date1.startsWith("Tue")) {
-                            daaaay12.setText("Вторник");
-                            current_day = 2;
-                        }
-                        if (date1.startsWith("Wed")) {
-                            daaaay12.setText("Среда");
-                            current_day = 3;
-                        }
-                        if (date1.startsWith("Thu")) {
-                            daaaay12.setText("Четверг");
-                            current_day = 4;
-                        }
-                        if (date1.startsWith("Fri")) {
-                            daaaay12.setText("Пятница");
-                            current_day = 5;
-                        }
-                        if (date1.startsWith("Sat")) {
-                            daaaay12.setText("Суббота");
-                            current_day = 6;
-                        }
-
-//                        if (dateText.equals(DATE)) {
-//                            switch (APP_PREFERENCES_THEME) {
-//                                case "white":
-//                                    card12.setBackground(getDrawable(R.drawable.card_day));
-//                                    break;
-//                                case "black":
-//                                    card12.setBackground(getDrawable(R.drawable.card_night));
-//                                    break;
-//                                case "auto":
-//                                    switch (currentNightMode) {
-//                                        case Configuration.UI_MODE_NIGHT_NO:
-//                                            card12.setBackground(getDrawable(R.drawable.card_day));
-//                                            break;
-//                                        case Configuration.UI_MODE_NIGHT_YES:
-//                                            card12.setBackground(getDrawable(R.drawable.card_night));
-//                                            break;
-//                                        default:
-//                                            card12.setBackground(getDrawable(R.drawable.card_day));
-//                                            break;
-//                                    }
-//                                    break;
-//                            }
-//                        }
-
-                        if (current_day < buffer_day) {
-                            second = true;
-                            nedel1_text2.setText(date.get(j-1));
-                            switch (day_number) {
-                                case 2:
-                                    nedel2.setVisibility(View.VISIBLE);
-                                    nedel2_text1.setText(date.get(j));
-                                    nedel2_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 3:
-                                    nedel3.setVisibility(View.VISIBLE);
-                                    nedel3_text1.setText(date.get(j));
-                                    nedel3_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 4:
-                                    nedel4.setVisibility(View.VISIBLE);
-                                    nedel4_text1.setText(date.get(j));
-                                    nedel4_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 5:
-                                    nedel5.setVisibility(View.VISIBLE);
-                                    nedel5_text1.setText(date.get(j));
-                                    nedel5_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 6:
-                                    nedel6.setVisibility(View.VISIBLE);
-                                    nedel6_text1.setText(date.get(j));
-                                    nedel6_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 7:
-                                    nedel7.setVisibility(View.VISIBLE);
-                                    nedel7_text1.setText(date.get(j));
-                                    nedel7_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 8:
-                                    nedel8.setVisibility(View.VISIBLE);
-                                    nedel8_text1.setText(date.get(j));
-                                    nedel8_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 9:
-                                    nedel9.setVisibility(View.VISIBLE);
-                                    nedel9_text1.setText(date.get(j));
-                                    nedel9_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 10:
-                                    nedel10.setVisibility(View.VISIBLE);
-                                    nedel10_text1.setText(date.get(j));
-                                    nedel10_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 11:
-                                    nedel11.setVisibility(View.VISIBLE);
-                                    nedel11_text1.setText(date.get(j));
-                                    nedel11_text2.setText(date.get(date.size()-1));
-                                    break;
-                                case 12:
-                                    nedel12.setVisibility(View.VISIBLE);
-                                    nedel12_text1.setText(date.get(j));
-                                    nedel12_text2.setText(date.get(date.size()-1));
-                                    break;
-                            }
-                        }
-
+                    case 13:
                         day12.addView(view);
-
-                        break;
-                }
-
-
-                buffer_day = current_day;
-
-            }
-
-            if(second){
-                nedel1_text2.setText(date.get(date.size()-1));
-            }
-
-            if (paar_for_day < 3){
-
-                switch (day_number){
-                    case 1:
-                        date_activ1.setVisibility(View.GONE);
-                        break;
-                    case 2:
-                        date_activ2.setVisibility(View.GONE);
-                        break;
-                    case 3:
-                        date_activ3.setVisibility(View.GONE);
-                        break;
-                    case 4:
-                        date_activ4.setVisibility(View.GONE);
-                        break;
-                    case 5:
-                        date_activ5.setVisibility(View.GONE);
-                        break;
-                    case 6:
-                        date_activ6.setVisibility(View.GONE);
-                        break;
-                    case 7:
-                        date_activ7.setVisibility(View.GONE);
-                        break;
-                    case 8:
-                        date_activ8.setVisibility(View.GONE);
-                        break;
-                    case 9:
-                        date_activ9.setVisibility(View.GONE);
-                        break;
-                    case 10:
-                        date_activ10.setVisibility(View.GONE);
-                        break;
-                    case 11:
-                        date_activ11.setVisibility(View.GONE);
-                        break;
-                    case 12:
-                        date_activ12.setVisibility(View.GONE);
                         break;
                 }
 
             }
 
+            switch (key_value){
+                case "Day":
 
-            final TextView note_subtext = (TextView) note_dialog.findViewById(R.id.note_subtext);
-            final EditText note_text = (EditText) note_dialog.findViewById(R.id.note_text);
-            MaterialButton note_button = (MaterialButton) note_dialog.findViewById(R.id.note_button);
+                    break;
+                case "Time":
 
-            note_button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    SQLiteDatabase database = dbHelper.getWritableDatabase();
+                    break;
 
-                    ContentValues contentValues = new ContentValues();
+                case "Para":
 
-                    contentValues.put(MyDatabaseHelper.KEY_DATE, (String) note_subtext.getText());
-                    contentValues.put(MyDatabaseHelper.KEY_NOTE, note_text.getText().toString());
+                    break;
 
-                    Cursor cursor = database.query(MyDatabaseHelper.TABLE_NOTE, null, null, null, null, null, null);
+                case "Prepod":
 
-                    int updater = 0;
+                    break;
 
-                    if (cursor.moveToFirst()) {
-                        int dateIndex = cursor.getColumnIndex(MyDatabaseHelper.KEY_DATE);
-                        int noteIndex = cursor.getColumnIndex(MyDatabaseHelper.KEY_NOTE);
+                case "Location":
 
-                        Log.i("МЕСЯЦ", cursor.getString(dateIndex));
+                    break;
+            }
+        }
+        if (!second){
+            nedel1_text2.setText(day_split[1]);
+        }
 
-                        do {
+        nedel2_text2.setText(day_split[1]);
+        nedel3_text2.setText(day_split[1]);
+        nedel4_text2.setText(day_split[1]);
+        nedel5_text2.setText(day_split[1]);
+        nedel6_text2.setText(day_split[1]);
+        nedel7_text2.setText(day_split[1]);
+        nedel8_text2.setText(day_split[1]);
+        nedel9_text2.setText(day_split[1]);
+        nedel10_text2.setText(day_split[1]);
+        nedel11_text2.setText(day_split[1]);
+        nedel12_text2.setText(day_split[1]);
 
-                            if(cursor.getString(dateIndex).equals(note_subtext.getText())){
+        final TextView note_subtext = (TextView) note_dialog.findViewById(R.id.note_subtext);
+        final EditText note_text = (EditText) note_dialog.findViewById(R.id.note_text);
+        MaterialButton note_button = (MaterialButton) note_dialog.findViewById(R.id.note_button);
 
-                                String date_db = (String) note_subtext.getText();
-                                Log.i("date_db",  date_db);
-
-
-                                database.delete(MyDatabaseHelper.TABLE_NOTE, MyDatabaseHelper.KEY_DATE + " = ?", new String[]{String.valueOf(cursor.getString(dateIndex))});
-                                database.insert(MyDatabaseHelper.TABLE_NOTE, null, contentValues);
-
-                                if (note_text.getText().toString().equals("") ||
-                                        note_text.getText().toString().equals(" ") ||
-                                        note_text.getText().toString().equals(null)){
-
-                                    database.delete(MyDatabaseHelper.TABLE_NOTE, MyDatabaseHelper.KEY_DATE + " = ?", new String[]{String.valueOf(cursor.getString(dateIndex))});
-                                }
-
-                                updater = 1;
-                            }
-
-                        } while (cursor.moveToNext());
-                    }
-                    cursor.close();
-
-                    if (updater == 0){
-                        database.insert(MyDatabaseHelper.TABLE_NOTE, null, contentValues);
-                        if (note_text.getText().toString().equals("") ||
-                                note_text.getText().toString().equals(" ") ||
-                                note_text.getText().toString().equals(null)){
-                            database.delete(MyDatabaseHelper.TABLE_NOTE, MyDatabaseHelper.KEY_DATE, null);
-                        }
-                    }
-
-                    recreate();
-                }
-            });
-
-
-            for (int g = 1; g < 13; g++){
-                final View note_fragment_view = getLayoutInflater().inflate(R.layout.fragment_note, null);
-
-
-                LinearLayout note_linear = (LinearLayout) note_fragment_view.findViewById(R.id.fragment_note_linear);
-                TextView note = (TextView) note_fragment_view.findViewById(R.id.note_text);
-                ImageView note_pen = (ImageView) note_fragment_view.findViewById(R.id.pen_icon);
-
-
-                note_linear.setId(g);
-                note_linear.setTag(g);
-                note.setTag(g);
-                note_pen.setTag(g);
-
-                note_linear.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        int layoutID = (int) v.getTag();
-
-
-
-                        switch (layoutID){
-                            case 1:
-                                note_subtext.setText(date_activ1.getText());
-                                break;
-                            case 2:
-                                note_subtext.setText(date_activ2.getText());
-                                break;
-                            case 3:
-                                note_subtext.setText(date_activ3.getText());
-                                break;
-                            case 4:
-                                note_subtext.setText(date_activ4.getText());
-                                break;
-                            case 5:
-                                note_subtext.setText(date_activ5.getText());
-                                break;
-                            case 6:
-                                note_subtext.setText(date_activ6.getText());
-                                break;
-                            case 7:
-                                note_subtext.setText(date_activ7.getText());
-                                break;
-                            case 8:
-                                note_subtext.setText(date_activ8.getText());
-                                break;
-                            case 9:
-                                note_subtext.setText(date_activ9.getText());
-                                break;
-                            case 10:
-                                note_subtext.setText(date_activ10.getText());
-                                break;
-                            case 11:
-                                note_subtext.setText(date_activ11.getText());
-                                break;
-                            case 12:
-                                note_subtext.setText(date_activ12.getText());
-                                break;
-                        }
-
-
-                        SQLiteDatabase database = dbHelper.getWritableDatabase();
-                        Cursor cursor = database.query(MyDatabaseHelper.TABLE_NOTE, null, null, null, null, null, null);
-
-                        note_text.setText("");
-
-                        if (cursor.moveToFirst()) {
-                            int dateIndex = cursor.getColumnIndex(MyDatabaseHelper.KEY_DATE);
-                            int noteIndex = cursor.getColumnIndex(MyDatabaseHelper.KEY_NOTE);
-
-                            do {
-
-                                if(cursor.getString(dateIndex).equals(note_subtext.getText())){
-
-                                    Log.d("Я НАШЁЛ_ДИАЛОГ!!!", "name = " + cursor.getString(dateIndex) +
-                                            ", email = " + cursor.getString(noteIndex));
-                                    note_text.setText(cursor.getString(noteIndex));
-
-                                }
-
-                            } while (cursor.moveToNext());
-                        } else
-                            Log.d("mLog","0 rows");
-                        cursor.close();
-
-//                        String mPremium = mSettings.getString(APP_PREFERENCES_PREMIUM, "false");
-
-//                        if (!mPremium.equals("true") && !mPremium.equals("false")){
-//                            mPremium = "false";
-//                        }
-
-
-                        if(!APP_PREFERENCES_PREMIUM.equals("false")){
-                            note_dialog.show();
-                        } else {
-                            dialog.show();
-                        }
-
-                    }
-                });
-
-                String SUBTEXT;
-
-                switch (g){
-                    case 1:
-                        SUBTEXT = (String) date_activ1.getText();
-                        break;
-                    case 2:
-                        SUBTEXT = (String) date_activ2.getText();
-                        break;
-                    case 3:
-                        SUBTEXT = (String) date_activ3.getText();
-                        break;
-                    case 4:
-                        SUBTEXT = (String) date_activ4.getText();
-                        break;
-                    case 5:
-                        SUBTEXT = (String) date_activ5.getText();
-                        break;
-                    case 6:
-                        SUBTEXT = (String) date_activ6.getText();
-                        break;
-                    case 7:
-                        SUBTEXT = (String) date_activ7.getText();
-                        break;
-                    case 8:
-                        SUBTEXT = (String) date_activ8.getText();
-                        break;
-                    case 9:
-                        SUBTEXT = (String) date_activ9.getText();
-                        break;
-                    case 10:
-                        SUBTEXT = (String) date_activ10.getText();
-                        break;
-                    case 11:
-                        SUBTEXT = (String) date_activ11.getText();
-                        break;
-                    case 12:
-                        SUBTEXT = (String) date_activ12.getText();
-                        break;
-                    default:
-                        throw new IllegalStateException("Unexpected value: " + g);
-                }
-
+        note_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 SQLiteDatabase database = dbHelper.getWritableDatabase();
+
+                ContentValues contentValues = new ContentValues();
+
+                contentValues.put(MyDatabaseHelper.KEY_DATE, (String) note_subtext.getText());
+                contentValues.put(MyDatabaseHelper.KEY_NOTE, note_text.getText().toString());
+
                 Cursor cursor = database.query(MyDatabaseHelper.TABLE_NOTE, null, null, null, null, null, null);
+
+                int updater = 0;
 
                 if (cursor.moveToFirst()) {
                     int dateIndex = cursor.getColumnIndex(MyDatabaseHelper.KEY_DATE);
                     int noteIndex = cursor.getColumnIndex(MyDatabaseHelper.KEY_NOTE);
 
+                    Log.i("МЕСЯЦ", cursor.getString(dateIndex));
+
                     do {
-                        Log.d("mLog", "name = " + cursor.getString(dateIndex) +
-                                ", email = " + cursor.getString(noteIndex));
 
-                        if(cursor.getString(dateIndex).equals(SUBTEXT)
-                                && !cursor.getString(dateIndex).equals("")
-                                && !cursor.getString(dateIndex).equals(" ")){
+                        if(cursor.getString(dateIndex).equals(note_subtext.getText())){
 
-                            Log.d("Я НАШЁЛ!!!", "name = " + cursor.getString(dateIndex) +
-                                    ", email = " + cursor.getString(noteIndex));
+                            String date_db = (String) note_subtext.getText();
+                            Log.i("date_db",  date_db);
 
-                            note.setText(cursor.getString(noteIndex));
-                            note_pen.setVisibility(View.GONE);
+
+                            database.delete(MyDatabaseHelper.TABLE_NOTE, MyDatabaseHelper.KEY_DATE + " = ?", new String[]{String.valueOf(cursor.getString(dateIndex))});
+                            database.insert(MyDatabaseHelper.TABLE_NOTE, null, contentValues);
+
+                            if (note_text.getText().toString().equals("") ||
+                                    note_text.getText().toString().equals(" ") ||
+                                    note_text.getText().toString().equals(null)){
+
+                                database.delete(MyDatabaseHelper.TABLE_NOTE, MyDatabaseHelper.KEY_DATE + " = ?", new String[]{String.valueOf(cursor.getString(dateIndex))});
+                            }
+
+                            updater = 1;
                         }
 
                     } while (cursor.moveToNext());
-                } else
-                    Log.d("mLog","0 rows");
+                }
                 cursor.close();
 
-                switch (g){
-                    case 1:
-                        first_day.addView(note_fragment_view);
-                        break;
-                    case 2:
-                        second_day.addView(note_fragment_view);
-                        break;
-                    case 3:
-                        day3.addView(note_fragment_view);
-                        break;
-                    case 4:
-                        day4.addView(note_fragment_view);
-                        break;
-                    case 5:
-                        day5.addView(note_fragment_view);
-                        break;
-                    case 6:
-                        day6.addView(note_fragment_view);
-                        break;
-                    case 7:
-                        day7.addView(note_fragment_view);
-                        break;
-                    case 8:
-                        day8.addView(note_fragment_view);
-                        break;
-                    case 9:
-                        day9.addView(note_fragment_view);
-                        break;
-                    case 10:
-                        day10.addView(note_fragment_view);
-                        break;
-                    case 11:
-                        day11.addView(note_fragment_view);
-                        break;
-                    case 12:
-                        day12.addView(note_fragment_view);
-                        break;
+                if (updater == 0){
+                    database.insert(MyDatabaseHelper.TABLE_NOTE, null, contentValues);
+                    if (note_text.getText().toString().equals("") ||
+                            note_text.getText().toString().equals(" ") ||
+                            note_text.getText().toString().equals(null)){
+                        database.delete(MyDatabaseHelper.TABLE_NOTE, MyDatabaseHelper.KEY_DATE, null);
+                    }
+                }
 
+                recreate();
+            }
+        });
+
+        for (int g = 1; g < 13; g++){
+            final View note_fragment_view = getLayoutInflater().inflate(R.layout.fragment_note, null);
+
+
+            LinearLayout note_linear = (LinearLayout) note_fragment_view.findViewById(R.id.fragment_note_linear);
+            TextView note = (TextView) note_fragment_view.findViewById(R.id.note_text);
+            ImageView note_pen = (ImageView) note_fragment_view.findViewById(R.id.pen_icon);
+
+
+            note_linear.setId(g);
+            note_linear.setTag(g);
+            note.setTag(g);
+            note_pen.setTag(g);
+
+            note_linear.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    int layoutID = (int) v.getTag();
+
+
+
+                    switch (layoutID){
+                        case 1:
+                            note_subtext.setText(date_activ1.getText());
+                            break;
+                        case 2:
+                            note_subtext.setText(date_activ2.getText());
+                            break;
+                        case 3:
+                            note_subtext.setText(date_activ3.getText());
+                            break;
+                        case 4:
+                            note_subtext.setText(date_activ4.getText());
+                            break;
+                        case 5:
+                            note_subtext.setText(date_activ5.getText());
+                            break;
+                        case 6:
+                            note_subtext.setText(date_activ6.getText());
+                            break;
+                        case 7:
+                            note_subtext.setText(date_activ7.getText());
+                            break;
+                        case 8:
+                            note_subtext.setText(date_activ8.getText());
+                            break;
+                        case 9:
+                            note_subtext.setText(date_activ9.getText());
+                            break;
+                        case 10:
+                            note_subtext.setText(date_activ10.getText());
+                            break;
+                        case 11:
+                            note_subtext.setText(date_activ11.getText());
+                            break;
+                        case 12:
+                            note_subtext.setText(date_activ12.getText());
+                            break;
+                    }
+
+
+                    SQLiteDatabase database = dbHelper.getWritableDatabase();
+                    Cursor cursor = database.query(MyDatabaseHelper.TABLE_NOTE, null, null, null, null, null, null);
+
+                    note_text.setText("");
+
+                    if (cursor.moveToFirst()) {
+                        int dateIndex = cursor.getColumnIndex(MyDatabaseHelper.KEY_DATE);
+                        int noteIndex = cursor.getColumnIndex(MyDatabaseHelper.KEY_NOTE);
+
+                        do {
+
+                            if(cursor.getString(dateIndex).equals(note_subtext.getText())){
+
+                                Log.d("Я НАШЁЛ_ДИАЛОГ!!!", "name = " + cursor.getString(dateIndex) +
+                                        ", email = " + cursor.getString(noteIndex));
+                                note_text.setText(cursor.getString(noteIndex));
+
+                            }
+
+                        } while (cursor.moveToNext());
+                    } else
+                        Log.d("mLog","0 rows");
+                    cursor.close();
+
+                    if(!APP_PREFERENCES_PREMIUM.equals("false")){
+                        note_dialog.show();
+                    } else {
+                        dialog.show();
+                    }
 
                 }
+            });
+
+            String SUBTEXT;
+
+            switch (g){
+                case 1:
+                    SUBTEXT = (String) date_activ1.getText();
+                    break;
+                case 2:
+                    SUBTEXT = (String) date_activ2.getText();
+                    break;
+                case 3:
+                    SUBTEXT = (String) date_activ3.getText();
+                    break;
+                case 4:
+                    SUBTEXT = (String) date_activ4.getText();
+                    break;
+                case 5:
+                    SUBTEXT = (String) date_activ5.getText();
+                    break;
+                case 6:
+                    SUBTEXT = (String) date_activ6.getText();
+                    break;
+                case 7:
+                    SUBTEXT = (String) date_activ7.getText();
+                    break;
+                case 8:
+                    SUBTEXT = (String) date_activ8.getText();
+                    break;
+                case 9:
+                    SUBTEXT = (String) date_activ9.getText();
+                    break;
+                case 10:
+                    SUBTEXT = (String) date_activ10.getText();
+                    break;
+                case 11:
+                    SUBTEXT = (String) date_activ11.getText();
+                    break;
+                case 12:
+                    SUBTEXT = (String) date_activ12.getText();
+                    break;
+                default:
+                    throw new IllegalStateException("Unexpected value: " + g);
             }
 
+            SQLiteDatabase database = dbHelper.getWritableDatabase();
+            Cursor cursor = database.query(MyDatabaseHelper.TABLE_NOTE, null, null, null, null, null, null);
 
-            ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar);
+            if (cursor.moveToFirst()) {
+                int dateIndex = cursor.getColumnIndex(MyDatabaseHelper.KEY_DATE);
+                int noteIndex = cursor.getColumnIndex(MyDatabaseHelper.KEY_NOTE);
 
-            progressBar.setVisibility(View.GONE);
-            card12.setVisibility(View.VISIBLE);
-            card11.setVisibility(View.VISIBLE);
-            card10.setVisibility(View.VISIBLE);
-            card9.setVisibility(View.VISIBLE);
-            card8.setVisibility(View.VISIBLE);
-            card7.setVisibility(View.VISIBLE);
-            card6.setVisibility(View.VISIBLE);
-            card5.setVisibility(View.VISIBLE);
-            card4.setVisibility(View.VISIBLE);
-            card3.setVisibility(View.VISIBLE);
-            card1.setVisibility(View.VISIBLE);
-            card2.setVisibility(View.VISIBLE);
+                do {
+                    Log.d("mLog", "name = " + cursor.getString(dateIndex) +
+                            ", email = " + cursor.getString(noteIndex));
+
+                    if(cursor.getString(dateIndex).equals(SUBTEXT)
+                            && !cursor.getString(dateIndex).equals("")
+                            && !cursor.getString(dateIndex).equals(" ")){
+
+                        Log.d("Я НАШЁЛ!!!", "name = " + cursor.getString(dateIndex) +
+                                ", email = " + cursor.getString(noteIndex));
+
+                        note.setText(cursor.getString(noteIndex));
+                        note_pen.setVisibility(View.GONE);
+                    }
+
+                } while (cursor.moveToNext());
+            } else
+                Log.d("mLog","0 rows");
+            cursor.close();
+
+            switch (g){
+                case 1:
+                    first_day.addView(note_fragment_view);
+                    break;
+                case 2:
+                    second_day.addView(note_fragment_view);
+                    break;
+                case 3:
+                    day3.addView(note_fragment_view);
+                    break;
+                case 4:
+                    day4.addView(note_fragment_view);
+                    break;
+                case 5:
+                    day5.addView(note_fragment_view);
+                    break;
+                case 6:
+                    day6.addView(note_fragment_view);
+                    break;
+                case 7:
+                    day7.addView(note_fragment_view);
+                    break;
+                case 8:
+                    day8.addView(note_fragment_view);
+                    break;
+                case 9:
+                    day9.addView(note_fragment_view);
+                    break;
+                case 10:
+                    day10.addView(note_fragment_view);
+                    break;
+                case 11:
+                    day11.addView(note_fragment_view);
+                    break;
+                case 12:
+                    day12.addView(note_fragment_view);
+                    break;
 
 
-            Integer number_of_day = day_number;
-
-            RelativeLayout second_nedel = (RelativeLayout) findViewById(R.id.second_nedel);
-
-            if (number_of_day != 12) {
-                if (number_of_day == 11) {
-                    card12.setVisibility(View.GONE);
-                }
-                if (number_of_day == 10) {
-                    card12.setVisibility(View.GONE);
-                    card11.setVisibility(View.GONE);
-                }
-                if (number_of_day == 9) {
-                    card12.setVisibility(View.GONE);
-                    card11.setVisibility(View.GONE);
-                    card10.setVisibility(View.GONE);
-                }
-                if (number_of_day == 8) {
-                    card12.setVisibility(View.GONE);
-                    card11.setVisibility(View.GONE);
-                    card10.setVisibility(View.GONE);
-                    card9.setVisibility(View.GONE);
-                }
-                if (number_of_day == 7) {
-                    card12.setVisibility(View.GONE);
-                    card11.setVisibility(View.GONE);
-                    card10.setVisibility(View.GONE);
-                    card9.setVisibility(View.GONE);
-                    card8.setVisibility(View.GONE);
-                }
-                if (number_of_day == 6) {
-                    card12.setVisibility(View.GONE);
-                    card11.setVisibility(View.GONE);
-                    card10.setVisibility(View.GONE);
-                    card9.setVisibility(View.GONE);
-                    card8.setVisibility(View.GONE);
-                    card7.setVisibility(View.GONE);
-                    second_nedel.setVisibility(View.GONE);
-                }
-                if (number_of_day == 5) {
-                    card12.setVisibility(View.GONE);
-                    card11.setVisibility(View.GONE);
-                    card10.setVisibility(View.GONE);
-                    card9.setVisibility(View.GONE);
-                    card8.setVisibility(View.GONE);
-                    card7.setVisibility(View.GONE);
-                    card6.setVisibility(View.GONE);
-                    second_nedel.setVisibility(View.GONE);
-
-                }
-                if (number_of_day == 4) {
-                    card12.setVisibility(View.GONE);
-                    card11.setVisibility(View.GONE);
-                    card10.setVisibility(View.GONE);
-                    card9.setVisibility(View.GONE);
-                    card8.setVisibility(View.GONE);
-                    card7.setVisibility(View.GONE);
-                    card6.setVisibility(View.GONE);
-                    card5.setVisibility(View.GONE);
-                    second_nedel.setVisibility(View.GONE);
-
-                }
-                if (number_of_day == 3) {
-                    card12.setVisibility(View.GONE);
-                    card11.setVisibility(View.GONE);
-                    card10.setVisibility(View.GONE);
-                    card9.setVisibility(View.GONE);
-                    card8.setVisibility(View.GONE);
-                    card7.setVisibility(View.GONE);
-                    card6.setVisibility(View.GONE);
-                    card5.setVisibility(View.GONE);
-                    card4.setVisibility(View.GONE);
-                    second_nedel.setVisibility(View.GONE);
-
-                }
-                if (number_of_day == 2) {
-                    card12.setVisibility(View.GONE);
-                    card11.setVisibility(View.GONE);
-                    card10.setVisibility(View.GONE);
-                    card9.setVisibility(View.GONE);
-                    card8.setVisibility(View.GONE);
-                    card7.setVisibility(View.GONE);
-                    card6.setVisibility(View.GONE);
-                    card5.setVisibility(View.GONE);
-                    card4.setVisibility(View.GONE);
-                    card3.setVisibility(View.GONE);
-                    second_nedel.setVisibility(View.GONE);
-
-                }
-                if (number_of_day == 1) {
-                    card12.setVisibility(View.GONE);
-                    card11.setVisibility(View.GONE);
-                    card10.setVisibility(View.GONE);
-                    card9.setVisibility(View.GONE);
-                    card8.setVisibility(View.GONE);
-                    card7.setVisibility(View.GONE);
-                    card6.setVisibility(View.GONE);
-                    card5.setVisibility(View.GONE);
-                    card4.setVisibility(View.GONE);
-                    card3.setVisibility(View.GONE);
-                    card2.setVisibility(View.GONE);
-                    card1.setVisibility(View.GONE);
-
-                }
             }
-
-
-            day_number = 1;
-
         }
 
 
+        ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
+        progressBar.setVisibility(View.GONE);
 
+        timetable_list.clear();
 
     }
 
 
-    public void Read() throws IOException {
-        Context c = getApplicationContext();
-        File file = new File(c.getFilesDir(), "/files");
+    class Save_page extends AsyncTask<Void, Void, Void>{
 
-        File dir = new File(Environment.getExternalStorageDirectory() + "Android/data/dev.prokrostinatorbl.raspisanie/files/");
-
-        File dest = new File(file + destFileName);
-        Scanner in = new Scanner(dest);
-
-        Log.i("***", "  " + "я читаю");
-
-        String s;
-
-
-        String group_num = "X-WR-CALNAME";
-        String prep = "DESCRIPTION";
-        String locat = "LOCATION";
-        String name = "SUMMARY";
-        String start_js = "DTSTART;TZID=Asia/Krasnoyarsk";
-        String end_js = "DTEND;TZID=Asia/Krasnoyarsk";
-
-        group_numb = new JSONArray();
-        prepod_name = new JSONArray();
-        auditor = new JSONArray();
-        par_name = new JSONArray();
-        start_par = new JSONArray();
-        end_par = new JSONArray();
-        date_par = new JSONArray();
-
-        day_js = new JSONArray();
-        month_js = new JsonArray();
-        year_js = new JsonArray();
-
-        while(in.hasNextLine()){
-
-            s = in.nextLine();
-            String words[] = s.split(":");
-            String word = words[0];
-
-            try {
-                // Create a new instance of a JSONObject
-                File json_db = new File(dir + json_db_name);
-                final JSONObject object = new JSONObject();
-
-
-
-                if (word.equals(group_num))
-                {
-                    String words_line[] = words[1].split(",");
-
-                    String number_group = words_line[0];
-                    number.add(number_group);
-
-                }
-
-                if (word.equals(prep))
-                {
-                    String prepodav = ""; //создаём пустую переменную, чтобы в неё скидывать нужные записи
-
-                    if (words.length > 1 && words[1] != null) //Проверка: если в строке есть не пустые данные после двоеточия, то идём дальше
-                    {
-                        String words_line[] = words[1].split(" ");
-
-
-                        for (int i = 0; i <= words_line.length - 1; i++) { //цикл который будет работать пока не дойдёт до значения "Длина строки" (хуй знает зачем минус один. По сути я хотел убрать скобки после ФИО препода которые "Доцент" и т.п., но не вышло, да и похуй)
-
-                            prepodav += words_line[i] + " "; //в вышесозданную переменную мы скидываем встречающиеся слова и ставим между ними пробелы
-
-                        }
-                        prepod.add(prepodav);
-
-                    } else {
-
-                        prepodav += "";
-                        prepod.add(prepodav);
-
-                    }
-                }
-
-                if (word.equals(locat))
-                {
-                    if (words.length > 1 && words[1] != null) { // аналогично проверяем существование данных
-                        String words_line[] = words[1].split(" ");
-
-                        location.add(words_line[0]);
-                    }   else {
-
-                        String rand = "";
-                        location.add(rand);
-
-                    }
-                }
-
-                if (word.equals(name))
-                {
-                    if (words.length > 1 && words[2] != null) {
-                        String name_par[] = words[2].split(" ");
-                        String par = "";
-                        for (int i = 1; i <= name_par.length - 1; i++) {
-                            par += name_par[i] + " ";
-                        }
-                        String paar_name[] = par.split("\\(");
-                        String paar;
-                        paar = paar_name[0];
-
-                        par_names.add(paar);
-
-
-
-
-                    }
-                }
-
-
-
-
-                if (word.equals(start_js))
-                {
-                    if (words.length > 1 && words[1] != null) {
-                        String start_time = words[1];
-                        char[] start_t = start_time.toCharArray(); //преобразования слова в массив символов
-
-                        String y = new String(start_t, 0, 4); // начиная с нулевого символа(до строки) забираем 4 символа в переменную
-                        String m = new String(start_t, 4, 2); // начиная с 4 символа забираем два символа в переменную
-                        String d = new String(start_t, 6, 2); // аналогично предыдущим
-                        String t = new String(start_t, 9, 2) + ":" + new String(start_t, 11, 2);
-                        String date = d + "." + m + "." + y;
-                        //                    Log.i("!!!", "Дата: " + date); //выводим дату
-                        //                        Log.i("AAAA", date);
-                        String buf_date = date.toString();
-                        //                        days.add(buf_date);
-                        date_par.put(date); // в json добавляем дату
-                        Log.i("JSON_DATE", date);
-                        //                        Log.i("ЗАБРАЛ ЭТУ ДАТУ: ", d);
-                        //                        month_js.add(m);
-                        //                        year_js.add(y);
-
-                        //                    Log.i("!!!", "Начало пары: "  + t); // выводим время
-                        //                        start_par.put(t); // в json добавляем время начала пары
-                        start.add(t);
-
-
-
-
-
-                    }
-                }
-
-                if (word.equals(end_js))
-                {
-                    if (words.length > 1 && words[1] != null) {
-                        String end_time = words[1];
-                        char[] end_t = end_time.toCharArray(); //преобразования слова в массив символов
-
-
-                        String t = new String(end_t, 9, 2) + ":" + new String(end_t, 11, 2);
-                        //                    Log.i("!!!", "Конец пары: "  + t);
-                        //                        end_par.put(t); // в json добавляем время конца пары
-                        end.add(t);
-                    }
-                }
-
-                object.put("date", date_par);
-
-
-                try{
-                    FileWriter js = new FileWriter(json_db); // сохраняем всё это в json
-                    js.write(object.toString());
-                    js.flush();
-                    js.close();
-                } catch (IOException ex){
-                    ex.printStackTrace();
-                }
-
-
-            } catch (JSONException e) {
-                Log.e("***", "Failed to create JSONObject", e);
-            }
-
+        @Override
+        protected Void doInBackground(Void... voids) {
+            Save_page();
+            return null;
         }
-        in.close();
-
-
-        temp = 0;
+    }
 
 
 
+    private void Save_page() {
+
+        final Connection.Response response;
+        final Connection.Response response1;
+        try {
+
+            final Context c = getApplicationContext();
+            response = Jsoup.connect(link_asu_1).execute();
+            response1 = Jsoup.connect(link_asu_2).execute();
+            Document doc = response.parse();
+            Document doc1 = response1.parse();
+
+            File f = new File(c.getFilesDir() + "Android/data/dev.prokrostinatorbl.raspisanie/files/" + group_number + "first" + ".html");
+
+            FileUtils.writeStringToFile(f, doc.outerHtml(), "UTF-8");
+
+            f = new File(c.getFilesDir() + "Android/data/dev.prokrostinatorbl.raspisanie/files/" + group_number + "second" + ".html");
+
+            FileUtils.writeStringToFile(f, doc1.outerHtml(), "UTF-8");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 

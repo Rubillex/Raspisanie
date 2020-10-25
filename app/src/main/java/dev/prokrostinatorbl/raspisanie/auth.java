@@ -164,6 +164,7 @@ public class auth extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = mAuth.getCurrentUser();
                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            intent.putExtra("back", "false");
                             startActivity(intent);
 
                         } else {
@@ -171,7 +172,6 @@ public class auth extends AppCompatActivity {
                             Toast.makeText(auth.this, "Не удалось войти в аккаунт", Toast.LENGTH_SHORT).show();
                         }
 
-                        // ...
                     }
                 });
     }

@@ -5,14 +5,13 @@
     android:background="@color/colorPrimary_light">
 
 
-    <ImageButton
-        android:layout_width="wrap_content"
+    <ImageView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/card_white"
         android:padding="9dp"
         android:src="@mipmap/ic_icon_app_new_foreground"
         android:layout_marginTop="170dp"
-        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
         android:id="@+id/book_logo"/>
 
     <TextView
@@ -34,10 +33,5 @@
         android:layout_below="@id/text_logo"
         />
 
-<!--    <Button-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_below="@id/sign_in_button"-->
-<!--        android:id="@+id/go"/>-->
 
 </RelativeLayout>

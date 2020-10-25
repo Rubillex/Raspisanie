@@ -32,12 +32,21 @@ import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+
 public class Favorite extends Activity implements View.OnClickListener {
 
 
     private Handler h;
     public static String APP_PREFERENCES;
     public static String APP_PREFERENCES_THEME; // выбранная тема
+
+    public static String APP_PREFERENCES_PREMIUM;
 
     public static String APP_PREFERENCES_STARTFRAME;
     public static String APP_PREFERENCES_START_UNI;
@@ -73,6 +82,8 @@ public class Favorite extends Activity implements View.OnClickListener {
     public String destFileName = "list.txt";
     SharedPreferences mSettings;
     TextView delete_text;
+
+    private AdView mAdView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -202,6 +213,31 @@ public class Favorite extends Activity implements View.OnClickListener {
         //-----------------------------------------------------------------------------------------
 
 
+
+
+        if (APP_PREFERENCES_PREMIUM.equals("false")){
+
+            AdView adView = new AdView(this);
+
+            adView.setAdSize(AdSize.BANNER);
+
+            adView.setAdUnitId("ca-app-pub-7189546175747172/7591150643");
+
+
+            MobileAds.initialize(this, new OnInitializationCompleteListener() {
+                @Override
+                public void onInitializationComplete(InitializationStatus initializationStatus) {
+                }
+            });
+
+            mAdView = findViewById(R.id.adView);
+            AdRequest adRequest = new AdRequest.Builder().build();
+            mAdView.loadAd(adRequest);
+
+        }
+
+        //-----------------------------------------------------------------------------------------
+
         new Reader().start();
 
         h = new Handler() {
@@ -220,6 +256,15 @@ public class Favorite extends Activity implements View.OnClickListener {
         };
 
     }
+
+
+    @Override
+    public void onBackPressed() {
+        Intent intent3 = new Intent(getApplicationContext(), MainActivity.class);
+        intent3.putExtra("back", "true");
+        startActivity(intent3);
+    }
+
 
     private class Reader extends Thread {
 
