@@ -3,7 +3,8 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/group_list">
+    android:id="@+id/group_list"
+    android:background="@color/colorPrimary">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -19,7 +20,7 @@
             android:gravity="center"
             android:layout_centerHorizontal="true"
             android:text="000"
-            android:textColor="?attr/colorAccent"
+            android:textColor="@color/colorAccent"
             android:textSize="@dimen/text_bigest"
             android:id="@+id/group1"
             android:background="@android:color/transparent"/>
@@ -40,7 +41,7 @@
         android:layout_centerHorizontal="true"
         android:background="@android:color/transparent"
         android:text="000"
-        android:textColor="?attr/colorAccent"
+        android:textColor="@color/colorAccent"
         android:textSize="@dimen/text_bigest" />
     </RelativeLayout>
 
@@ -57,7 +58,7 @@
         android:layout_height="wrap_content"
         android:text="000"
         android:layout_centerHorizontal="true"
-        android:textColor="?attr/colorAccent"
+        android:textColor="@color/colorAccent"
         android:textSize="@dimen/text_bigest"
         android:id="@+id/group3"
         android:background="@android:color/transparent"/>

@@ -1,49 +1,30 @@
 <resources>
 
 
-    <style name="Light" parent="Theme.MaterialComponents.Light.NoActionBar">
+<!--    <style name="Light" parent="Theme.MaterialComponents.Light.NoActionBar">-->
 
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowContentOverlay">@null</item>
+<!--        <item name="android:windowNoTitle">true</item>-->
+<!--        <item name="android:windowContentOverlay">@null</item>-->
 
-        <item name="android:textColorHint">@color/colorAccent_light</item>
-        <item name="boxStrokeColor">@color/colorAccent_light</item>
 
-        <item name="colorPrimary">@color/colorPrimary_light</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark_light</item>
-        <item name="colorAccent">@color/colorAccent_light</item>
 
-        <item name="colorControlHighlight">@color/ripple_material_light</item>
+<!--        <item name="android:textColorHint">@color/colorAccent_light</item>-->
+<!--        <item name="boxStrokeColor">@color/colorAccent_light</item>-->
 
-        <item name="android:textColorPrimary">@color/primaryText_light</item>
-        <item name="android:textColorSecondary">@color/secondaryText_light</item>
-        <item name="android:navigationBarColor">@android:color/transparent</item>
+<!--        <item name="colorPrimary">@color/colorPrimary_light</item>-->
+<!--        <item name="colorPrimaryDark">@color/colorPrimaryDark_light</item>-->
+<!--        <item name="colorAccent">@color/colorAccent_light</item>-->
 
-        <item name="android:listDivider">@color/line_white</item>
-    </style>
+<!--        <item name="colorControlHighlight">@color/ripple_material_light</item>-->
 
-    <style name="Light_statusbar" parent="Theme.MaterialComponents.Light.NoActionBar">
+<!--        <item name="android:textColorPrimary">@color/primaryText_light</item>-->
+<!--        <item name="android:textColorSecondary">@color/secondaryText_light</item>-->
+<!--        <item name="android:navigationBarColor">@android:color/transparent</item>-->
 
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowContentOverlay">@null</item>
+<!--        <item name="android:listDivider">@color/line_white</item>-->
+<!--    </style>-->
 
-        <item name="android:textColorHint">@color/colorAccent_light</item>
-        <item name="boxStrokeColor">@color/colorAccent_light</item>
-
-        <item name="colorPrimary">@color/colorPrimary_light</item>
-        <item name="colorPrimaryDark">@color/statusbar</item>
-        <item name="colorAccent">@color/colorAccent_light</item>
-
-        <item name="colorControlHighlight">@color/ripple_material_light</item>
-
-        <item name="android:textColorPrimary">@color/primaryText_light</item>
-        <item name="android:textColorSecondary">@color/secondaryText_light</item>
-        <item name="android:navigationBarColor">@android:color/transparent</item>
-
-        <item name="android:listDivider">@color/line_white</item>
-    </style>
-
-    <style name="Dark" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Light" parent="Theme.MaterialComponents.DayNight.NoActionBar">
 
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowContentOverlay">@null</item>
@@ -55,14 +36,102 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
 
-        <item name="colorControlHighlight">@color/ripple_material_dark</item>
+        <item name="colorControlHighlight">@color/ripple_material_light</item>
 
         <item name="android:textColorPrimary">@color/primaryText</item>
         <item name="android:textColorSecondary">@color/secondaryText</item>
-        <item name="android:navigationBarColor">@color/colorPrimary</item>
 
-        <item name="android:listDivider">@color/line_dark</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+
+        <item name="android:listDivider">@color/line</item>
     </style>
+
+<!--    <style name="Light_tone4ka" parent="Theme.MaterialComponents.Light.NoActionBar">-->
+
+<!--        <item name="android:windowNoTitle">true</item>-->
+<!--        <item name="android:windowContentOverlay">@null</item>-->
+
+
+
+<!--        <item name="android:textColorHint">@color/colorAccent_light_tone4ka</item>-->
+<!--        <item name="boxStrokeColor">@color/colorAccent_light_tone4ka</item>-->
+
+<!--        <item name="colorPrimary">@color/colorPrimary_light_tone4ka</item>-->
+<!--        <item name="colorPrimaryDark">@color/colorPrimaryDark_light_tone4ka</item>-->
+<!--        <item name="colorAccent">@color/colorAccent_light_tone4ka</item>-->
+
+<!--        <item name="colorControlHighlight">@color/ripple_material_light</item>-->
+
+<!--        <item name="android:textColorPrimary">@color/primaryText_light_tone4ka</item>-->
+<!--        <item name="android:textColorSecondary">@color/secondaryText_light_tone4ka</item>-->
+<!--        <item name="android:navigationBarColor">@android:color/transparent</item>-->
+
+<!--        <item name="android:listDivider">@color/line_white</item>-->
+<!--    </style>-->
+<!--    -->
+<!--    <style name="Light_statusbar" parent="Theme.MaterialComponents.Light.NoActionBar">-->
+
+<!--        <item name="android:windowNoTitle">true</item>-->
+<!--        <item name="android:windowContentOverlay">@null</item>-->
+
+<!--        <item name="android:textColorHint">@color/colorAccent_light</item>-->
+<!--        <item name="boxStrokeColor">@color/colorAccent_light</item>-->
+
+<!--        <item name="colorPrimary">@color/colorPrimary_light</item>-->
+<!--        <item name="colorPrimaryDark">@color/statusbar</item>-->
+<!--        <item name="colorAccent">@color/colorAccent_light</item>-->
+
+<!--        <item name="colorControlHighlight">@color/ripple_material_light</item>-->
+
+<!--        <item name="android:textColorPrimary">@color/primaryText_light</item>-->
+<!--        <item name="android:textColorSecondary">@color/secondaryText_light</item>-->
+<!--        <item name="android:navigationBarColor">@android:color/transparent</item>-->
+
+<!--        <item name="android:listDivider">@color/line_white</item>-->
+<!--    </style>-->
+
+<!--    <style name="Dark" parent="Theme.MaterialComponents.DayNight.NoActionBar">-->
+
+<!--        <item name="android:windowNoTitle">true</item>-->
+<!--        <item name="android:windowContentOverlay">@null</item>-->
+
+<!--        <item name="android:textColorHint">@color/colorAccent</item>-->
+<!--        <item name="boxStrokeColor">@color/colorAccent</item>-->
+
+<!--        <item name="colorPrimary">@color/colorPrimary</item>-->
+<!--        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
+<!--        <item name="colorAccent">@color/colorAccent</item>-->
+
+<!--        <item name="colorControlHighlight">@color/ripple_material_dark</item>-->
+
+<!--        <item name="android:textColorPrimary">@color/primaryText</item>-->
+<!--        <item name="android:textColorSecondary">@color/secondaryText</item>-->
+<!--        <item name="android:navigationBarColor">@color/colorPrimary</item>-->
+
+<!--        <item name="android:listDivider">@color/line_dark</item>-->
+<!--    </style>-->
+
+<!--    <style name="Dark_tone4ka" parent="Theme.MaterialComponents.DayNight.NoActionBar">-->
+
+<!--        <item name="android:windowNoTitle">true</item>-->
+<!--        <item name="android:windowContentOverlay">@null</item>-->
+
+<!--        <item name="android:textColorHint">@color/colorAccent_tone4ka</item>-->
+<!--        <item name="boxStrokeColor">@color/colorAccent_tone4ka</item>-->
+
+<!--        <item name="colorPrimary">@color/colorPrimary_tone4ka</item>-->
+<!--        <item name="colorPrimaryDark">@color/colorPrimaryDark_tone4ka</item>-->
+<!--        <item name="colorAccent">@color/colorAccent_tone4ka</item>-->
+
+<!--        <item name="colorControlHighlight">@color/ripple_material_dark</item>-->
+
+<!--        <item name="android:textColorPrimary">@color/primaryText_tone4ka</item>-->
+<!--        <item name="android:textColorSecondary">@color/secondaryText_tone4ka</item>-->
+<!--        <item name="android:navigationBarColor">@color/colorPrimary_tone4ka</item>-->
+
+<!--        <item name="android:listDivider">@color/line_dark</item>-->
+<!--    </style>-->
+
 
     <style name="Theme.AppCompat.PopMe">
         

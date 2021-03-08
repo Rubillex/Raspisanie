@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#151719</color>
+    <color name="colorPrimaryDark">#151719</color>
+    <color name="colorAccent">#156CB1</color>
+
+    <color name="primaryText">#FFFFFF</color>
+    <color name="secondaryText">#B3FFFFFF</color>
+
+    <color name="line">#353535</color>
+
+    <color name="line_table">#292929</color>
+
+    <color name="day">#ffd7ef87</color>
+
+    <color name="search">#232323</color>
+</resources>

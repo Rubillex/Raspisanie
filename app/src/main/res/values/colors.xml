@@ -1,26 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary_light">#FFFFFF</color>
-    <color name="colorPrimaryDark_light">#FFFFFF</color>
-    <color name="colorAccent_light">#5E47FF</color>
-    <color name="primaryText_light">#DE000000</color>
-    <color name="secondaryText_light">#8A000000</color>
 
-    <color name="card_day">#0F5E47FF</color>
-    <color name="card_night">#0F1DB954</color>
+    <color name="cyanea_primary_reference">#DE000000</color>
+    <color name="cyanea_accent_reference">#5E47FF</color>
 
-    <color name="colorPrimary">#212121</color>
-    <color name="colorPrimaryDark">#212121</color>
-    <color name="colorAccent">#1DB954</color>
-    <color name="primaryText">#FFFFFF</color>
-    <color name="secondaryText">#B3FFFFFF</color>
+        <color name="colorPrimary">#FFFFFF</color>
+        <color name="colorPrimaryDark">#FFFFFF</color>
+        <color name="colorAccent">#5E47FF</color>
 
-    <color name="line_white">#e0e0e0</color>
-    <color name="line_dark">#353535</color>
+        <color name="primaryText">#DE000000</color>
+        <color name="secondaryText">#8A000000</color>
 
-    <color name="ripple_material_dark1">#33ffffff</color>
-    <color name="ripple_material_light1">#1f000000</color>`
+        <color name="line">#e0e0e0</color>
+        <color name="line_table">#CFCFCF</color>
+
+        <color name="day">#ffd7ef87</color>
+
+        <color name="search">#DFDFDF</color>
+
+<!--    <color name="colorPrimary_light">#FFFFFF</color>-->
+<!--    <color name="colorPrimaryDark_light">#FFFFFF</color>-->
+<!--    <color name="colorAccent_light">#5E47FF</color>-->
+<!--    <color name="primaryText_light">#DE000000</color>-->
+<!--    <color name="secondaryText_light">#8A000000</color>-->
 
 
-    <color name="statusbar">#FAFAFA</color>
+<!--    //Light Tone4ka-->
+<!--    <color name="colorPrimary_light_tone4ka">#FDFDED</color>-->
+<!--    <color name="colorPrimaryDark_light_tone4ka">#FDFDED</color>-->
+<!--    <color name="colorAccent_light_tone4ka">#BA8E4C</color>-->
+<!--    <color name="primaryText_light_tone4ka">#53514B</color>-->
+<!--    <color name="secondaryText_light_tone4ka">#B8B7B7</color>-->
+
+<!--    <color name="card_day">#0F5E47FF</color>-->
+<!--    <color name="card_night">#0F1DB954</color>-->
+
+<!--    <color name="colorPrimary">#212121</color>-->
+<!--    <color name="colorPrimaryDark">#212121</color>-->
+<!--    <color name="colorAccent">#1DB954</color>-->
+<!--    <color name="primaryText">#FFFFFF</color>-->
+<!--    <color name="secondaryText">#B3FFFFFF</color>-->
+
+<!--    //dark Tone4ka-->
+<!--    <color name="colorPrimary_tone4ka">#151719</color>-->
+<!--    <color name="colorPrimaryDark_tone4ka">#151719</color>-->
+<!--    <color name="colorAccent_tone4ka">#156CB1</color>-->
+<!--    <color name="primaryText_tone4ka">#FFFFFF</color>-->
+<!--    <color name="secondaryText_tone4ka">#B3FFFFFF</color>-->
+
+
+<!--    <color name="line_white">#e0e0e0</color>-->
+<!--    <color name="line_dark">#353535</color>-->
+
+<!--    <color name="ripple_material_dark1">#33ffffff</color>-->
+<!--    <color name="ripple_material_light1">#1f000000</color>`-->
+
+
+<!--    <color name="statusbar">#FAFAFA</color>-->
 </resources>

@@ -3,6 +3,8 @@
     <string name="app_name">Помощник АГУ</string>
     <string name="card_margin">16dp</string>
     <string name="server_client_id">646645078300-kr7b1hj5t6pdu6j4gubhee1idfr2moao.apps.googleusercontent.com</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

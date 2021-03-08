@@ -8,18 +8,41 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="com.android.vending.BILLING" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
     <application
+        android:name=".new_version.help_functions.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_icon_app_new"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_icon_app_new_round"
         android:supportsRtl="true"
         android:theme="@style/Light">
-        <activity android:name=".Test_kt"></activity>
-        <activity android:name=".Favorite" />
-        <activity android:name=".profile" />
-        <activity android:name=".license" />
+        <service
+            android:name=".new_version.service.DailyTable"
+            android:enabled="true"
+            android:exported="true"></service>
+        <service
+            android:name=".new_version.service.TimeTableChecker"
+            android:enabled="true"
+            android:exported="true"
+            android:stopWithTask="false" />
+
+        <receiver
+            android:name=".new_version.service.BootCompleteReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name=".new_version.parrent"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity android:name=".splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,15 +51,13 @@
             </intent-filter>
         </activity>
         <activity android:name=".auth" />
-        <activity android:name=".app_info" />
-        <activity android:name=".FUCKTABLE" />
-        <activity android:name=".Setting" />
-        <activity android:name=".group_list" />
-        <activity android:name=".MainActivity" />
 
         <meta-data
             android:name="com.google.android.gms.wallet.api.enabled"
             android:value="true" />
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-7189546175747172~4377829796" />
     </application>
 
 </manifest>

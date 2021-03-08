@@ -27,28 +27,27 @@
             app:layout_constraintTop_toTopOf="parent" />
 
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/favorite"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:layout_width="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/info_card"
-            android:layout_centerHorizontal="true"
-            android:text="Добавить в избранное"
-            android:textColor="?android:attr/textColorPrimary"
-            android:textStyle="bold"
-            app:icon="@drawable/ic_star"
-            app:iconTint="@null"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/info_card" />
+<!--        <com.google.android.material.button.MaterialButton-->
+<!--            android:id="@+id/favorite"-->
+<!--            style="@style/Widget.MaterialComponents.Button.TextButton"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_marginTop="16dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_below="@id/info_card"-->
+<!--            android:layout_centerHorizontal="true"-->
+<!--            android:text="Добавить в избранное"-->
+<!--            android:textColor="?android:attr/textColorPrimary"-->
+<!--            android:textStyle="bold"-->
+<!--            app:icon="@drawable/ic_star"-->
+<!--            app:iconTint="@null"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/info_card" />-->
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/startUp"
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/favorite"
             android:layout_marginTop="16dp"
             android:layout_centerHorizontal="true"
             android:text="Открывать при запуске"
@@ -57,7 +56,22 @@
             app:icon="@drawable/ic_play"
             app:iconTint="@null"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/favorite" />
+            app:layout_constraintTop_toBottomOf="@+id/info_card" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/online"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_centerHorizontal="true"
+            android:text="Посмотреть расписание из кэша"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textStyle="bold"
+            app:icon="@drawable/ic_baseline_cloud_done_24"
+            app:iconTint="@null"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/startUp" />
 
 
 

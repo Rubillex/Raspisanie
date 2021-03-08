@@ -16,7 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Выберите тему"
-            android:textColor="?android:attr/textColorPrimary"
+            android:textColor="@color/primaryText"
             android:textStyle="bold"
             android:textSize="20sp"
             android:layout_centerHorizontal="true"
@@ -37,7 +37,7 @@
                 android:layout_marginLeft="25dp"
                 android:text="Светлая тема"
                 android:textSize="16sp"
-                android:textColor="?android:attr/textColorPrimary"
+                android:textColor="@color/primaryText"
                 android:layout_weight="1"
                 android:checked="true"/>
 
@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
                 android:text="Тёмная тема"
-                android:textColor="?android:attr/textColorPrimary"
+                android:textColor="@color/primaryText"
                 android:layout_marginLeft="25dp"
                 android:layout_marginTop="16dp"
                 android:layout_weight="1" />
@@ -57,7 +57,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
-                android:textColor="?android:attr/textColorPrimary"
+                android:textColor="@color/primaryText"
                 android:text="По умолчанию системы"
                 android:layout_marginLeft="25dp"
                 android:layout_marginTop="16dp"

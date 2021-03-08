@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".new_version.fragments.main"
+    android:background="@color/colorPrimary">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtSearch"
+            android:hint="Поиск...   (ОЧЕНЬ АЛЬФА ВЕРСИЯ ПРИЛОЖЕНИЯ)"
+            android:textColorHint="@color/secondaryText"
+            />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Воспользуйтесь поиском"
+                android:id="@+id/txtInfo"
+                android:textColor="@color/secondaryText"
+                android:textSize="@dimen/text_bigest"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/RvMain"
+                android:visibility="gone"/>
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:ems="10"
+                android:id="@+id/llTeacher"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp">
+
+                        <com.google.android.material.checkbox.MaterialCheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/chIbb"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="ИББ"
+                            android:textStyle="bold"
+                            android:paddingRight="6dp"
+                            android:paddingLeft="6dp"
+                            android:textColor="@color/primaryText"
+                            android:textSize="@dimen/text_bigest"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp">
+
+                        <com.google.android.material.checkbox.MaterialCheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/chIng"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="ИНГЕО"
+                            android:textStyle="bold"
+                            android:paddingRight="6dp"
+                            android:paddingLeft="6dp"
+                            android:textColor="@color/primaryText"
+                            android:textSize="@dimen/text_bigest"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp">
+
+                        <com.google.android.material.checkbox.MaterialCheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/chIpo"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="ИПО"
+                            android:textStyle="bold"
+                            android:paddingRight="6dp"
+                            android:paddingLeft="6dp"
+                            android:textColor="@color/primaryText"
+                            android:textSize="@dimen/text_bigest"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp">
+
+                        <com.google.android.material.checkbox.MaterialCheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/chIp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="ИП"
+                            android:textStyle="bold"
+                            android:paddingRight="6dp"
+                            android:paddingLeft="6dp"
+                            android:textColor="@color/primaryText"
+                            android:textSize="@dimen/text_bigest"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp">
+
+                        <com.google.android.material.checkbox.MaterialCheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/chIsn"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="ИСН"
+                            android:textStyle="bold"
+                            android:paddingRight="6dp"
+                            android:paddingLeft="6dp"
+                            android:textColor="@color/primaryText"
+                            android:textSize="@dimen/text_bigest"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp">
+
+                        <com.google.android.material.checkbox.MaterialCheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/chIid"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="ИИД"
+                            android:textStyle="bold"
+                            android:paddingRight="6dp"
+                            android:paddingLeft="6dp"
+                            android:textColor="@color/primaryText"
+                            android:textSize="@dimen/text_bigest"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp">
+
+                        <com.google.android.material.checkbox.MaterialCheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/chIimo"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="ИИМО"
+                            android:textStyle="bold"
+                            android:paddingRight="6dp"
+                            android:paddingLeft="6dp"
+                            android:textColor="@color/primaryText"
+                            android:textSize="@dimen/text_bigest"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp">
+
+                        <com.google.android.material.checkbox.MaterialCheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/chIhft"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="ИХХФТ"
+                            android:textStyle="bold"
+                            android:paddingRight="6dp"
+                            android:paddingLeft="6dp"
+                            android:textColor="@color/primaryText"
+                            android:textSize="@dimen/text_bigest"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp">
+
+                        <com.google.android.material.checkbox.MaterialCheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/chIctef"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="ИЦТЭФ"
+                            android:textStyle="bold"
+                            android:paddingRight="6dp"
+                            android:paddingLeft="6dp"
+                            android:textColor="@color/primaryText"
+                            android:textSize="@dimen/text_bigest"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp">
+
+                        <com.google.android.material.checkbox.MaterialCheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/chImkfp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="ИМКФП"
+                            android:textStyle="bold"
+                            android:paddingRight="6dp"
+                            android:paddingLeft="6dp"
+                            android:textColor="@color/primaryText"
+                            android:textSize="@dimen/text_bigest"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp">
+
+                        <com.google.android.material.checkbox.MaterialCheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/chImiit"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="ИМИИТ"
+                            android:textStyle="bold"
+                            android:paddingRight="6dp"
+                            android:paddingLeft="6dp"
+                            android:textColor="@color/primaryText"
+                            android:textSize="@dimen/text_bigest"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp">
+
+                        <com.google.android.material.checkbox.MaterialCheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/chEf"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="ЭФ"
+                            android:textStyle="bold"
+                            android:paddingRight="6dp"
+                            android:paddingLeft="6dp"
+                            android:textColor="@color/primaryText"
+                            android:textSize="@dimen/text_bigest"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp">
+
+                        <com.google.android.material.checkbox.MaterialCheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/chObs"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="ОБЩ"
+                            android:textStyle="bold"
+                            android:paddingRight="6dp"
+                            android:paddingLeft="6dp"
+                            android:textColor="@color/primaryText"
+                            android:textSize="@dimen/text_bigest"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp">
+
+                        <com.google.android.material.checkbox.MaterialCheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/chYi"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="ЮИ"
+                            android:textStyle="bold"
+                            android:paddingRight="6dp"
+                            android:paddingLeft="6dp"
+                            android:textColor="@color/primaryText"
+                            android:textSize="@dimen/text_bigest"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+            </ScrollView>
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:id="@+id/progress_main"/>
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+</FrameLayout>

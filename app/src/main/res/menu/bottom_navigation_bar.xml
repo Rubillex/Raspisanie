@@ -3,16 +3,25 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+<!--    <item-->
+<!--        android:id="@+id/star"-->
+<!--        android:icon="@drawable/ic_star"-->
+<!--        app:showAsAction="ifRoom"-->
+<!--        android:title="" />-->
+
     <item
-        android:id="@+id/star"
-        android:icon="@drawable/ic_star"
-        app:showAsAction="ifRoom"
-        android:title="" />
+        android:id="@+id/students"
+        android:icon="@drawable/ic_reading"
+        android:title="Студенты" />
+
+    <item
+        android:id="@+id/teach"
+        android:icon="@drawable/ic_presentation"
+        android:title="Преподаватели" />
 
     <item
         android:id="@+id/setting_button"
-        android:icon="@drawable/ic_baseline_settings_24"
-        app:showAsAction="ifRoom"
-        android:title="" />
+        android:icon="@drawable/ic_settings"
+        android:title="настройки" />
 
 </menu>

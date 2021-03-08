@@ -3,10 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="?attr/colorPrimary"
-    app:blurOverlayColor="@color/colorAccent"
-    android:id="@+id/root"
-    android:orientation="vertical">
+    android:background="@color/colorPrimary"
+    android:id="@+id/root">
 
            <LinearLayout
                android:layout_width="match_parent"
@@ -53,7 +51,7 @@
                                android:layout_alignLeft="@+id/start_page_icon"
                                android:text="Раздел по умолчанию"
                                android:textSize="@dimen/text_big"
-                               android:textColor="?android:attr/textColorPrimary"
+                               android:textColor="@color/primaryText"
                                android:id="@+id/start_page_text"/>
 
                            <TextView
@@ -65,7 +63,7 @@
                                android:text="585"
                                android:textSize="@dimen/text"
                                android:id="@+id/start_page_subtext"
-                               android:textColor="?android:attr/textColorSecondary"
+                               android:textColor="@color/secondaryText"
                                android:layout_below="@+id/start_page_text"/>
 
                        </RelativeLayout>
@@ -104,7 +102,7 @@
                                android:layout_alignLeft="@+id/premium_icon"
                                android:text="Премиум"
                                android:textSize="@dimen/text_big"
-                               android:textColor="?android:attr/textColorPrimary"
+                               android:textColor="@color/primaryText"
                                android:id="@+id/premium_text"/>
 
                            <TextView
@@ -116,7 +114,7 @@
                                android:text="false"
                                android:textSize="@dimen/text"
                                android:id="@+id/premium_subtext"
-                               android:textColor="?android:attr/textColorSecondary"
+                               android:textColor="@color/secondaryText"
                                android:layout_below="@+id/premium_text"/>
 
                        </RelativeLayout>
@@ -154,7 +152,7 @@
                                android:layout_alignLeft="@+id/theme_icon"
                                android:text="Выбор темы"
                                android:textSize="@dimen/text_big"
-                               android:textColor="?android:attr/textColorPrimary"
+                               android:textColor="@color/primaryText"
                                android:id="@+id/theme_text"/>
 
                            <TextView
@@ -166,11 +164,10 @@
                                android:textSize="@dimen/text"
                                android:text="Текущая тема: "
                                android:id="@+id/current_theme"
-                               android:textColor="?android:attr/textColorSecondary"
+                               android:textColor="@color/secondaryText"
                                android:layout_below="@+id/theme_text"/>
 
                        </RelativeLayout>
-
 
                        <View
                            android:layout_width="fill_parent"
@@ -205,7 +202,7 @@
                                android:layout_alignLeft="@+id/info_icon"
                                android:text="О приложении"
                                android:textSize="@dimen/text_big"
-                               android:textColor="?android:attr/textColorPrimary"
+                               android:textColor="@color/primaryText"
                                android:id="@+id/info_text"/>
 
                            <TextView
@@ -217,7 +214,7 @@
                                android:text="123"
                                android:textSize="@dimen/text"
                                android:id="@+id/info_sub"
-                               android:textColor="?android:attr/textColorSecondary"
+                               android:textColor="@color/secondaryText"
                                android:layout_below="@+id/info_text"/>
 
                        </RelativeLayout>
@@ -228,7 +225,6 @@
                            android:background="?android:attr/listDivider"
                            android:layout_marginLeft="10dp"
                            android:layout_marginRight="10dp"/>
-
 
                    </LinearLayout>
 

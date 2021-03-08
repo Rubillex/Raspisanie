@@ -32,6 +32,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import dev.prokrostinatorbl.raspisanie.new_version.parrent;
+
 public class auth extends AppCompatActivity {
 
     private GoogleSignInClient mGoogleSignInClient;
@@ -88,7 +90,7 @@ public class auth extends AppCompatActivity {
 
         FirebaseUser user  = mAuth.getCurrentUser();
         if(user != null) {
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            Intent intent = new Intent(getApplicationContext(), parrent.class);
             intent.putExtra("back", "false");
             startActivity(intent);
         }
@@ -104,12 +106,11 @@ public class auth extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.auth);
 
+        //три строчки ниже- это не стоит пока трогать
         Cheker();
-
         mAuth = FirebaseAuth.getInstance();
-
         createRequest();
-
+        
         findViewById(R.id.sign_in_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -161,9 +162,12 @@ public class auth extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+
+                            String mail = mAuth.getUid();
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            Intent intent = new Intent(getApplicationContext(), parrent.class);
+                            intent.putExtra("back", "false");
                             startActivity(intent);
 
                         } else {
@@ -171,7 +175,6 @@ public class auth extends AppCompatActivity {
                             Toast.makeText(auth.this, "Не удалось войти в аккаунт", Toast.LENGTH_SHORT).show();
                         }
 
-                        // ...
                     }
                 });
     }
