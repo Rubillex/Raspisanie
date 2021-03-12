@@ -11,6 +11,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.app.ActivityCompat.finishAffinity
 import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dev.prokrostinatorbl.raspisanie.BuildConfig
@@ -23,6 +24,7 @@ import moxy.MvpAppCompatFragment
 import java.util.*
 import kotlin.collections.HashMap
 import kotlin.coroutines.coroutineContext
+import kotlin.system.exitProcess
 
 
 class parrent : MvpAppCompatActivity() {
@@ -129,28 +131,28 @@ class parrent : MvpAppCompatActivity() {
     }
 
 
-    // сохранение состояния
-    override fun onSaveInstanceState(outState: Bundle) {
-        val arr = ArrayList<HashMap<String, Stack<MvpAppCompatFragment>>>()
-        outState.putParcelableArrayList("stack", arr as ArrayList<out Parcelable?>)
-//        outState.putSerializable("stack", mStacks)
-
-        super.onSaveInstanceState(outState)
-    }
-
-    // получение ранее сохраненного состояния
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-
-        val a = savedInstanceState["stack"] as ArrayList<HashMap<String, Stack<MvpAppCompatFragment>>>?
-        if (a!!.size != 0)
-            mStacks = a[0]
-
-        Log.e("stack", "aaa")
-        val fragmentTransaction: FragmentTransaction = supportFragmentManager.beginTransaction()
-        val fragment: MvpAppCompatFragment = mStacks[mCurrentTab]!!.elementAt(mStacks[mCurrentTab]!!.size - 1)
-        gotoFragment(fragment, fragmentTransaction)
-    }
+//    // сохранение состояния
+//    override fun onSaveInstanceState(outState: Bundle) {
+//        val arr = ArrayList<HashMap<String, Stack<MvpAppCompatFragment>>>()
+//        outState.putParcelableArrayList("stack", arr as ArrayList<out Parcelable?>)
+////        outState.putSerializable("stack", mStacks)
+//
+//        super.onSaveInstanceState(outState)
+//    }
+//
+//    // получение ранее сохраненного состояния
+//    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+//        super.onRestoreInstanceState(savedInstanceState)
+//
+//        val a = savedInstanceState["stack"] as ArrayList<HashMap<String, Stack<MvpAppCompatFragment>>>?
+//        if (a!!.size != 0)
+//            mStacks = a[0]
+//
+//        Log.e("stack", "aaa")
+//        val fragmentTransaction: FragmentTransaction = supportFragmentManager.beginTransaction()
+//        val fragment: MvpAppCompatFragment = mStacks[mCurrentTab]!!.elementAt(mStacks[mCurrentTab]!!.size - 1)
+//        gotoFragment(fragment, fragmentTransaction)
+//    }
 
     private var currentPageId = -1
 
@@ -185,18 +187,18 @@ class parrent : MvpAppCompatActivity() {
         val fragmentTransaction: FragmentTransaction = supportFragmentManager.beginTransaction()
 
         if (start_frame == "main"){
-
-            if (mStacks[mCurrentTab]!!.size == 1){
+            if(mStacks[mCurrentTab]!!.size == 1){
                 super.onBackPressed()
                 finishAffinity()
+            } else {
+                popFragments(fTrans = fragmentTransaction)
             }
-            popFragments(fTrans = fragmentTransaction)
         }
         if (start_frame != "main"){
             if (mStacks[mCurrentTab]!!.size == 1){
                 replaceFragment(tag = TAB_STUDENTS, fragment = main(), shouldAdd = true, fTrans = fragmentTransaction)
             } else {
-                if (mStacks[mCurrentTab]!!.size < 1){
+                if ((mStacks[mCurrentTab]!!.size - 2) < 1){
                     super.onBackPressed()
                     finishAffinity()
                 } else {
@@ -269,12 +271,14 @@ class parrent : MvpAppCompatActivity() {
 
         fun popFragments(fTrans: FragmentTransaction){
 
-            val fragment: MvpAppCompatFragment = mStacks[mCurrentTab]!!.elementAt(mStacks[mCurrentTab]!!.size - 2)
-
-            mStacks[mCurrentTab]!!.pop()
-
-            fTrans.replace(R.id.container, fragment)
-            fTrans.commit()
+            if (mStacks[mCurrentTab]!!.size - 2 < 0){
+                exitProcess(-1)
+            } else {
+                val fragment: MvpAppCompatFragment = mStacks[mCurrentTab]!!.elementAt(mStacks[mCurrentTab]!!.size - 2)
+                mStacks[mCurrentTab]!!.pop()
+                fTrans.replace(R.id.container, fragment)
+                fTrans.commit()
+            }
 
         }
 

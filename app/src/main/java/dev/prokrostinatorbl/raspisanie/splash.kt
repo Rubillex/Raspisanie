@@ -44,7 +44,7 @@ class splash : AppCompatActivity() {
          *
          */
 
-        if (signInAccount == null){
+        if (signInAccount != null){
             if (mSettingMap["start_frame"] == "main"){
                 val intent = Intent(this, parrent::class.java)
                 intent.putExtra("frame", "main")
@@ -54,6 +54,9 @@ class splash : AppCompatActivity() {
                 intent.putExtra("frame", "timetable")
                 startActivity(intent)
             }
+        } else {
+            val intent = Intent(this, auth::class.java)
+            startActivity(intent)
         }
 
 

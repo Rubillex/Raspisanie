@@ -166,7 +166,7 @@ class TeacherProvider(var presenter: teacherPresenter) {
                             val url = link.attr("href")
 
                             val item = MainModel(
-                                    name = name[0],
+                                    name = name[0].toUpperCase(),
                                     href = "${name_href[1]}$url"
                             )
                             if (!item.name.startsWith("Вакансия") && !item.name.startsWith("Преподаватель"))

@@ -19,7 +19,7 @@ class Saver: AppCompatActivity() {
             editor = preferences.edit()
         }
 
-        private val premium_default = "false"
+        private val premium_default = "true"
         private val theme = "theme"
         private val premium = "premium"
 

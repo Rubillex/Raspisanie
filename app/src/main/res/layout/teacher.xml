@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".new_version.fragments.main"
     android:background="@color/colorPrimary">
 
@@ -11,13 +12,62 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <EditText
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="?android:attr/actionBarSize"
+            android:padding="8dp"
+            android:layout_margin="10dp"
+            android:id="@+id/llSearchText"
+            android:background="@color/line"
+            android:elevation="6dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_big"
+                android:text="Поиск"
+                android:layout_gravity="center_vertical"
+                android:id="@+id/txtSearchText"
+                android:textColor="@color/secondaryText"
+                android:layout_marginLeft="16dp"/>
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/txtSearch"
-            android:hint="Поиск...   (ОЧЕНЬ АЛЬФА ВЕРСИЯ ПРИЛОЖЕНИЯ)"
-            android:textColorHint="@color/secondaryText"
-            />
+            android:padding="8dp"
+            android:id="@+id/llSearchInput"
+            android:background="@color/line"
+            android:visibility="gone"
+            android:orientation="horizontal"
+            android:elevation="6dp">
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtSearch1"
+                android:maxLines="1"
+                android:hint="поиск"
+                android:textColorHint="@color/primaryText"
+                android:layout_weight="1"
+                android:visibility="gone"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/outlinedTextField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Поиск"
+                app:hintTextColor="@color/colorAccent"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txtSearch"
+                    android:inputType="text"
+                    android:imeOptions="actionSearch"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
 
         <FrameLayout
             android:layout_width="match_parent"

@@ -44,8 +44,9 @@ private const val ARG_PARAM2 = "param2"
 
 
     private val mSkuDetailsMap: MutableMap<String, SkuDetails> = HashMap<String, SkuDetails>()
-    private val mSkuId: String = "premium"
-
+    private val mSkuId: String = "one"
+    private val mSkuTwo: String = "two"
+    private val mSkuThree: String = "three"
 
 
 class Setting : MvpAppCompatFragment() {
@@ -144,25 +145,6 @@ class Setting : MvpAppCompatFragment() {
         view.findViewById<RelativeLayout>(R.id.Theme_swicher).setOnClickListener { theme_swith.show() }
         view.findViewById<RelativeLayout>(R.id.premium).setOnClickListener { premium_cheker() }
 
-        //--------------------------------
-
-        view.findViewById<TextView>(R.id.premium_subtext).text = APP_PREFERENCES_PREMIUM
-
-        if (APP_PREFERENCES_START_GROUP == "standart"){
-            view.findViewById<TextView>(R.id.start_page_subtext).text = "Главное меню"
-        } else {
-            view.findViewById<TextView>(R.id.start_page_subtext).text = APP_PREFERENCES_START_GROUP
-        }
-
-        view.findViewById<RelativeLayout>(R.id.start_page).setOnClickListener {
-            save()
-            Saver.load_setting()
-            if (APP_PREFERENCES_START_GROUP == "standart"){
-                view.findViewById<TextView>(R.id.start_page_subtext).text = "Главное меню"
-            } else {
-                view.findViewById<TextView>(R.id.start_page_subtext).text = APP_PREFERENCES_START_GROUP
-            }
-        }
 
         //--------------------------------
 
@@ -249,20 +231,20 @@ class Setting : MvpAppCompatFragment() {
     private fun saveTheme(theme: Int) = sharedPrefs?.edit()?.putInt(KEY_THEME, theme)?.apply()
 
     fun premium_cheker(){
-        val premium_subtext = view?.findViewById<TextView>(R.id.premium_subtext)
-        premium_subtext!!.text = APP_PREFERENCES_PREMIUM
+        donate_dialog = Dialog(context_)
+        donate_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        donate_dialog.setContentView(R.layout.donate)
+        donate_dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        donate_dialog.show()
 
-        if (APP_PREFERENCES_PREMIUM == "false"){
-            donate_dialog = Dialog(context_)
-            donate_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-            donate_dialog.setContentView(R.layout.donate)
-            donate_dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            donate_dialog.show()
-
-            donate_dialog.findViewById<LinearLayout>(R.id.vk).setOnClickListener {
-                launchBilling(mSkuId)
-            }
-
+        donate_dialog.findViewById<LinearLayout>(R.id.one).setOnClickListener {
+            launchBilling(mSkuId)
+        }
+        donate_dialog.findViewById<LinearLayout>(R.id.two).setOnClickListener {
+            launchBilling(mSkuTwo)
+        }
+        donate_dialog.findViewById<LinearLayout>(R.id.three).setOnClickListener {
+            launchBilling(mSkuThree)
         }
     }
 
@@ -353,7 +335,9 @@ class Setting : MvpAppCompatFragment() {
          * To purchase an Subscription
          */
         val skuList: MutableList<String> = ArrayList()
-        skuList.add("premium") // SKU Id
+        skuList.add("one") // SKU Id
+        skuList.add("two") // SKU Id
+        skuList.add("three") // SKU Id
         val params = SkuDetailsParams.newBuilder()
                 .setSkusList(skuList)
                 .setType(BillingClient.SkuType.INAPP)

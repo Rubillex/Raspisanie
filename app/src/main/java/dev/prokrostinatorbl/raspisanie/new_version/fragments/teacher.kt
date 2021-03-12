@@ -11,11 +11,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.view.WindowManager
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.OrientationHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.textfield.TextInputEditText
 import dev.prokrostinatorbl.raspisanie.R
 import dev.prokrostinatorbl.raspisanie.new_version.adapters.MainAdapter
 import dev.prokrostinatorbl.raspisanie.new_version.help_functions.*
@@ -65,6 +68,9 @@ class teacher : MvpAppCompatFragment(), TeacherView, MainAdapter.OnItemClick {
     private lateinit var mInfo: TextView
     private lateinit var mTxtSearch: EditText
 
+    private lateinit var mllSearch: LinearLayout
+    private lateinit var mllInput: LinearLayout
+
     @InjectPresenter
     lateinit var mainPresenter: teacherPresenter
 
@@ -93,10 +99,18 @@ class teacher : MvpAppCompatFragment(), TeacherView, MainAdapter.OnItemClick {
         mSettingMap.putAll(Saver.load_main())
         APP_PREFERENCES_THEME = mSettingMap.getValue("theme")
 
-
-        mTxtSearch = root.findViewById<EditText>(R.id.txtSearch)
+        mTxtSearch = root.findViewById<TextInputEditText>(R.id.txtSearch)
         mProgress = root.findViewById(R.id.progress_main)
         mProgress.visibility = View.GONE
+
+        mllSearch = root.findViewById(R.id.llSearchText)
+        mllInput = root.findViewById(R.id.llSearchInput)
+        mllSearch.setOnClickListener {
+            mllSearch.visibility = View.GONE
+            mllInput.visibility = View.VISIBLE
+            mTxtSearch.requestFocus()
+            view?.showKeyboard()
+        }
 
         mRvInstituts = root.findViewById(R.id.RvMain)
         mInfo = root.findViewById(R.id.txtInfo)
@@ -118,6 +132,8 @@ class teacher : MvpAppCompatFragment(), TeacherView, MainAdapter.OnItemClick {
 
         llTeacher = root.findViewById(R.id.llTeacher)
 
+        var request: String = ""
+
         root.viewTreeObserver.addOnGlobalLayoutListener(
                 OnGlobalLayoutListener {
                     val r = Rect()
@@ -135,6 +151,8 @@ class teacher : MvpAppCompatFragment(), TeacherView, MainAdapter.OnItemClick {
                     }
                 })
 
+        val mTxtIn = root.findViewById<TextView>(R.id.txtSearchText)
+
         mTxtSearch.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
@@ -142,6 +160,12 @@ class teacher : MvpAppCompatFragment(), TeacherView, MainAdapter.OnItemClick {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (context != null) {
+
+                    request = s.toString().toUpperCase()
+                    if (s.toString() == "") { mTxtIn.text = "Поиск"
+                        mInfo.visibility = View.GONE }
+                    else mTxtIn.text = s.toString()
+
                     mInfo.visibility = View.GONE
                     teachCreate()
                     mainPresenter.loadTeach(context = context, teach = teach)
@@ -155,8 +179,15 @@ class teacher : MvpAppCompatFragment(), TeacherView, MainAdapter.OnItemClick {
 
         })
 
-
-
+        mTxtSearch.setOnEditorActionListener { v, actionId, event ->
+            return@setOnEditorActionListener when (actionId) {
+                EditorInfo.IME_ACTION_SEARCH -> {
+                    search(req = request)
+                    true
+                }
+                else -> false
+            }
+        }
 
         mAdapter = MainAdapter(this)
 
@@ -174,6 +205,14 @@ class teacher : MvpAppCompatFragment(), TeacherView, MainAdapter.OnItemClick {
         }
 
         return root
+    }
+
+    private fun search(req: String){
+        view?.clearFocus()
+        view?.hideKeyboard()
+        mllInput.visibility = View.GONE
+        mllSearch.visibility = View.VISIBLE
+        mAdapter.search(req)
     }
 
     private fun teachCreate(){
@@ -202,6 +241,14 @@ class teacher : MvpAppCompatFragment(), TeacherView, MainAdapter.OnItemClick {
         AppCompatDelegate.setDefaultNightMode(themeMode)
     }
 
+    fun View.hideKeyboard() {
+        val inputManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputManager.hideSoftInputFromWindow(windowToken, 0)
+    }
+    fun View.showKeyboard() {
+        val inputManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputManager.toggleSoftInputFromWindow(windowToken, InputMethodManager.SHOW_FORCED, 0)
+    }
 
     companion object {
         @JvmStatic
@@ -231,7 +278,7 @@ class teacher : MvpAppCompatFragment(), TeacherView, MainAdapter.OnItemClick {
 
     override fun onItemClick(item: MainModel, position: Int) {
         val fr = fragmentManager?.beginTransaction()
-        val array: Array<String> = arrayOf(position.toString(), item.name, item.href, "teach")
+        val array: Array<String> = arrayOf(position.toString(), item.name, item.href, "teach", "from_group")
         parrent.pushFragments(tag = parrent.TAB_TEACH, fragment = TimeTableFragment.newInstance(array), shouldAdd = true, fTrans = fr!!)
     }
 

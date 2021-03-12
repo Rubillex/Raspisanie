@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#151719</color>
     <color name="colorPrimaryDark">#151719</color>
-    <color name="colorAccent">#156CB1</color>
+    <color name="colorAccent">#227FC8</color>
 
     <color name="primaryText">#FFFFFF</color>
     <color name="secondaryText">#B3FFFFFF</color>
@@ -11,7 +11,7 @@
 
     <color name="line_table">#292929</color>
 
-    <color name="day">#ffd7ef87</color>
+    <color name="day">#8C7BFF</color>
 
     <color name="search">#232323</color>
 </resources>

@@ -140,17 +140,11 @@ class main : MvpAppCompatFragment(), MainView, MainAdapter.OnItemClick {
                 false
         )
 
-        val mAuth: FirebaseUser? =  FirebaseAuth.getInstance().currentUser
-        val mail: String
-        mail = mAuth?.email?.toString() ?: ""
-
         when(Themer.onActivityCreateSetTheme(APP_PREFERENCES_THEME = APP_PREFERENCES_THEME)){
             "Light" -> setTheme(AppCompatDelegate.MODE_NIGHT_NO, THEME_LIGHT)
             "Dark" -> setTheme(AppCompatDelegate.MODE_NIGHT_YES, THEME_DARK)
             "auto" -> setTheme(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM, THEME_SYSTEM)
         }
-
-
 
 
         return root
